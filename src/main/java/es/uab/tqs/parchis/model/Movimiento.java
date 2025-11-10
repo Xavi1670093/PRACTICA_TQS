@@ -7,6 +7,14 @@ public class Movimiento {
     private boolean captura;
     private Posicion comida;
 
+    public Movimiento()
+    {
+        this.inicial = null;
+        this.destino = null;
+        this.captura = false;
+        this.comida = null;
+    }
+    
     public Movimiento(Posicion inicial, Posicion destino, boolean captura) {
         this.inicial = inicial;
         this.destino = destino;
