@@ -1,0 +1,11 @@
+es\uab\tqs\parchis\main.class
+es\uab\tqs\parchis\model\Movimiento.class
+es\uab\tqs\parchis\model\Ficha$TipoFicha.class
+es\uab\tqs\parchis\view\dadoView.class
+es\uab\tqs\parchis\model\Ficha$ColorFicha.class
+es\uab\tqs\parchis\view\tableroView.class
+es\uab\tqs\parchis\model\Dado.class
+es\uab\tqs\parchis\controller\movimientoController.class
+es\uab\tqs\parchis\model\Tablero.class
+es\uab\tqs\parchis\model\Posicion.class
+es\uab\tqs\parchis\model\Ficha.class
