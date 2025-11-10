@@ -22,5 +22,13 @@ public class MovimientoTest {
         assertFalse(mov.isCaptura());
     }
 
-    
+    @Test
+    void testSetters() {
+        mov.setInicial(new Posicion(2, false));
+        mov.setDestino(new Posicion(6, true));
+        mov.setCaptura(true);
+        assertEquals(mov.getInicial().getNumero(), 2);
+        assertEquals(mov.getDestino().getNumero(), 6);
+        assertTrue(mov.isCaptura());
+    }
 }
