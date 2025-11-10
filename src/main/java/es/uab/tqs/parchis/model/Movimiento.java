@@ -5,7 +5,7 @@ public class Movimiento {
     private Posicion inicial;
     private Posicion destino;
     private boolean captura;
-
+    
     
 
 }
