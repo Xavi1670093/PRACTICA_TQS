@@ -24,6 +24,14 @@ public class Movimiento {
         return captura;
     }
 
-    
+    public void setInicial(Posicion inicial) {
+        this.inicial = inicial;
+    }
+    public void setDestino(Posicion destino) {
+        this.destino = destino;
+    }
+    public void setCaptura(boolean captura) {
+        this.captura = captura;
+    }
 
 }
