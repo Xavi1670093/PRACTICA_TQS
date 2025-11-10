@@ -142,8 +142,8 @@ public class Tablero {
                     System.out.print(" " + letraColor + " "); // ocupado: también 3 caracteres
                 }
             }
-    System.out.println();
-}
+        System.out.println();
+        }
     }
 }
 

@@ -5,6 +5,11 @@ public class Posicion {
     private boolean seguro;
 
     //CONSTRUCTOR
+    public Posicion() {
+        this.nCasilla = 0;
+        this.seguro = false;
+    }
+    
     public Posicion(int nCasilla, boolean seguro) {
         this.nCasilla = nCasilla;
         this.seguro = seguro;

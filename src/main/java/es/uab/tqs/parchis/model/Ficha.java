@@ -1,6 +1,9 @@
 package es.uab.tqs.parchis.model;
 
 public class Ficha {
+
+    public Ficha() {
+    }
     public enum ColorFicha {
         COLOR_AMARILLO,
         COLOR_AZUL,
@@ -21,8 +24,8 @@ public class Ficha {
     public Ficha(ColorFicha color, TipoFicha tipo) {
         this.color = color;
         this.tipo = tipo;
-        this.pos = null;
-        this.mov = null;
+        this.pos = new Posicion();
+        this.mov = new Movimiento();
     }
 
     
