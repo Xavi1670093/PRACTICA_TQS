@@ -5,11 +5,13 @@ public class Movimiento {
     private Posicion inicial;
     private Posicion destino;
     private boolean captura;
+    private Posicion comida;
 
     public Movimiento(Posicion inicial, Posicion destino, boolean captura) {
         this.inicial = inicial;
         this.destino = destino;
         this.captura = captura;
+        this.comida = null;
     }
 
     public Posicion getInicial() {
@@ -24,6 +26,10 @@ public class Movimiento {
         return captura;
     }
 
+    public Posicion getComida() {
+        return comida;
+    }
+
     public void setInicial(Posicion inicial) {
         this.inicial = inicial;
     }
@@ -32,6 +38,9 @@ public class Movimiento {
     }
     public void setCaptura(boolean captura) {
         this.captura = captura;
+    }
+    public void setComida(Posicion comida) {
+        this.comida = comida;
     }
 
 }

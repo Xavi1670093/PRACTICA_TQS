@@ -21,6 +21,7 @@ public class MovimientoTest {
         assertEquals(mov.getInicial().getNumero(), 0);
         assertEquals(mov.getDestino().getNumero(), 4);
         assertFalse(mov.isCaptura());
+        assertEquals(mov.getComida(), null);
     }
 
     @Test
@@ -28,8 +29,10 @@ public class MovimientoTest {
         mov.setInicial(new Posicion(2, false));
         mov.setDestino(new Posicion(6, true));
         mov.setCaptura(true);
+        mov.setComida(new Posicion(3, false));
         assertEquals(mov.getInicial().getNumero(), 2);
         assertEquals(mov.getDestino().getNumero(), 6);
         assertTrue(mov.isCaptura());
+        assertEquals(mov.getComida().getNumero(), 3);
     }
 }
