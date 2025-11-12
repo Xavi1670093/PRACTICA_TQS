@@ -21,11 +21,11 @@ public class Ficha {
     private Posicion pos;
     private Movimiento mov;
 
-    public Ficha(ColorFicha color, TipoFicha tipo) {
+    public Ficha(ColorFicha color, TipoFicha tipo, Posicion pos, Movimiento mov) {
         this.color = color;
         this.tipo = tipo;
-        this.pos = new Posicion();
-        this.mov = new Movimiento();
+        this.pos = pos;
+        this.mov = mov;
     }
 
     

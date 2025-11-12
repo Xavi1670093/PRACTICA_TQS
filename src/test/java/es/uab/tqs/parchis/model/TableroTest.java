@@ -1,7 +1,6 @@
 package es.uab.tqs.parchis.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +10,7 @@ public class TableroTest {
     Tablero tablero;
 
     @BeforeEach
+    @SuppressWarnings("unused")
     void setUp() {
         tablero = new Tablero();
         tablero.inicializa();
@@ -50,5 +50,53 @@ public class TableroTest {
                 }
             }
         }
+    }
+    
+        @Test
+    void testObtenerIndice() {
+
+        // Casos válidos
+        int[] posValidoIntermedio = tablero.obtenerIndice(25);
+        assertArrayEquals(new int[]{8, 11}, posValidoIntermedio);
+
+        int[] posValidoInferior = tablero.obtenerIndice(1);
+        assertArrayEquals(new int[]{18, 10}, posValidoInferior);
+
+        int[] posValidoSuperior = tablero.obtenerIndice(68);
+        assertArrayEquals(new int[]{18, 9}, posValidoSuperior);
+
+        // Valores frontera (fuera de rango)
+        assertNull(tablero.obtenerIndice(0));
+        assertNull(tablero.obtenerIndice(69));
+
+        // Valores límite negativos y mayores
+        assertNull(tablero.obtenerIndice(-1));
+        assertNull(tablero.obtenerIndice(70));
+    }
+
+        
+    
+    
+    @Test
+    void testCapturaPosible() {
+        Ficha ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(5, true), null);
+        Ficha fichaOponente = new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(10, true), null);
+        tablero.setFicha(ficha, tablero.obtenerIndice(5)); // Colocamos la ficha en el tablero
+        tablero.setFicha(fichaOponente, tablero.obtenerIndice(10)); // Colocamos la ficha del oponente en el tablero
+
+        //CAS BASIC -> captura normal
+        assertTrue(tablero.capturaPosible(ficha, 5)); 
+        //Valors frontera
+        assertTrue(tablero.capturaPosible(ficha, 6)); 
+        assertFalse(tablero.capturaPosible(ficha, 4)); 
+
+        //CAS EXTRA: ficha del mateix color:
+        Ficha fichaAliada = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(8, true), null);
+        tablero.setFicha(fichaAliada, tablero.obtenerIndice(8)); 
+        assertFalse(tablero.capturaPosible(ficha, 3)); 
+        
+        //CAS EXTRA -> Barrera:
+        
+
     }
 }
