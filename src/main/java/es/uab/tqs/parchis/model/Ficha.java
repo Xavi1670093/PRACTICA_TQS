@@ -39,11 +39,18 @@ public class Ficha {
         return pos;
     }
 
+    public boolean isBarrera() {
+        return barrera;
+    }
+
     public void setColor(ColorFicha color) {
         this.color = color;
     }
     public void setTipo(TipoFicha tipo) {
         this.tipo = tipo;
+    }
+    public void setBarrera(boolean barrera) {
+        this.barrera = barrera;
     }
 
 }
