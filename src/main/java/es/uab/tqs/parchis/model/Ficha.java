@@ -19,13 +19,11 @@ public class Ficha {
     private ColorFicha color;
     private TipoFicha tipo;
     private Posicion pos;
-    private Movimiento mov;
 
-    public Ficha(ColorFicha color, TipoFicha tipo, Posicion pos, Movimiento mov) {
+    public Ficha(ColorFicha color, TipoFicha tipo, Posicion pos) {
         this.color = color;
         this.tipo = tipo;
         this.pos = pos;
-        this.mov = mov;
     }
 
     
@@ -37,9 +35,6 @@ public class Ficha {
     }
     public Posicion getPosicion() {
         return pos;
-    }
-    public Movimiento getMovimiento() {
-        return mov;
     }
 
     public void setColor(ColorFicha color) {

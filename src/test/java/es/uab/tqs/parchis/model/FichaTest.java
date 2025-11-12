@@ -12,8 +12,8 @@ class FichaTest {
     @BeforeEach
     @SuppressWarnings("unused")
     void setUp() {
-        fichaAmarilla = new Ficha(Ficha.ColorFicha.COLOR_AMARILLO, Ficha.TipoFicha.TIPO_OCUPADO, null, null);
-        fichaRoja = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_EMPTY, null, null);
+        fichaAmarilla = new Ficha(Ficha.ColorFicha.COLOR_AMARILLO, Ficha.TipoFicha.TIPO_OCUPADO, null);
+        fichaRoja = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_EMPTY, null);
     }
 
     @Test
@@ -21,12 +21,10 @@ class FichaTest {
         assertEquals(Ficha.ColorFicha.COLOR_AMARILLO, fichaAmarilla.getColor());
         assertEquals(Ficha.TipoFicha.TIPO_OCUPADO, fichaAmarilla.getTipo());
         assertNull(fichaAmarilla.getPosicion());
-        assertNull(fichaAmarilla.getMovimiento());
 
         assertEquals(Ficha.ColorFicha.COLOR_ROJO, fichaRoja.getColor());
         assertEquals(Ficha.TipoFicha.TIPO_EMPTY, fichaRoja.getTipo());
         assertNull(fichaRoja.getPosicion());
-        assertNull(fichaRoja.getMovimiento());
     }
 
     @Test
@@ -46,7 +44,6 @@ class FichaTest {
         assertEquals(Ficha.ColorFicha.COLOR_AMARILLO, fichaAmarilla.getColor());
         assertEquals(Ficha.TipoFicha.TIPO_OCUPADO, fichaAmarilla.getTipo());
         assertNull(fichaAmarilla.getPosicion());
-        assertNull(fichaAmarilla.getMovimiento());
     }
 
     @Test
@@ -55,6 +52,5 @@ class FichaTest {
         assertNull(fichaVacia.getColor());
         assertNull(fichaVacia.getTipo());
         assertNull(fichaVacia.getPosicion());
-        assertNull(fichaVacia.getMovimiento());
     }
 }
