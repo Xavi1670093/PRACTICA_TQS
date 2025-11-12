@@ -121,9 +121,16 @@ public class Tablero {
         return false; 
     }
 
-    public void setFicha(Ficha ficha, int fila, int col) {
-        tablero[fila][col] = ficha;
+    public void setFicha(Ficha ficha, int[] posicion) {
+    if (posicion == null || posicion.length != 2) {
+        throw new IllegalArgumentException("Posición inválida");
     }
+
+    int fila = posicion[0];
+    int col = posicion[1];
+
+    tablero[fila][col] = ficha;
+}
 
 
     public int[] obtenerIndice(int numero) {

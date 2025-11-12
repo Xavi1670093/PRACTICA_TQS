@@ -10,6 +10,7 @@ class FichaTest {
     private Ficha fichaRoja;
 
     @BeforeEach
+    @SuppressWarnings("unused")
     void setUp() {
         fichaAmarilla = new Ficha(Ficha.ColorFicha.COLOR_AMARILLO, Ficha.TipoFicha.TIPO_OCUPADO, null, null);
         fichaRoja = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_EMPTY, null, null);

@@ -10,6 +10,7 @@ public class TableroTest {
     Tablero tablero;
 
     @BeforeEach
+    @SuppressWarnings("unused")
     void setUp() {
         tablero = new Tablero();
         tablero.inicializa();
@@ -56,15 +57,12 @@ public class TableroTest {
 
         // Casos válidos
         int[] posValidoIntermedio = tablero.obtenerIndice(25);
-        assertNotNull(posValidoIntermedio);
         assertArrayEquals(new int[]{8, 11}, posValidoIntermedio);
 
         int[] posValidoInferior = tablero.obtenerIndice(1);
-        assertNotNull(posValidoInferior);
         assertArrayEquals(new int[]{18, 10}, posValidoInferior);
 
         int[] posValidoSuperior = tablero.obtenerIndice(68);
-        assertNotNull(posValidoSuperior);
         assertArrayEquals(new int[]{18, 9}, posValidoSuperior);
 
         // Valores frontera (fuera de rango)
@@ -79,15 +77,26 @@ public class TableroTest {
         
     
     
-    //@Test
-    //void testCapturaPosible() {
-    //    Ficha ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(5, true), null);
-    //    Ficha fichaOponente = new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(10, true), null);
-    //    tablero.setFicha(ficha, 14, 10); // Colocamos la ficha en el tablero
-    //    tablero.setFicha(fichaOponente, 10, 12); // Colocamos la ficha del oponente en el tablero
-//
-    //    //CAS BASIC -> captura normal
-    //    assertTrue(tablero.capturaPosible(ficha, 5)); // Avanzar 5 posiciones desde 5 a 10
-//
-    //}
+    @Test
+    void testCapturaPosible() {
+        Ficha ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(5, true), null);
+        Ficha fichaOponente = new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(10, true), null);
+        tablero.setFicha(ficha, tablero.obtenerIndice(5)); // Colocamos la ficha en el tablero
+        tablero.setFicha(fichaOponente, tablero.obtenerIndice(10)); // Colocamos la ficha del oponente en el tablero
+
+        //CAS BASIC -> captura normal
+        assertTrue(tablero.capturaPosible(ficha, 5)); 
+        //Valors frontera
+        assertTrue(tablero.capturaPosible(ficha, 6)); 
+        assertFalse(tablero.capturaPosible(ficha, 4)); 
+
+        //CAS EXTRA: ficha del mateix color:
+        Ficha fichaAliada = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(8, true), null);
+        tablero.setFicha(fichaAliada, tablero.obtenerIndice(8)); 
+        assertFalse(tablero.capturaPosible(ficha, 3)); 
+        
+        //CAS EXTRA -> Barrera:
+        
+
+    }
 }
