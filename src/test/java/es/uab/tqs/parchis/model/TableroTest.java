@@ -90,6 +90,23 @@ public class TableroTest {
         assertTrue(tablero.capturaPosible(ficha, 6)); 
         assertFalse(tablero.capturaPosible(ficha, 4)); 
 
+        //CAS EXTRA: ficha del mateix color:
+        Ficha fichaAliada = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(8, true), false);
+        tablero.setFicha(fichaAliada, tablero.obtenerIndice(8)); 
+        assertFalse(tablero.capturaPosible(ficha, 3)); 
         
+        //CAS EXTRA -> Barrera:
+        ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(15, true), false);
+        fichaOponente = new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(20, true), true);
+        tablero.setFicha(ficha, tablero.obtenerIndice(15)); 
+        tablero.setFicha(fichaOponente, tablero.obtenerIndice(20)); 
+        assertFalse(tablero.capturaPosible(ficha, 5)); 
+
+        //CAS EXTRA -> Casilla segura
+        ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(25, true), false);
+        fichaOponente = new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(30, true), false);
+        tablero.setFicha(ficha, tablero.obtenerIndice(25)); 
+        tablero.setFicha(fichaOponente, tablero.obtenerIndice(30)); 
+        assertFalse(tablero.capturaPosible(ficha, 5));
     }
 }
