@@ -19,11 +19,13 @@ public class Ficha {
     private ColorFicha color;
     private TipoFicha tipo;
     private Posicion pos;
+    private boolean barrera;
 
-    public Ficha(ColorFicha color, TipoFicha tipo, Posicion pos) {
+    public Ficha(ColorFicha color, TipoFicha tipo, Posicion pos, boolean barrera) {
         this.color = color;
         this.tipo = tipo;
         this.pos = pos;
+        this.barrera = barrera;
     }
 
     

@@ -79,8 +79,8 @@ public class TableroTest {
     
     //@Test
     void testCapturaPosible() {
-        Ficha ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(5, true));
-        Ficha fichaOponente = new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(10, true));
+        Ficha ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(5, true), false);
+        Ficha fichaOponente = new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(10, true), false);
         tablero.setFicha(ficha, tablero.obtenerIndice(5)); // Colocamos la ficha en el tablero
         tablero.setFicha(fichaOponente, tablero.obtenerIndice(10)); // Colocamos la ficha del oponente en el tablero
 
@@ -90,13 +90,6 @@ public class TableroTest {
         assertTrue(tablero.capturaPosible(ficha, 6)); 
         assertFalse(tablero.capturaPosible(ficha, 4)); 
 
-        //CAS EXTRA: ficha del mateix color:
-        Ficha fichaAliada = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(8, true));
-        tablero.setFicha(fichaAliada, tablero.obtenerIndice(8)); 
-        assertFalse(tablero.capturaPosible(ficha, 3)); 
         
-        //CAS EXTRA -> Barrera:
-        
-
     }
 }

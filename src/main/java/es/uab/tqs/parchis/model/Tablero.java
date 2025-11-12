@@ -9,7 +9,7 @@ public class Tablero {
         numerosTablero = new int[19][19];
         for (int i = 0; i < 19; i++) {
             for (int j = 0; j < 19; j++) {
-                tablero[i][j] = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_EMPTY, null);
+                tablero[i][j] = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_EMPTY, null, false);
             }
         }
 
