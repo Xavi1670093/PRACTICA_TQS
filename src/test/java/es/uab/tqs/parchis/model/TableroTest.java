@@ -77,7 +77,7 @@ public class TableroTest {
         
     
     
-    //@Test
+    @Test
     void testCapturaPosible() {
         Ficha ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(5, true), false);
         Ficha fichaOponente = new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(10, true), false);

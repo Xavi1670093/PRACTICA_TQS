@@ -116,11 +116,6 @@ public class Tablero {
         return tablero;
     }
 
-    public boolean capturaPosible(Ficha ficha, int numDado) {
-        int pos = ficha.getPosicion().getNumero();
-        return false; 
-    }
-
     public void setFicha(Ficha ficha, int[] posicion) {
     if (posicion == null || posicion.length != 2) {
         throw new IllegalArgumentException("Posición inválida");
@@ -134,17 +129,35 @@ public class Tablero {
 
 
     public int[] obtenerIndice(int numero) {
-    if (numero < 1 || numero > 68) return null;
-    for (int i = 0; i < numerosTablero.length; i++) {
-        for (int j = 0; j < numerosTablero[i].length; j++) {
-            if (numerosTablero[i][j] == numero) {
-                return new int[]{i, j}; 
+        if (numero < 1 || numero > 68) return null;
+        for (int i = 0; i < numerosTablero.length; i++) {
+            for (int j = 0; j < numerosTablero[i].length; j++) {
+                if (numerosTablero[i][j] == numero) {
+                    return new int[]{i, j}; 
+                }
             }
         }
-    }
-    return null; 
-}
+        return null; 
+    }   
 
+    public boolean capturaPosible(Ficha ficha, int numDado) {
+    if (ficha == null || ficha.getPosicion() == null) return false;
+
+    int posActual = ficha.getPosicion().getNumero();
+    int posDestino = posActual + numDado;
+
+    // No se puede capturar fuera del rango del tablero
+    if (posDestino < 1 || posDestino > 68) return false;
+
+    int[] indiceDestino = obtenerIndice(posDestino);
+    if (indiceDestino == null) return false;
+
+    Ficha fichaDestino = tablero[indiceDestino[0]][indiceDestino[1]];
+        // Condiciones de captura
+
+    return fichaDestino.getTipo() == Ficha.TipoFicha.TIPO_OCUPADO && fichaDestino.getColor() != ficha.getColor() 
+            && !fichaDestino.isBarrera() && !fichaDestino.getPosicion().esSeguro();
+}
 
 
 
