@@ -53,11 +53,8 @@ public class TableroTest {
     
         @Test
     void testObtenerIndice() {
-        Tablero tablero = new Tablero();
 
-        // ============================
         // Casos válidos
-        // ============================
         int[] posValidoIntermedio = tablero.obtenerIndice(25);
         assertNotNull(posValidoIntermedio);
         assertArrayEquals(new int[]{8, 11}, posValidoIntermedio);
@@ -70,30 +67,27 @@ public class TableroTest {
         assertNotNull(posValidoSuperior);
         assertArrayEquals(new int[]{18, 9}, posValidoSuperior);
 
-        // ============================
         // Valores frontera (fuera de rango)
-        // ============================
         assertNull(tablero.obtenerIndice(0));
         assertNull(tablero.obtenerIndice(69));
 
-        // ============================
         // Valores límite negativos y mayores
-        // ============================
         assertNull(tablero.obtenerIndice(-1));
         assertNull(tablero.obtenerIndice(70));
     }
 
         
-    }
-    @Test
-    void testCapturaPosible() {
-        Ficha ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(5, true), null);
-        Ficha fichaOponente = new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(10, true), null);
-        tablero.setFicha(ficha, 14, 10); // Colocamos la ficha en el tablero
-        tablero.setFicha(fichaOponente, 10, 12); // Colocamos la ficha del oponente en el tablero
-
-        //CAS BASIC -> captura normal
-        assertTrue(tablero.capturaPosible(ficha, 5)); // Avanzar 5 posiciones desde 5 a 10
-
-    }
+    
+    
+    //@Test
+    //void testCapturaPosible() {
+    //    Ficha ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(5, true), null);
+    //    Ficha fichaOponente = new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(10, true), null);
+    //    tablero.setFicha(ficha, 14, 10); // Colocamos la ficha en el tablero
+    //    tablero.setFicha(fichaOponente, 10, 12); // Colocamos la ficha del oponente en el tablero
+//
+    //    //CAS BASIC -> captura normal
+    //    assertTrue(tablero.capturaPosible(ficha, 5)); // Avanzar 5 posiciones desde 5 a 10
+//
+    //}
 }

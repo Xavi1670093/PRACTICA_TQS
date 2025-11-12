@@ -6,6 +6,7 @@ public class Tablero {
 
     public void inicializa() {
         tablero = new Ficha[19][19];
+        numerosTablero = new int[19][19];
         for (int i = 0; i < 19; i++) {
             for (int j = 0; j < 19; j++) {
                 tablero[i][j] = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_EMPTY, null, null);
@@ -125,8 +126,17 @@ public class Tablero {
     }
 
 
-    public static int[] obtenerIndice(int numero, int[][] numerosTablero) {
+    public int[] obtenerIndice(int numero) {
+    if (numero < 1 || numero > 68) return null;
+    for (int i = 0; i < numerosTablero.length; i++) {
+        for (int j = 0; j < numerosTablero[i].length; j++) {
+            if (numerosTablero[i][j] == numero) {
+                return new int[]{i, j}; 
+            }
+        }
     }
+    return null; 
+}
 
 
 
