@@ -1,7 +1,6 @@
 package es.uab.tqs.parchis.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,5 +49,51 @@ public class TableroTest {
                 }
             }
         }
+    }
+    
+        @Test
+    void testObtenerIndice() {
+        Tablero tablero = new Tablero();
+
+        // ============================
+        // Casos válidos
+        // ============================
+        int[] posValidoIntermedio = tablero.obtenerIndice(25);
+        assertNotNull(posValidoIntermedio);
+        assertArrayEquals(new int[]{8, 11}, posValidoIntermedio);
+
+        int[] posValidoInferior = tablero.obtenerIndice(1);
+        assertNotNull(posValidoInferior);
+        assertArrayEquals(new int[]{18, 10}, posValidoInferior);
+
+        int[] posValidoSuperior = tablero.obtenerIndice(68);
+        assertNotNull(posValidoSuperior);
+        assertArrayEquals(new int[]{18, 9}, posValidoSuperior);
+
+        // ============================
+        // Valores frontera (fuera de rango)
+        // ============================
+        assertNull(tablero.obtenerIndice(0));
+        assertNull(tablero.obtenerIndice(69));
+
+        // ============================
+        // Valores límite negativos y mayores
+        // ============================
+        assertNull(tablero.obtenerIndice(-1));
+        assertNull(tablero.obtenerIndice(70));
+    }
+
+        
+    }
+    @Test
+    void testCapturaPosible() {
+        Ficha ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(5, true), null);
+        Ficha fichaOponente = new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(10, true), null);
+        tablero.setFicha(ficha, 14, 10); // Colocamos la ficha en el tablero
+        tablero.setFicha(fichaOponente, 10, 12); // Colocamos la ficha del oponente en el tablero
+
+        //CAS BASIC -> captura normal
+        assertTrue(tablero.capturaPosible(ficha, 5)); // Avanzar 5 posiciones desde 5 a 10
+
     }
 }
