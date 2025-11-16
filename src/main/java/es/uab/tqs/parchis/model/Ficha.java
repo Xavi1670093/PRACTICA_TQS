@@ -8,7 +8,8 @@ public class Ficha {
         COLOR_AMARILLO,
         COLOR_AZUL,
         COLOR_ROJO,
-        COLOR_VERDE
+        COLOR_VERDE,
+        NULL
     }
 
     public enum TipoFicha {

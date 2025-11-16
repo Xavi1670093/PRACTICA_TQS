@@ -78,35 +78,35 @@ public class TableroTest {
     
     
     @Test
-    void testCapturaPosible() {
-        Ficha ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(5, true), false);
-        Ficha fichaOponente = new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(10, true), false);
+    void testMovimentPosible() {
+        Ficha ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(5, false), false);
+        Ficha fichaOponente = new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(10, false), false);
         tablero.setFicha(ficha, tablero.obtenerIndice(5)); // Colocamos la ficha en el tablero
         tablero.setFicha(fichaOponente, tablero.obtenerIndice(10)); // Colocamos la ficha del oponente en el tablero
 
         //CAS BASIC -> captura normal
-        assertTrue(tablero.capturaPosible(ficha, 5)); 
+        assertTrue(tablero.movimientPosible(ficha, 5));
         //Valors frontera
-        assertTrue(tablero.capturaPosible(ficha, 6)); 
-        assertFalse(tablero.capturaPosible(ficha, 4)); 
+        assertTrue(tablero.movimientPosible(ficha, 6));
+        assertTrue(tablero.movimientPosible(ficha, 4));
 
         //CAS EXTRA: ficha del mateix color:
         Ficha fichaAliada = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(8, true), false);
-        tablero.setFicha(fichaAliada, tablero.obtenerIndice(8)); 
-        assertFalse(tablero.capturaPosible(ficha, 3)); 
+        tablero.setFicha(fichaAliada, tablero.obtenerIndice(8));
+        assertFalse(tablero.movimientPosible(ficha, 3));
         
         //CAS EXTRA -> Barrera:
         ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(15, true), false);
         fichaOponente = new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(20, true), true);
         tablero.setFicha(ficha, tablero.obtenerIndice(15)); 
-        tablero.setFicha(fichaOponente, tablero.obtenerIndice(20)); 
-        assertFalse(tablero.capturaPosible(ficha, 5)); 
+        tablero.setFicha(fichaOponente, tablero.obtenerIndice(20));
+        assertFalse(tablero.movimientPosible(ficha, 5));
 
         //CAS EXTRA -> Casilla segura
-        ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(25, true), false);
+        ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(25, false), false);
         fichaOponente = new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(30, true), false);
         tablero.setFicha(ficha, tablero.obtenerIndice(25)); 
         tablero.setFicha(fichaOponente, tablero.obtenerIndice(30)); 
-        assertFalse(tablero.capturaPosible(ficha, 5));
+        assertFalse(tablero.movimientPosible(ficha, 5));
     }
 }

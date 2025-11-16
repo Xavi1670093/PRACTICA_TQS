@@ -9,7 +9,7 @@ public class Tablero {
         numerosTablero = new int[19][19];
         for (int i = 0; i < 19; i++) {
             for (int j = 0; j < 19; j++) {
-                tablero[i][j] = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_EMPTY, null, false);
+                tablero[i][j] = new Ficha(Ficha.ColorFicha.NULL, Ficha.TipoFicha.TIPO_EMPTY, null, false);
             }
         }
 
@@ -140,24 +140,39 @@ public class Tablero {
         return null; 
     }   
 
-    public boolean capturaPosible(Ficha ficha, int numDado) {
+public boolean movimientPosible(Ficha ficha, int numDado) {
     if (ficha == null || ficha.getPosicion() == null) return false;
 
     int posActual = ficha.getPosicion().getNumero();
     int posDestino = posActual + numDado;
 
-    // No se puede capturar fuera del rango del tablero
+    // Verifica que el destino esté dentro del tablero
     if (posDestino < 1 || posDestino > 68) return false;
 
     int[] indiceDestino = obtenerIndice(posDestino);
     if (indiceDestino == null) return false;
 
     Ficha fichaDestino = tablero[indiceDestino[0]][indiceDestino[1]];
-        // Condiciones de captura
 
-    return fichaDestino.getTipo() == Ficha.TipoFicha.TIPO_OCUPADO && fichaDestino.getColor() != ficha.getColor() 
-            && !fichaDestino.isBarrera() && !fichaDestino.getPosicion().esSeguro();
+    // Movimiento posible si la casilla está vacía o se puede capturar
+    if (fichaDestino.getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
+        return true;
+    }
+
+    // Movimiento posible si hay ficha enemiga y no es barrera ni casilla segura
+    if (fichaDestino.getColor() != ficha.getColor() 
+            && !fichaDestino.isBarrera() 
+            && !fichaDestino.getPosicion().esSeguro()) {
+        return true;
+    }
+
+    // Movimiento no posible si hay barrera o ficha aliada
+    return false;
 }
+
+
+
+
 
 
 
