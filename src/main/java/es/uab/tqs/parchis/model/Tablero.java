@@ -3,6 +3,7 @@ package es.uab.tqs.parchis.model;
 public class Tablero {
     private Ficha[][] tablero;
     private int[][] numerosTablero;
+    private boolean captura;
 
     public void inicializa() {
         tablero = new Ficha[19][19];
@@ -107,13 +108,18 @@ public class Tablero {
         numerosTablero[18][9] = 68;
     }
 
+    public Ficha[][] getTablero() {
+        return tablero;
+    }
+
+    public boolean isCaptura() {
+        return captura;
+    }
+
+
     private void setFicha(int fila, int col, Ficha.ColorFicha color) {
         tablero[fila][col].setColor(color);
         tablero[fila][col].setTipo(Ficha.TipoFicha.TIPO_OCUPADO);
-    }
-
-    public Ficha[][] getTablero() {
-        return tablero;
     }
 
     public void setFicha(Ficha ficha, int[] posicion) {
@@ -141,32 +147,6 @@ public class Tablero {
     }   
 
 public boolean movimientPosible(Ficha ficha, int numDado) {
-    if (ficha == null || ficha.getPosicion() == null) return false;
-
-    int posActual = ficha.getPosicion().getNumero();
-    int posDestino = posActual + numDado;
-
-    // Verifica que el destino esté dentro del tablero
-    if (posDestino < 1 || posDestino > 68) return false;
-
-    int[] indiceDestino = obtenerIndice(posDestino);
-    if (indiceDestino == null) return false;
-
-    Ficha fichaDestino = tablero[indiceDestino[0]][indiceDestino[1]];
-
-    // Movimiento posible si la casilla está vacía o se puede capturar
-    if (fichaDestino.getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
-        return true;
-    }
-
-    // Movimiento posible si hay ficha enemiga y no es barrera ni casilla segura
-    if (fichaDestino.getColor() != ficha.getColor() 
-            && !fichaDestino.isBarrera() 
-            && !fichaDestino.getPosicion().esSeguro()) {
-        return true;
-    }
-
-    // Movimiento no posible si hay barrera o ficha aliada
     return false;
 }
 
