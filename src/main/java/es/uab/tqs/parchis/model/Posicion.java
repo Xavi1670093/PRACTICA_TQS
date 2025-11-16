@@ -24,7 +24,7 @@ public class Posicion {
     }
 
     //SETTERS
-    public void sertNumero(int nCasilla) {
+    public void setNumero(int nCasilla) {
         this.nCasilla = nCasilla;
     }
     public void setSeguro(boolean seguro) {

@@ -123,15 +123,15 @@ public class Tablero {
     }
 
     public void setFicha(Ficha ficha, int[] posicion) {
-    if (posicion == null || posicion.length != 2) {
-        throw new IllegalArgumentException("Posición inválida");
+        if (posicion == null || posicion.length != 2) {
+            throw new IllegalArgumentException("Posición inválida");
+        }
+
+        int fila = posicion[0];
+        int col = posicion[1];
+
+        tablero[fila][col] = ficha;
     }
-
-    int fila = posicion[0];
-    int col = posicion[1];
-
-    tablero[fila][col] = ficha;
-}
 
 
     public int[] obtenerIndice(int numero) {
@@ -146,9 +146,41 @@ public class Tablero {
         return null; 
     }   
 
-public boolean movimientPosible(Ficha ficha, int numDado) {
-    return false;
-}
+    public boolean movimientPosible(Ficha ficha, int numDado) {
+
+        captura = false;
+
+        int posActual = ficha.getPosicion().getNumero();
+        int casillaDestino = posActual + numDado;
+        int[] destino = obtenerIndice(casillaDestino);
+        Ficha fichaDestino = tablero[destino[0]][destino[1]];
+
+
+        if (casillaDestino > 68) return false;
+        if (destino == null) return false;
+
+        //Comprobem que no hi hagi cap barrera en el camí
+        for (int i = posActual + 1; i <= casillaDestino; i++) {
+            int[] coord = obtenerIndice(i);
+            if (coord != null) {
+                Ficha f = tablero[coord[0]][coord[1]];
+                if (f != null && f.isBarrera())
+                    return false;
+            }
+        }
+
+        if (fichaDestino.getTipo() == Ficha.TipoFicha.TIPO_EMPTY) return true; // Casilla lliure
+
+        if (fichaDestino.getColor() == ficha.getColor()) return true; // Casilla ocupada per ficha del mateix color
+
+        if (fichaDestino.getPosicion().esSeguro()) return false; // Casilla segura
+
+        //CAPTURA
+        captura = true;
+        return true;
+    }
+
+
 
 
 

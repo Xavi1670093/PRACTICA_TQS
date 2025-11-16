@@ -54,4 +54,8 @@ public class Ficha {
         this.barrera = barrera;
     }
 
+    public int getNumCasilla() {
+    return pos != null ? pos.getNumero() : 0;
+}
+
 }

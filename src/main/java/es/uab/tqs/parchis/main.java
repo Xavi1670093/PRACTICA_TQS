@@ -3,7 +3,7 @@ package es.uab.tqs.parchis;
 import es.uab.tqs.parchis.model.Tablero;
 
 public class Main {
-    public static void Main(String[] args) {
+    public static void main(String[] args) {
        
         // Crear el tablero
         Tablero tablero = new Tablero();
