@@ -106,6 +106,38 @@ public class Tablero {
         numerosTablero[17][8] = 66;
         numerosTablero[18][8] = 67;
         numerosTablero[18][9] = 68;
+        numerosTablero[9][17] = 69;
+        numerosTablero[9][16] = 70;
+        numerosTablero[9][15] = 71;
+        numerosTablero[9][14] = 72;
+        numerosTablero[9][13] = 73;
+        numerosTablero[9][12] = 74;
+        numerosTablero[9][11] = 75;
+        numerosTablero[9][10] = 76;
+        numerosTablero[1][9] = 77;
+        numerosTablero[2][9] = 78;
+        numerosTablero[3][9] = 79;
+        numerosTablero[4][9] = 80;
+        numerosTablero[5][9] = 81;
+        numerosTablero[6][9] = 82;
+        numerosTablero[7][9] = 83;
+        numerosTablero[8][9] = 84;
+        numerosTablero[9][1] = 85;
+        numerosTablero[9][2] = 86;
+        numerosTablero[9][3] = 87;
+        numerosTablero[9][4] = 88;
+        numerosTablero[9][5] = 89;
+        numerosTablero[9][6] = 90;
+        numerosTablero[9][7] = 91;
+        numerosTablero[9][8] = 92;
+        numerosTablero[17][9] = 93;
+        numerosTablero[16][9] = 94;
+        numerosTablero[15][9] = 95;
+        numerosTablero[14][9] = 96;
+        numerosTablero[13][9] = 97;
+        numerosTablero[12][9] = 98;
+        numerosTablero[11][9] = 99;
+        numerosTablero[10][9] = 100;
     }
 
     public Ficha[][] getTablero() {
@@ -222,7 +254,7 @@ public class Tablero {
             for (int j = 0; j < 19; j++) {
                 Ficha f = tablero[i][j];
                 if (f.getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
-                    if (numerosTablero[i][j] != 0) {
+                    if (numerosTablero[i][j] != 0 && numerosTablero[i][j] <= 68) {
                         System.out.printf("%2d ", numerosTablero[i][j]); // número con 2 dígitos de ancho
                     } else {
                         System.out.print("   "); // alineamos con espacio extra
