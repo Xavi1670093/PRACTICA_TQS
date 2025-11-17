@@ -4,6 +4,7 @@ public class Tablero {
     private Ficha[][] tablero;
     private int[][] numerosTablero;
     private boolean captura;
+    Ficha fichaDestino;
 
     public void inicializa() {
         tablero = new Ficha[19][19];
@@ -148,6 +149,9 @@ public class Tablero {
         return captura;
     }
 
+    public Ficha getFichaDestino() {
+        return fichaDestino;
+    }
 
     private void setFicha(int fila, int col, Ficha.ColorFicha color) {
         tablero[fila][col].setColor(color);
@@ -185,7 +189,7 @@ public class Tablero {
         int posActual = ficha.getPosicion().getNumero();
         int casillaDestino = posActual + numDado;
         int[] destino = obtenerIndice(casillaDestino);
-        Ficha fichaDestino = tablero[destino[0]][destino[1]];
+        fichaDestino = tablero[destino[0]][destino[1]];
 
 
         if (casillaDestino > 68) return false;
