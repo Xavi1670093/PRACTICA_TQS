@@ -10,9 +10,21 @@ public class Posicion {
         this.seguro = false;
     }
     
+    public Posicion(int nCasilla) {
+        this.nCasilla = nCasilla;
+        this.seguro = esCasillaSegura(nCasilla);
+    }
+
     public Posicion(int nCasilla, boolean seguro) {
         this.nCasilla = nCasilla;
         this.seguro = seguro;
+    }
+
+    private boolean esCasillaSegura(int n) {
+        return n == 5  || n == 12 || n == 17 ||
+            n == 22 || n == 29 || n == 34 ||
+            n == 39 || n == 46 || n == 51 ||
+            n == 56 || n == 63 || n == 68;
     }
 
     //GETTERS

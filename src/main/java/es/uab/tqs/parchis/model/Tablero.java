@@ -1,5 +1,7 @@
 package es.uab.tqs.parchis.model;
 
+import es.uab.tqs.parchis.model.Ficha.ColorFicha;
+
 public class Tablero {
     private Ficha[][] tablero;
     private int[][] numerosTablero;
@@ -171,7 +173,7 @@ public class Tablero {
 
 
     public int[] obtenerIndice(int numero) {
-        if (numero < 1 || numero > 68) return null;
+        if (numero < 1 || numero > 100) return null;
         for (int i = 0; i < numerosTablero.length; i++) {
             for (int j = 0; j < numerosTablero[i].length; j++) {
                 if (numerosTablero[i][j] == numero) {
@@ -182,21 +184,74 @@ public class Tablero {
         return null; 
     }   
 
+
+    private int convertirCasillaFinal(Ficha ficha, int casilla) {
+
+        // Si ya está en zona final (69–100), NO transformar nada
+        if (casilla >= 69 && casilla <= 100 && ficha.getColor() != ColorFicha.COLOR_AMARILLO) {
+            return casilla;
+        }
+
+        switch (ficha.getColor()) {
+
+            case COLOR_AZUL -> {
+                // Entrada en 17 → tramo 69–76
+                if (casilla > 17 && casilla <= 24) { // 17 + 7 pasos
+                    return 69 + (casilla - 17) - 1;
+                }
+                return casilla;
+            }
+
+            case COLOR_ROJO -> {
+                // Entrada en 34 → tramo 77–84
+                if (casilla >= 34 && casilla <= 41) {
+                    return 77 + (casilla - 34) - 1;
+                }
+                return casilla;
+            }
+
+            case COLOR_VERDE -> {
+                // Entrada en 51 → tramo 85–92
+                if (casilla >= 51 && casilla <= 58) {
+                    return 85 + (casilla - 51) - 1;
+                }
+                return casilla;
+            }
+
+            case COLOR_AMARILLO -> {
+                // Entrada en 68 → tramo 93–100
+                if (casilla > 68 && casilla <= 76) { 
+                    return 93 + (casilla - 68) - 1;
+                }
+                return casilla;
+            }
+
+            default -> {
+                return casilla;
+            }
+        }
+    }
+
+
     public boolean movimientPosible(Ficha ficha, int numDado) {
 
         captura = false;
 
         int posActual = ficha.getPosicion().getNumero();
         int casillaDestino = posActual + numDado;
+        casillaDestino = convertirCasillaFinal(ficha, casillaDestino);
+
         int[] destino = obtenerIndice(casillaDestino);
         fichaDestino = tablero[destino[0]][destino[1]];
+        Posicion pos = new Posicion(casillaDestino);
+        fichaDestino.setPosicion(pos);
+ 
 
-
-        if (casillaDestino > 68) return false;
         if (destino == null) return false;
 
         //Comprobem que no hi hagi cap barrera en el camí
         for (int i = posActual + 1; i <= casillaDestino; i++) {
+            i = convertirCasillaFinal(ficha, i);
             int[] coord = obtenerIndice(i);
             if (coord != null) {
                 Ficha f = tablero[coord[0]][coord[1]];

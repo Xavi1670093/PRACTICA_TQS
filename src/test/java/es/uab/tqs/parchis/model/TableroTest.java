@@ -67,11 +67,11 @@ public class TableroTest {
 
         // Valores frontera (fuera de rango)
         assertNull(tablero.obtenerIndice(0));
-        assertNull(tablero.obtenerIndice(69));
+        assertNull(tablero.obtenerIndice(101));
 
         // Valores límite negativos y mayores
         assertNull(tablero.obtenerIndice(-1));
-        assertNull(tablero.obtenerIndice(70));
+        assertNull(tablero.obtenerIndice(102));
     }
 
         
@@ -121,13 +121,13 @@ public class TableroTest {
         ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(25, false), false);
         fichaOponente = new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(30, true), false);
         tablero.setFicha(ficha, tablero.obtenerIndice(25)); 
-        tablero.setFicha(fichaOponente, tablero.obtenerIndice(30)); 
+        tablero.setFicha(fichaOponente, tablero.obtenerIndice(29)); 
         
-        assertFalse(tablero.movimientPosible(ficha, 5));
+        assertFalse(tablero.movimientPosible(ficha, 4));
         assertFalse(tablero.isCaptura());
-        assertTrue(tablero.movimientPosible(ficha, 4)); //Valors frontera
+        assertTrue(tablero.movimientPosible(ficha, 5)); //Valors frontera
         assertFalse(tablero.isCaptura());
-        assertTrue(tablero.movimientPosible(ficha, 6)); //Valors frontera
+        assertTrue(tablero.movimientPosible(ficha, 3)); //Valors frontera
         assertFalse(tablero.isCaptura());
 
         //CAS FICHA VERDA DONA TOTA LA VOLTA:
