@@ -269,40 +269,45 @@ public class Tablero {
         captura = false;
 
         int posActual = ficha.getPosicion().getNumero();
-        int casillaDestino = posActual + numDado;
-        if (casillaDestino > 68 && casillaDestino <= 76 && ficha.getColor() != ColorFicha.COLOR_AMARILLO) {
-            casillaDestino = casillaDestino - 68;
-        }
-        casillaDestino = convertirCasillaFinal(ficha, casillaDestino);
-
-        int[] destino = obtenerIndice(casillaDestino);
-        fichaDestino = tablero[destino[0]][destino[1]];
-        Posicion pos = new Posicion(casillaDestino);
-        fichaDestino.setPosicion(pos);
- 
-        
-        if (destino == null) return false;
-        
-        //Comprobem que no hi hagi cap barrera en el camí
-        for (int i = posActual + 1; i <= casillaDestino; i++) {
-            i = convertirCasillaFinal(ficha, i);
-            int[] coord = obtenerIndice(i);
-            if (coord != null) {
-                Ficha f = tablero[coord[0]][coord[1]];
-                if (f != null && f.isBarrera())
-                    return false;
+        if (ficha.getPosicion().getNumero() < 0) return movimentInicial(ficha, numDado);
+        else
+        {
+            int casillaDestino = posActual + numDado;
+            if (casillaDestino > 68 && casillaDestino <= 76 && ficha.getColor() != ColorFicha.COLOR_AMARILLO) {
+                casillaDestino = casillaDestino - 68;
             }
+            casillaDestino = convertirCasillaFinal(ficha, casillaDestino);
+
+            int[] destino = obtenerIndice(casillaDestino);
+            fichaDestino = tablero[destino[0]][destino[1]];
+            Posicion pos = new Posicion(casillaDestino);
+            fichaDestino.setPosicion(pos);
+    
+            
+            if (destino == null) return false;
+            
+            //Comprobem que no hi hagi cap barrera en el camí
+            for (int i = posActual + 1; i <= casillaDestino; i++) {
+                i = convertirCasillaFinal(ficha, i);
+                int[] coord = obtenerIndice(i);
+                if (coord != null) {
+                    Ficha f = tablero[coord[0]][coord[1]];
+                    if (f != null && f.isBarrera())
+                        return false;
+                }
+            }
+
+            if (fichaDestino.getTipo() == Ficha.TipoFicha.TIPO_EMPTY) return true; // Casilla lliure
+
+            if (fichaDestino.getColor() == ficha.getColor()) return true; // Casilla ocupada per ficha del mateix color
+
+            if (fichaDestino.getPosicion().esSeguro()) return false; // Casilla segura
+
+            //CAPTURA
+            captura = true;
+            return true;
         }
-
-        if (fichaDestino.getTipo() == Ficha.TipoFicha.TIPO_EMPTY) return true; // Casilla lliure
-
-        if (fichaDestino.getColor() == ficha.getColor()) return true; // Casilla ocupada per ficha del mateix color
-
-        if (fichaDestino.getPosicion().esSeguro()) return false; // Casilla segura
-
-        //CAPTURA
-        captura = true;
-        return true;
+        
     }
 
 
