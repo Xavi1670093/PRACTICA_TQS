@@ -169,5 +169,68 @@ public class TableroTest {
         assertTrue(tablero.movimientPosible(ficha, 4));
         assertFalse(tablero.isCaptura());
         assertEquals(tablero.getFichaDestino().getPosicion().getNumero(), 70);
+
+        //CAS FICHA ROJA PASA DEL 68 AL 1
+        ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(68, false), false);
+        tablero.setFicha(ficha, tablero.obtenerIndice(68));
+        assertTrue(tablero.movimientPosible(ficha, 1));
+        assertEquals(tablero.getFichaDestino().getPosicion().getNumero(), 1);
+
+        //CAS FICHA VERDE PASA DEL 66 AL 4
+        ficha = new Ficha(Ficha.ColorFicha.COLOR_VERDE, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(66, false), false);
+        tablero.setFicha(ficha, tablero.obtenerIndice(66));
+        assertTrue(tablero.movimientPosible(ficha, 6));
+        assertEquals(tablero.getFichaDestino().getPosicion().getNumero(), 4);
+
+        //CAS FICHA VERDE PASA DEL 68 AL 1
+        ficha = new Ficha(Ficha.ColorFicha.COLOR_VERDE, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(66, false), false);
+        tablero.setFicha(ficha, tablero.obtenerIndice(66));
+        assertTrue(tablero.movimientPosible(ficha, 4));
+        assertEquals(tablero.getFichaDestino().getPosicion().getNumero(), 2);
+    }
+
+    @Test
+    void testIniciPartidaMovimentPosible() {
+        assertFalse(tablero.movimientPosible(tablero.getFicha(1,1), 4)); //FICHA ROJA
+        assertTrue(tablero.movimientPosible(tablero.getFicha(1,1), 5)); //FICHA ROJA
+        assertFalse(tablero.movimientPosible(tablero.getFicha(13,1), 3)); //FICHA VERDA
+        assertTrue(tablero.movimientPosible(tablero.getFicha(13,1), 5)); //FICHA VERDA
+        assertFalse(tablero.movimientPosible(tablero.getFicha(1,13), 2)); //FICHA BLAU
+        assertTrue(tablero.movimientPosible(tablero.getFicha(1,13), 5)); //FICHA BLAU
+        assertFalse(tablero.movimientPosible(tablero.getFicha(13,13), 1)); //FICHA GROCA
+        assertTrue(tablero.movimientPosible(tablero.getFicha(13,13), 5)); //FICHA GROCA
+
+    }
+    @Test
+    void testConvertirCasillaFinal() {
+        Ficha fichaRoja = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(65, false), false);
+        Ficha fichaVerde = new Ficha(Ficha.ColorFicha.COLOR_VERDE, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(65, false), false);
+        Ficha fichaAzul = new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(65, false), false);
+        Ficha fichaAmarilla = new Ficha(Ficha.ColorFicha.COLOR_AMARILLO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(65, false), false);
+
+        // Casillas dentro del rango normal
+        assertEquals(67, tablero.convertirCasillaFinal(fichaRoja, 67));
+        assertEquals(68, tablero.convertirCasillaFinal(fichaVerde, 68));
+
+        // Casillas que exceden el rango normal
+        assertEquals(77, tablero.convertirCasillaFinal(fichaRoja, 35));
+        assertEquals(78, tablero.convertirCasillaFinal(fichaRoja, 36));
+        assertEquals(79, tablero.convertirCasillaFinal(fichaRoja, 37));
+        assertEquals(80, tablero.convertirCasillaFinal(fichaRoja, 38));
+
+        assertEquals(85, tablero.convertirCasillaFinal(fichaVerde, 52));
+        assertEquals(86, tablero.convertirCasillaFinal(fichaVerde, 53));
+        assertEquals(87, tablero.convertirCasillaFinal(fichaVerde, 54));
+        assertEquals(88, tablero.convertirCasillaFinal(fichaVerde, 55));
+
+        assertEquals(69, tablero.convertirCasillaFinal(fichaAzul, 18));
+        assertEquals(70, tablero.convertirCasillaFinal(fichaAzul, 19));
+        assertEquals(71, tablero.convertirCasillaFinal(fichaAzul, 20));
+        assertEquals(72, tablero.convertirCasillaFinal(fichaAzul, 21));
+
+        assertEquals(93, tablero.convertirCasillaFinal(fichaAmarilla, 69));
+        assertEquals(94, tablero.convertirCasillaFinal(fichaAmarilla, 70));
+        assertEquals(95, tablero.convertirCasillaFinal(fichaAmarilla, 71));
+        assertEquals(96, tablero.convertirCasillaFinal(fichaAmarilla,   72));
     }
 }

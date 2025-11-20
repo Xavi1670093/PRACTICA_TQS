@@ -155,6 +155,10 @@ public class Tablero {
         return fichaDestino;
     }
 
+    public Ficha getFicha(int fila, int col) {
+        return tablero[fila][col];
+    }
+
     private void setFicha(int fila, int col, Ficha.ColorFicha color) {
         tablero[fila][col].setColor(color);
         tablero[fila][col].setTipo(Ficha.TipoFicha.TIPO_OCUPADO);
@@ -185,7 +189,7 @@ public class Tablero {
     }   
 
 
-    private int convertirCasillaFinal(Ficha ficha, int casilla) {
+    public int convertirCasillaFinal(Ficha ficha, int casilla) {
 
         // Si ya está en zona final (69–100), NO transformar nada
         if (casilla >= 69 && casilla <= 100 && ficha.getColor() != ColorFicha.COLOR_AMARILLO) {
@@ -232,13 +236,16 @@ public class Tablero {
         }
     }
 
-
+    
     public boolean movimientPosible(Ficha ficha, int numDado) {
 
         captura = false;
 
         int posActual = ficha.getPosicion().getNumero();
         int casillaDestino = posActual + numDado;
+        if (casillaDestino > 68 && casillaDestino <= 76 && ficha.getColor() != ColorFicha.COLOR_AMARILLO) {
+            casillaDestino = casillaDestino - 68;
+        }
         casillaDestino = convertirCasillaFinal(ficha, casillaDestino);
 
         int[] destino = obtenerIndice(casillaDestino);
@@ -246,9 +253,9 @@ public class Tablero {
         Posicion pos = new Posicion(casillaDestino);
         fichaDestino.setPosicion(pos);
  
-
+        
         if (destino == null) return false;
-
+        
         //Comprobem que no hi hagi cap barrera en el camí
         for (int i = posActual + 1; i <= casillaDestino; i++) {
             i = convertirCasillaFinal(ficha, i);
