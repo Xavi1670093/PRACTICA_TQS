@@ -169,5 +169,25 @@ public class TableroTest {
         assertTrue(tablero.movimientPosible(ficha, 4));
         assertFalse(tablero.isCaptura());
         assertEquals(tablero.getFichaDestino().getPosicion().getNumero(), 70);
+
+        //CAS FICHA ROJA PASA DEL 68 AL 1
+        ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(68, false), false);
+        tablero.setFicha(ficha, tablero.obtenerIndice(68));
+        assertTrue(tablero.movimientPosible(ficha, 1));
+        assertEquals(tablero.getFichaDestino().getPosicion().getNumero(), 1);
+
+        //CAS FICHA VERDE PASA DEL 66 AL 4
+        ficha = new Ficha(Ficha.ColorFicha.COLOR_VERDE, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(66, false), false);
+        tablero.setFicha(ficha, tablero.obtenerIndice(66));
+        assertTrue(tablero.movimientPosible(ficha, 6));
+        assertEquals(tablero.getFichaDestino().getPosicion().getNumero(), 4);
+
+        //CAS FICHA VERDE PASA DEL 68 AL 1
+        ficha = new Ficha(Ficha.ColorFicha.COLOR_VERDE, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(66, false), false);
+        tablero.setFicha(ficha, tablero.obtenerIndice(66));
+        assertTrue(tablero.movimientPosible(ficha, 4));
+        assertEquals(tablero.getFichaDestino().getPosicion().getNumero(), 2);
+
     }
+
 }
