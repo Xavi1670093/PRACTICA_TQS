@@ -18,28 +18,28 @@ public class Tablero {
         }
 
         // Rojas
-        setFicha(1, 1, Ficha.ColorFicha.COLOR_ROJO);
-        setFicha(1, 5, Ficha.ColorFicha.COLOR_ROJO);
-        setFicha(5, 1, Ficha.ColorFicha.COLOR_ROJO);
-        setFicha(5, 5, Ficha.ColorFicha.COLOR_ROJO);
+        setFicha(1, 1, Ficha.ColorFicha.COLOR_ROJO, new Posicion(-1, false));
+        setFicha(1, 5, Ficha.ColorFicha.COLOR_ROJO, new Posicion(-2, false));
+        setFicha(5, 1, Ficha.ColorFicha.COLOR_ROJO, new Posicion(-3, false));
+        setFicha(5, 5, Ficha.ColorFicha.COLOR_ROJO, new Posicion(-4, false));
 
         // Verdes
-        setFicha(13, 1, Ficha.ColorFicha.COLOR_VERDE);
-        setFicha(13, 5, Ficha.ColorFicha.COLOR_VERDE);
-        setFicha(17, 1, Ficha.ColorFicha.COLOR_VERDE);
-        setFicha(17, 5, Ficha.ColorFicha.COLOR_VERDE);
+        setFicha(13, 1, Ficha.ColorFicha.COLOR_VERDE, new Posicion(-5, false));
+        setFicha(13, 5, Ficha.ColorFicha.COLOR_VERDE, new Posicion(-6, false));
+        setFicha(17, 1, Ficha.ColorFicha.COLOR_VERDE, new Posicion(-7, false));
+        setFicha(17, 5, Ficha.ColorFicha.COLOR_VERDE, new Posicion(-8, false));
 
         // Azules
-        setFicha(1, 13, Ficha.ColorFicha.COLOR_AZUL);
-        setFicha(1, 17, Ficha.ColorFicha.COLOR_AZUL);
-        setFicha(5, 13, Ficha.ColorFicha.COLOR_AZUL);
-        setFicha(5, 17, Ficha.ColorFicha.COLOR_AZUL);
+        setFicha(1, 13, Ficha.ColorFicha.COLOR_AZUL, new Posicion(-9, false));
+        setFicha(1, 17, Ficha.ColorFicha.COLOR_AZUL, new Posicion(-10, false));
+        setFicha(5, 13, Ficha.ColorFicha.COLOR_AZUL, new Posicion(-11, false));
+        setFicha(5, 17, Ficha.ColorFicha.COLOR_AZUL, new Posicion(-12, false));
 
         // Amarillas
-        setFicha(13, 13, Ficha.ColorFicha.COLOR_AMARILLO);
-        setFicha(13, 17, Ficha.ColorFicha.COLOR_AMARILLO);
-        setFicha(17, 13, Ficha.ColorFicha.COLOR_AMARILLO);
-        setFicha(17, 17, Ficha.ColorFicha.COLOR_AMARILLO);
+        setFicha(13, 13, Ficha.ColorFicha.COLOR_AMARILLO, new Posicion(-13, false));
+        setFicha(13, 17, Ficha.ColorFicha.COLOR_AMARILLO, new Posicion(-14, false));
+        setFicha(17, 13, Ficha.ColorFicha.COLOR_AMARILLO, new Posicion(-15, false));
+        setFicha(17, 17, Ficha.ColorFicha.COLOR_AMARILLO, new Posicion(-16, false));
 
         numerosTablero[18][10] = 1;
         numerosTablero[17][10] = 2;
@@ -141,6 +141,22 @@ public class Tablero {
         numerosTablero[12][9] = 98;
         numerosTablero[11][9] = 99;
         numerosTablero[10][9] = 100;
+        numerosTablero[1][1] = -1; // Entrada Roja
+        numerosTablero[1][5] = -2; // Entrada Roja
+        numerosTablero[5][1] = -3; // Entrada Roja
+        numerosTablero[5][5] = -4; // Entrada Roja
+        numerosTablero[13][1] = -5; // Entrada Verde
+        numerosTablero[13][5] = -6; // Entrada Verde
+        numerosTablero[17][1] = -7; // Entrada Verde
+        numerosTablero[17][5] = -8; // Entrada Verde
+        numerosTablero[1][13] = -9; // Entrada Azul
+        numerosTablero[1][17] = -10; // Entrada Azul
+        numerosTablero[5][13] = -11; // Entrada Azul
+        numerosTablero[5][17] = -12; // Entrada Azul
+        numerosTablero[13][13] = -13; // Entrada Amarilla
+        numerosTablero[13][17] = -14; // Entrada Amarilla
+        numerosTablero[17][13] = -15; // Entrada Amarilla
+        numerosTablero[17][17] = -16; // Entrada Amarilla
     }
 
     public Ficha[][] getTablero() {
@@ -159,9 +175,10 @@ public class Tablero {
         return tablero[fila][col];
     }
 
-    private void setFicha(int fila, int col, Ficha.ColorFicha color) {
+    private void setFicha(int fila, int col, Ficha.ColorFicha color, Posicion posicion) {
         tablero[fila][col].setColor(color);
         tablero[fila][col].setTipo(Ficha.TipoFicha.TIPO_OCUPADO);
+        tablero[fila][col].setPosicion(posicion);
     }
 
     public void setFicha(Ficha ficha, int[] posicion) {
@@ -236,7 +253,17 @@ public class Tablero {
         }
     }
 
-    
+    public boolean movimentInicial(Ficha f, int numDado) {
+        if (f.getPosicion().getNumero() < 0) {
+
+            return numDado == 5;
+        }
+
+        return false;
+        }
+
+
+
     public boolean movimientPosible(Ficha ficha, int numDado) {
 
         captura = false;

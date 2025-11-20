@@ -233,4 +233,20 @@ public class TableroTest {
         assertEquals(95, tablero.convertirCasillaFinal(fichaAmarilla, 71));
         assertEquals(96, tablero.convertirCasillaFinal(fichaAmarilla,   72));
     }
+
+    @Test
+    void movimentInicialTest() {
+    
+        assertFalse(tablero.movimentInicial(tablero.getFicha(1, 1), 4));
+        assertTrue(tablero.movimentInicial(tablero.getFicha(1, 1), 5));
+
+        assertFalse(tablero.movimentInicial(tablero.getFicha(13, 1), 3));
+        assertTrue(tablero.movimentInicial(tablero.getFicha(13, 1), 5));
+
+        assertFalse(tablero.movimentInicial(tablero.getFicha(13, 13), 2));
+        assertTrue(tablero.movimentInicial(tablero.getFicha(13, 13), 5));
+
+        assertFalse(tablero.movimentInicial(tablero.getFicha(1, 13), 1));
+        assertTrue(tablero.movimentInicial(tablero.getFicha(1, 13), 5));
+    }
 }
