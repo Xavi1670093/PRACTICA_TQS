@@ -310,6 +310,111 @@ public class Tablero {
         
     }
 
+    private void enviarFichaACasa(Ficha ficha) {
+        int numero = ficha.getPosicion().getNumero();
+        int[] casa = null;
+
+        // Busca una casa libre del color correspondiente
+        outer:
+        for (int i = 0; i < 19; i++) {
+            for (int j = 0; j < 19; j++) {
+                if (numerosTablero[i][j] < 0 && tablero[i][j].getColor() == ficha.getColor()) {
+                    casa = new int[]{i, j};
+                    break outer;
+                }
+            }
+        }
+
+        if (casa != null) {
+            ficha.setPosicion(new Posicion(numerosTablero[casa[0]][casa[1]]));
+            tablero[casa[0]][casa[1]] = ficha;
+        }
+    }
+
+    private int obtenerCasillaSalida(ColorFicha color) {
+        return switch (color) {
+            case COLOR_ROJO -> 39;
+            case COLOR_VERDE -> 56;
+            case COLOR_AZUL -> 22;
+            case COLOR_AMARILLO -> 5;
+            default -> 1;
+        };
+    }
+
+    public void mouFicha(Ficha ficha, int numDado) {
+
+        // 1) Comprobación general
+        if (!movimientPosible(ficha, numDado)) {
+            return;
+        }
+
+        int posActual = ficha.getPosicion().getNumero();
+        int filaActual = -1, colActual = -1;
+
+        // Buscar la ficha en el tablero
+        for (int i = 0; i < 19; i++) {
+            for (int j = 0; j < 19; j++) {
+                if (tablero[i][j] == ficha) {
+                    filaActual = i;
+                    colActual = j;
+                    break;
+                }
+            }
+        }
+
+        // --- CASO 1: SALIDA DESDE CASA ---
+        if (posActual < 0) {
+            if (numDado == 5) {
+                int salida = obtenerCasillaSalida(ficha.getColor());
+                int[] destino = obtenerIndice(salida);
+
+                // CAPTURA si hay enemigo
+                if (tablero[destino[0]][destino[1]].getTipo() == Ficha.TipoFicha.TIPO_OCUPADO &&
+                    tablero[destino[0]][destino[1]].getColor() != ficha.getColor() &&
+                    !tablero[destino[0]][destino[1]].getPosicion().esSeguro()) {
+
+                    // Enemigo vuelve a su casa
+                    enviarFichaACasa(tablero[destino[0]][destino[1]]);
+                }
+
+                // mover ficha
+                tablero[filaActual][colActual] = new Ficha(ColorFicha.NULL, Ficha.TipoFicha.TIPO_EMPTY, null, false);
+                ficha.setPosicion(new Posicion(salida));
+                tablero[destino[0]][destino[1]] = ficha;
+            }
+            return;
+        }
+
+        // --- CASO 2: MOVIMIENTO NORMAL ---
+
+        int casillaDestino = posActual + numDado;
+
+        // Entradas finales excepto amarillo
+        if (casillaDestino > 68 && casillaDestino <= 76 && ficha.getColor() != ColorFicha.COLOR_AMARILLO) {
+            casillaDestino -= 68;
+        }
+
+        // Convertir tramo final según color
+        casillaDestino = convertirCasillaFinal(ficha, casillaDestino);
+
+        int[] destino = obtenerIndice(casillaDestino);
+
+        // CAPTURA
+        if (tablero[destino[0]][destino[1]].getTipo() == Ficha.TipoFicha.TIPO_OCUPADO &&
+            tablero[destino[0]][destino[1]].getColor() != ficha.getColor() &&
+            !tablero[destino[0]][destino[1]].getPosicion().esSeguro()) {
+
+            enviarFichaACasa(tablero[destino[0]][destino[1]]);
+            captura = true;
+        }
+
+        // Mover la ficha
+        tablero[filaActual][colActual] = new Ficha(ColorFicha.NULL, Ficha.TipoFicha.TIPO_EMPTY, null, false);
+
+        ficha.setPosicion(new Posicion(casillaDestino));
+        tablero[destino[0]][destino[1]] = ficha;
+    }
+
 
 
 
