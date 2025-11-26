@@ -187,6 +187,15 @@ public class TableroTest {
         tablero.setFicha(ficha, tablero.obtenerIndice(66));
         assertTrue(tablero.movimientPosible(ficha, 4));
         assertEquals(tablero.getFichaDestino().getPosicion().getNumero(), 2);
+
+        //CAS FICHA AMARILLA NO SOBREPASA LA CASILLA FINAL
+        ficha = new Ficha(Ficha.ColorFicha.COLOR_AMARILLO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(97, false), false);
+        tablero.setFicha(ficha, tablero.obtenerIndice(97));
+        assertFalse(tablero.movimientPosible(ficha, 4));
+
+        ficha = new Ficha(Ficha.ColorFicha.COLOR_VERDE, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(90, false), false);
+        tablero.setFicha(ficha, tablero.obtenerIndice(90));
+        assertFalse(tablero.movimientPosible(ficha, 3));
     }
 
     @Test
