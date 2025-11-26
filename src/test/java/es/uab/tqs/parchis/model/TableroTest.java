@@ -196,6 +196,12 @@ public class TableroTest {
         ficha = new Ficha(Ficha.ColorFicha.COLOR_VERDE, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(90, false), false);
         tablero.setFicha(ficha, tablero.obtenerIndice(90));
         assertFalse(tablero.movimientPosible(ficha, 3));
+
+        // Amarillo: cae justo en 100
+        ficha = new Ficha(Ficha.ColorFicha.COLOR_AMARILLO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(97,false), false);
+        tablero.setFicha(ficha, tablero.obtenerIndice(97));
+        assertTrue(tablero.movimientPosible(ficha, 3));
+
     }
 
     @Test

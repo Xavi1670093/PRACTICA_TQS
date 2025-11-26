@@ -260,9 +260,17 @@ public class Tablero {
         }
 
         return false;
+    }
+
+    private int obtenerCasillaFinal(Ficha.ColorFicha color) {
+        switch (color) {
+            case COLOR_AZUL: return 76;
+            case COLOR_ROJO: return 84;
+            case COLOR_VERDE: return 92;
+            case COLOR_AMARILLO: return 100;
+            default:return 100;
         }
-
-
+    }
 
     public boolean movimientPosible(Ficha ficha, int numDado) {
 
@@ -273,6 +281,10 @@ public class Tablero {
         else
         {
             int casillaDestino = posActual + numDado;
+            int casillaFinal = obtenerCasillaFinal(ficha.getColor());
+            
+            if (casillaDestino > casillaFinal) { return false; }
+            
             if (casillaDestino > 68 && casillaDestino <= 76 && ficha.getColor() != ColorFicha.COLOR_AMARILLO) {
                 casillaDestino = casillaDestino - 68;
             }
