@@ -249,4 +249,135 @@ public class TableroTest {
         assertFalse(tablero.movimentInicial(tablero.getFicha(1, 13), 1));
         assertTrue(tablero.movimentInicial(tablero.getFicha(1, 13), 5));
     }
+
+    @Test
+    void mouFichaTest() {
+
+        // CASO BÁSICO: captura normal
+        Ficha ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(5, false), false);
+        Ficha fichaOponente = new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(10, false), false);
+        tablero.setFicha(ficha, tablero.obtenerIndice(5));
+        tablero.setFicha(fichaOponente, tablero.obtenerIndice(10));
+
+        assertTrue(tablero.movimientPosible(ficha, 5));
+        tablero.mouFicha(ficha, 5);
+
+        assertEquals(10, ficha.getPosicion().getNumero());
+        // la ficha capturada debe volver a casa: comprobamos que su posición es negativa o que se ubicó en un slot inicial
+        assertTrue(fichaOponente.getPosicion().getNumero() <= 0);
+
+        // MOVIMIENTO NORMAL SIN CAPTURA
+        ficha.setPosicion(new Posicion(5, false));
+        tablero.setFicha(ficha, tablero.obtenerIndice(5));
+
+        assertTrue(tablero.movimientPosible(ficha, 6));
+        tablero.mouFicha(ficha, 6);
+        assertEquals(11, ficha.getPosicion().getNumero());
+
+        // MOVIMIENTO BLOQUEADO POR ALIADA
+        Ficha aliada = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(8, false), false);
+        tablero.setFicha(aliada, tablero.obtenerIndice(8));
+
+        ficha.setPosicion(new Posicion(5, false));
+        tablero.setFicha(ficha, tablero.obtenerIndice(5));
+
+        assertTrue(tablero.movimientPosible(ficha, 3));
+        tablero.mouFicha(ficha, 3);
+        assertEquals(8, ficha.getPosicion().getNumero());
+
+        // BARRERA (NO DEBE MOVERSE)
+        ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(15, false), false);
+        fichaOponente = new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(20, false), true);
+        tablero.setFicha(ficha, tablero.obtenerIndice(15));
+        tablero.setFicha(fichaOponente, tablero.obtenerIndice(20));
+
+        assertFalse(tablero.movimientPosible(ficha, 5));
+        tablero.mouFicha(ficha, 5);
+        assertEquals(15, ficha.getPosicion().getNumero());
+
+        // CASILLA SEGURA (NO DEBE CAPTURAR)
+        ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(25, false), false);
+        fichaOponente = new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(29, true), false);
+        tablero.setFicha(ficha, tablero.obtenerIndice(25));
+        tablero.setFicha(fichaOponente, tablero.obtenerIndice(29));
+
+        assertFalse(tablero.movimientPosible(ficha, 4));
+        tablero.mouFicha(ficha, 4);
+        assertEquals(25, ficha.getPosicion().getNumero());
+
+        // VERDE DA LA VUELTA
+        ficha = new Ficha(Ficha.ColorFicha.COLOR_VERDE, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(49, false), false);
+        fichaOponente = new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(53, false), false);
+        tablero.setFicha(ficha, tablero.obtenerIndice(49));
+        tablero.setFicha(fichaOponente, tablero.obtenerIndice(53));
+
+        assertTrue(tablero.movimientPosible(ficha, 4));
+        tablero.mouFicha(ficha, 4);
+        assertEquals(86, ficha.getPosicion().getNumero());
+
+        // ROJA DA LA VUELTA
+        ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(32, false), false);
+        fichaOponente = new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(36, false), false);
+        tablero.setFicha(ficha, tablero.obtenerIndice(32));
+        tablero.setFicha(fichaOponente, tablero.obtenerIndice(36));
+
+        assertTrue(tablero.movimientPosible(ficha, 4));
+        tablero.mouFicha(ficha, 4);
+        assertEquals(78, ficha.getPosicion().getNumero());
+
+        // AMARILLA DA LA VUELTA
+        ficha = new Ficha(Ficha.ColorFicha.COLOR_AMARILLO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(66, false), false);
+        fichaOponente = new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(2, false), false);
+        tablero.setFicha(ficha, tablero.obtenerIndice(66));
+        tablero.setFicha(fichaOponente, tablero.obtenerIndice(2));
+
+        assertTrue(tablero.movimientPosible(ficha, 4));
+        tablero.mouFicha(ficha, 4);
+        assertEquals(94, ficha.getPosicion().getNumero());
+
+        // AZUL DA LA VUELTA
+        ficha = new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(15, false), false);
+        fichaOponente = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(19, false), false);
+        tablero.setFicha(ficha, tablero.obtenerIndice(15));
+        tablero.setFicha(fichaOponente, tablero.obtenerIndice(19));
+
+        assertTrue(tablero.movimientPosible(ficha, 4));
+        tablero.mouFicha(ficha, 4);
+        assertEquals(70, ficha.getPosicion().getNumero());
+
+        // ROJA 68 → 1
+        ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(68, false), false);
+        tablero.setFicha(ficha, tablero.obtenerIndice(68));
+        assertTrue(tablero.movimientPosible(ficha, 1));
+        tablero.mouFicha(ficha, 1);
+        assertEquals(1, ficha.getPosicion().getNumero());
+
+        // VERDE 66 → 4
+        ficha = new Ficha(Ficha.ColorFicha.COLOR_VERDE, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(66, false), false);
+        tablero.setFicha(ficha, tablero.obtenerIndice(66));
+        assertTrue(tablero.movimientPosible(ficha, 6));
+        tablero.mouFicha(ficha, 6);
+        assertEquals(4, ficha.getPosicion().getNumero());
+
+        // VERDE 66 → 2
+        ficha = new Ficha(Ficha.ColorFicha.COLOR_VERDE, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(66, false), false);
+        tablero.setFicha(ficha, tablero.obtenerIndice(66));
+        assertTrue(tablero.movimientPosible(ficha, 4));
+        tablero.mouFicha(ficha, 4);
+        assertEquals(2, ficha.getPosicion().getNumero());
+
+        // NUEVO CASO: ficha en casa (posición negativa) saca 5 y sale a su casilla de salida
+        // Usamos la entrada roja en coordenadas (1,1) con posición -1
+        Ficha fichaCasa = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(-1, false), false);
+        tablero.setFicha(fichaCasa, new int[]{1, 1}); // posicion física de casa para roja
+
+        assertTrue(tablero.movimientPosible(fichaCasa, 5));
+        tablero.mouFicha(fichaCasa, 5);
+
+        // para rojo la casilla de salida indicada es 39
+        assertEquals(39, fichaCasa.getPosicion().getNumero());
+        int[] coordSalidaRoja = tablero.obtenerIndice(39);
+        assertNotNull(coordSalidaRoja);
+        assertSame(fichaCasa, tablero.getFicha(coordSalidaRoja[0], coordSalidaRoja[1]));
+    }
 }
