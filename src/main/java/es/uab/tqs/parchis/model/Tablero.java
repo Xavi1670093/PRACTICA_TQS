@@ -109,38 +109,38 @@ public class Tablero {
         numerosTablero[17][8] = 66;
         numerosTablero[18][8] = 67;
         numerosTablero[18][9] = 68;
-        numerosTablero[9][17] = 69;
-        numerosTablero[9][16] = 70;
-        numerosTablero[9][15] = 71;
-        numerosTablero[9][14] = 72;
-        numerosTablero[9][13] = 73;
-        numerosTablero[9][12] = 74;
-        numerosTablero[9][11] = 75;
-        numerosTablero[9][10] = 76;
-        numerosTablero[1][9] = 77;
-        numerosTablero[2][9] = 78;
-        numerosTablero[3][9] = 79;
-        numerosTablero[4][9] = 80;
-        numerosTablero[5][9] = 81;
-        numerosTablero[6][9] = 82;
-        numerosTablero[7][9] = 83;
-        numerosTablero[8][9] = 84;
-        numerosTablero[9][1] = 85;
-        numerosTablero[9][2] = 86;
-        numerosTablero[9][3] = 87;
-        numerosTablero[9][4] = 88;
-        numerosTablero[9][5] = 89;
-        numerosTablero[9][6] = 90;
-        numerosTablero[9][7] = 91;
-        numerosTablero[9][8] = 92;
-        numerosTablero[17][9] = 93;
-        numerosTablero[16][9] = 94;
-        numerosTablero[15][9] = 95;
-        numerosTablero[14][9] = 96;
-        numerosTablero[13][9] = 97;
-        numerosTablero[12][9] = 98;
-        numerosTablero[11][9] = 99;
-        numerosTablero[10][9] = 100;
+        numerosTablero[9][17] = 69+20;
+        numerosTablero[9][16] = 70+20;
+        numerosTablero[9][15] = 71+20;
+        numerosTablero[9][14] = 72+20;
+        numerosTablero[9][13] = 73+20;
+        numerosTablero[9][12] = 74+20;
+        numerosTablero[9][11] = 75+20;
+        numerosTablero[9][10] = 76+20;
+        numerosTablero[1][9] = 77+20;
+        numerosTablero[2][9] = 78+20;
+        numerosTablero[3][9] = 79+20;
+        numerosTablero[4][9] = 80+20;
+        numerosTablero[5][9] = 81+20;
+        numerosTablero[6][9] = 82+20;
+        numerosTablero[7][9] = 83+20;
+        numerosTablero[8][9] = 84+20;
+        numerosTablero[9][1] = 85+20;
+        numerosTablero[9][2] = 86+20;
+        numerosTablero[9][3] = 87+20;
+        numerosTablero[9][4] = 88+20;
+        numerosTablero[9][5] = 89+20;
+        numerosTablero[9][6] = 90+20;
+        numerosTablero[9][7] = 91+20;
+        numerosTablero[9][8] = 92+20;
+        numerosTablero[17][9] = 93+20;
+        numerosTablero[16][9] = 94+20;
+        numerosTablero[15][9] = 95+20;
+        numerosTablero[14][9] = 96+20;
+        numerosTablero[13][9] = 97+20;
+        numerosTablero[12][9] = 98+20;
+        numerosTablero[11][9] = 99+20;
+        numerosTablero[10][9] = 100+20;
         numerosTablero[1][1] = -1; // Entrada Roja
         numerosTablero[1][5] = -2; // Entrada Roja
         numerosTablero[5][1] = -3; // Entrada Roja
@@ -194,7 +194,7 @@ public class Tablero {
 
 
     public int[] obtenerIndice(int numero) {
-        if (numero < 1 || numero > 100) return null;
+        if (numero < -16 || numero > 120) return null;
         for (int i = 0; i < numerosTablero.length; i++) {
             for (int j = 0; j < numerosTablero[i].length; j++) {
                 if (numerosTablero[i][j] == numero) {
@@ -208,41 +208,61 @@ public class Tablero {
 
     public int convertirCasillaFinal(Ficha ficha, int casilla) {
 
-        // Si ya está en zona final (69–100), NO transformar nada
-        if (casilla >= 69 && casilla <= 100 && ficha.getColor() != ColorFicha.COLOR_AMARILLO) {
+        ColorFicha color = ficha.getColor();
+        int posicionActual = ficha.getPosicion().getNumero();
+
+        // --- BLOQUE 1: evitar conversiones en posiciones iniciales ---
+        switch (color) {
+            case COLOR_ROJO -> {
+                if (posicionActual >= 39 && posicionActual <= 41) return casilla; // NO convertir
+            }
+            case COLOR_AZUL -> {
+                if (posicionActual >= 22 && posicionActual <= 24) return casilla;
+            }
+            case COLOR_VERDE -> {
+                if (posicionActual >= 56 && posicionActual <= 58) return casilla;
+            }
+            case COLOR_AMARILLO -> {
+                if (posicionActual >= 5 && posicionActual <= 8) return casilla;
+            }
+        }
+
+        // --- BLOQUE 2: si ya está en tramo final, NO convertir ---
+        if (casilla >= 69 + 20 && casilla <= 100 + 20) {
             return casilla;
         }
 
-        switch (ficha.getColor()) {
+        // --- BLOQUE 3: conversiones normales ---
+        switch (color) {
 
             case COLOR_AZUL -> {
                 // Entrada en 17 → tramo 69–76
-                if (casilla > 17 && casilla <= 24) { // 17 + 7 pasos
-                    return 69 + (casilla - 17) - 1;
+                if (casilla > 17 && casilla <= 24) {
+                    return 69 + 20 + (casilla - 17) - 1;
                 }
                 return casilla;
             }
 
             case COLOR_ROJO -> {
                 // Entrada en 34 → tramo 77–84
-                if (casilla >= 34 && casilla <= 41) {
-                    return 77 + (casilla - 34) - 1;
+                if (casilla > 34 && casilla <= 41) {
+                    return 77 + 20 + (casilla - 34) - 1;
                 }
                 return casilla;
             }
 
             case COLOR_VERDE -> {
                 // Entrada en 51 → tramo 85–92
-                if (casilla >= 51 && casilla <= 58) {
-                    return 85 + (casilla - 51) - 1;
+                if (casilla > 51 && casilla <= 58) {
+                    return 85 + 20 + (casilla - 51) - 1;
                 }
                 return casilla;
             }
 
             case COLOR_AMARILLO -> {
                 // Entrada en 68 → tramo 93–100
-                if (casilla > 68 && casilla <= 76) { 
-                    return 93 + (casilla - 68) - 1;
+                if (casilla > 68 && casilla <= 76) {
+                    return 93 + 20 + (casilla - 68) - 1;
                 }
                 return casilla;
             }
@@ -253,6 +273,7 @@ public class Tablero {
         }
     }
 
+
     public boolean movimentInicial(Ficha f, int numDado) {
         if (f.getPosicion().getNumero() < 0) {
 
@@ -260,33 +281,38 @@ public class Tablero {
         }
 
         return false;
-        }
+    }
 
 
 
     public boolean movimientPosible(Ficha ficha, int numDado) {
-
         captura = false;
-
         int posActual = ficha.getPosicion().getNumero();
-        if (ficha.getPosicion().getNumero() < 0) return movimentInicial(ficha, numDado);
-        else
-        {
+        
+        if (ficha.getPosicion().getNumero() < 0) {
+            return movimentInicial(ficha, numDado);
+        } else {
             int casillaDestino = posActual + numDado;
-            if (casillaDestino > 68 && casillaDestino <= 76 && ficha.getColor() != ColorFicha.COLOR_AMARILLO) {
+            if (casillaDestino > 68 && casillaDestino <= 69 + 20 && ficha.getColor() != ColorFicha.COLOR_AMARILLO) {
                 casillaDestino = casillaDestino - 68;
             }
             casillaDestino = convertirCasillaFinal(ficha, casillaDestino);
 
+            if (ficha.getColor() == ColorFicha.COLOR_AMARILLO && casillaDestino > 100 + 20) return false;
+            if (ficha.getColor() == ColorFicha.COLOR_ROJO && casillaDestino > 84 + 20) return false;
+            if (ficha.getColor() == ColorFicha.COLOR_AZUL && casillaDestino > 76 + 20) return false;
+            if (ficha.getColor() == ColorFicha.COLOR_VERDE && casillaDestino > 92 + 20) return false;
+
+
             int[] destino = obtenerIndice(casillaDestino);
+            if (destino == null) return false;  
             fichaDestino = tablero[destino[0]][destino[1]];
-            Posicion pos = new Posicion(casillaDestino);
-            fichaDestino.setPosicion(pos);
-    
+
+            if (fichaDestino.getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
+                fichaDestino.setPosicion(new Posicion(casillaDestino));
+            }
             
-            if (destino == null) return false;
-            
-            //Comprobem que no hi hagi cap barrera en el camí
+            // Comprobamos que no haya barrera en el camino
             for (int i = posActual + 1; i <= casillaDestino; i++) {
                 i = convertirCasillaFinal(ficha, i);
                 int[] coord = obtenerIndice(i);
@@ -297,37 +323,61 @@ public class Tablero {
                 }
             }
 
-            if (fichaDestino.getTipo() == Ficha.TipoFicha.TIPO_EMPTY) return true; // Casilla lliure
+            if (fichaDestino.getTipo() == Ficha.TipoFicha.TIPO_EMPTY) return true;
 
-            if (fichaDestino.getColor() == ficha.getColor()) return true; // Casilla ocupada per ficha del mateix color
+            if (fichaDestino.getColor() == ficha.getColor()) return true;
 
-            if (fichaDestino.getPosicion().esSeguro()) return false; // Casilla segura
+            if (fichaDestino.getPosicion().esSeguro()) return false;
 
-            //CAPTURA
             captura = true;
             return true;
         }
-        
     }
 
     private void enviarFichaACasa(Ficha ficha) {
-        int numero = ficha.getPosicion().getNumero();
-        int[] casa = null;
-
-        // Busca una casa libre del color correspondiente
-        outer:
-        for (int i = 0; i < 19; i++) {
-            for (int j = 0; j < 19; j++) {
-                if (numerosTablero[i][j] < 0 && tablero[i][j].getColor() == ficha.getColor()) {
-                    casa = new int[]{i, j};
-                    break outer;
-                }
+        if (ficha.getColor() == ColorFicha.COLOR_ROJO) {
+            if (tablero[1][1] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
+                setFicha(1, 1, ColorFicha.COLOR_ROJO, new Posicion(-1, false));
+            } else if (tablero[1][5] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
+                setFicha(1, 5, ColorFicha.COLOR_ROJO, new Posicion(-2, false));
+            } else if (tablero[5][1] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
+                setFicha(5, 1, ColorFicha.COLOR_ROJO, new Posicion(-3, false));
+            } else if (tablero[5][5] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
+                setFicha(5, 5, ColorFicha.COLOR_ROJO, new Posicion(-4, false));
             }
         }
-
-        if (casa != null) {
-            ficha.setPosicion(new Posicion(numerosTablero[casa[0]][casa[1]]));
-            tablero[casa[0]][casa[1]] = ficha;
+        if (ficha.getColor() == ColorFicha.COLOR_VERDE) {
+            if (tablero[13][1] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
+                setFicha(13, 1, ColorFicha.COLOR_VERDE, new Posicion(-5, false));
+            } else if (tablero[13][5] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
+                setFicha(13, 5, ColorFicha.COLOR_VERDE, new Posicion(-6, false));
+            } else if (tablero[17][1] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
+                setFicha(17, 1, ColorFicha.COLOR_VERDE, new Posicion(-7, false));
+            } else if (tablero[17][5] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
+                setFicha(17, 5, ColorFicha.COLOR_VERDE, new Posicion(-8, false));
+            }
+        }
+        if (ficha.getColor() == ColorFicha.COLOR_AZUL) {
+            if (tablero[1][13] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
+                setFicha(1, 13, ColorFicha.COLOR_AZUL, new Posicion(-9, false));
+            } else if (tablero[1][17] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
+                setFicha(1, 17, ColorFicha.COLOR_AZUL, new Posicion(-10, false));
+            } else if (tablero[5][13] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
+                setFicha(5, 13, ColorFicha.COLOR_AZUL, new Posicion(-11, false));
+            } else if (tablero[5][17] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
+                setFicha(5, 17, ColorFicha.COLOR_AZUL, new Posicion(-12, false));
+            }
+        }
+        if (ficha.getColor() == ColorFicha.COLOR_AMARILLO) {
+            if (tablero[13][13] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
+                setFicha(13, 13, ColorFicha.COLOR_AMARILLO, new Posicion(-13, false));
+            } else if (tablero[13][17] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
+                setFicha(13, 17, ColorFicha.COLOR_AMARILLO, new Posicion(-14, false));
+            } else if (tablero[17][13] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
+                setFicha(17, 13, ColorFicha.COLOR_AMARILLO, new Posicion(-15, false));
+            } else if (tablero[17][17] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
+                setFicha(17, 17, ColorFicha.COLOR_AMARILLO, new Posicion(-16, false));
+            }
         }
     }
 
@@ -342,7 +392,8 @@ public class Tablero {
     }
 
     public void mouFicha(Ficha ficha, int numDado) {
-
+        ColorFicha color = ficha.getColor();
+        boolean barrera = ficha.isBarrera();
         // 1) Comprobación general
         if (!movimientPosible(ficha, numDado)) {
             return;
@@ -368,19 +419,16 @@ public class Tablero {
                 int salida = obtenerCasillaSalida(ficha.getColor());
                 int[] destino = obtenerIndice(salida);
 
-                // CAPTURA si hay enemigo
-                if (tablero[destino[0]][destino[1]].getTipo() == Ficha.TipoFicha.TIPO_OCUPADO &&
-                    tablero[destino[0]][destino[1]].getColor() != ficha.getColor() &&
-                    !tablero[destino[0]][destino[1]].getPosicion().esSeguro()) {
-
-                    // Enemigo vuelve a su casa
-                    enviarFichaACasa(tablero[destino[0]][destino[1]]);
-                }
-
                 // mover ficha
+                if (tablero[destino[0]][destino[1]].getColor() == color) tablero[destino[0]][destino[1]].setBarrera(true);
+                
                 tablero[filaActual][colActual] = new Ficha(ColorFicha.NULL, Ficha.TipoFicha.TIPO_EMPTY, null, false);
-                ficha.setPosicion(new Posicion(salida));
-                tablero[destino[0]][destino[1]] = ficha;
+
+                if (!tablero[destino[0]][destino[1]].isBarrera())
+                {
+                    ficha.setPosicion(new Posicion(salida));
+                    tablero[destino[0]][destino[1]] = ficha;
+                }
             }
             return;
         }
@@ -390,29 +438,40 @@ public class Tablero {
         int casillaDestino = posActual + numDado;
 
         // Entradas finales excepto amarillo
-        if (casillaDestino > 68 && casillaDestino <= 76 && ficha.getColor() != ColorFicha.COLOR_AMARILLO) {
+        if (casillaDestino > 68 && casillaDestino <= 69 + 20 && ficha.getColor() != ColorFicha.COLOR_AMARILLO) {
             casillaDestino -= 68;
         }
-
         // Convertir tramo final según color
         casillaDestino = convertirCasillaFinal(ficha, casillaDestino);
-
         int[] destino = obtenerIndice(casillaDestino);
-
         // CAPTURA
-        if (tablero[destino[0]][destino[1]].getTipo() == Ficha.TipoFicha.TIPO_OCUPADO &&
-            tablero[destino[0]][destino[1]].getColor() != ficha.getColor() &&
-            !tablero[destino[0]][destino[1]].getPosicion().esSeguro()) {
+        if (isCaptura()) {
 
             enviarFichaACasa(tablero[destino[0]][destino[1]]);
             captura = true;
         }
 
         // Mover la ficha
-        tablero[filaActual][colActual] = new Ficha(ColorFicha.NULL, Ficha.TipoFicha.TIPO_EMPTY, null, false);
 
-        ficha.setPosicion(new Posicion(casillaDestino));
-        tablero[destino[0]][destino[1]] = ficha;
+        if (tablero[destino[0]][destino[1]].getColor() == color) tablero[destino[0]][destino[1]].setBarrera(true);
+        
+        if (!barrera)
+            tablero[filaActual][colActual] = new Ficha(ColorFicha.NULL, Ficha.TipoFicha.TIPO_EMPTY, null, false);
+        else
+            tablero[filaActual][colActual] = new Ficha(color, Ficha.TipoFicha.TIPO_OCUPADO, ficha.getPosicion(), false);
+
+        if (!tablero[destino[0]][destino[1]].isBarrera())
+        {
+            ficha.setPosicion(new Posicion(casillaDestino));
+            ficha.setBarrera(false);
+            tablero[destino[0]][destino[1]] = ficha;
+        }
+        else
+        {
+            ficha.setPosicion(new Posicion(casillaDestino));
+            tablero[destino[0]][destino[1]] = ficha;
+        }
+        if (isCaptura()) mouFicha(ficha, 20);
     }
 
 
@@ -470,7 +529,8 @@ public class Tablero {
                         case COLOR_AZUL -> letraColor = 'A';
                         case COLOR_AMARILLO -> letraColor = 'Y';
                     }
-                    System.out.print(" " + letraColor + " "); // ocupado: también 3 caracteres
+                    if (f.isBarrera()) System.out.print("(" + letraColor + ")");
+                    else System.out.print(" " + letraColor + " "); // ocupado: también 3 caracteres
                 }
             }
         System.out.println();

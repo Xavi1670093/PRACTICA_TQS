@@ -18,37 +18,36 @@ public class Main {
         tablero.mostrar();
 
         while (true) {
-            System.out.println("\nIntroduce la fila de la ficha a mover (0 para salir): ");
-            int fila = sc.nextInt();
-            System.out.println("Introduce la columna de la ficha a mover (0 para salir): ");
-            int columna = sc.nextInt();
+            System.out.println("\nIntroduce el número de la ficha a mover (0 para salir): ");
+            int numFicha = sc.nextInt();
 
-            if (fila == 0 && columna == 0) {
+            if (numFicha == 0) {
                 System.out.println("Saliendo del programa...");
                 break;
             }
 
-            // Obtener ficha en coordenadas
-            Ficha ficha = tablero.getFicha(fila, columna);
+            int[] coords = tablero.obtenerIndice(numFicha);
+            if (coords == null) {
+                System.out.println("Número de ficha inválido.");
+                continue;
+            }
 
-            if (ficha == null) {
-                System.out.println("No hay ninguna ficha en esa posición.");
+            Ficha ficha = tablero.getFicha(coords[0], coords[1]);
+            if (ficha == null || ficha.getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
+                System.out.println("No hay ninguna ficha en esa casilla.");
                 continue;
             }
 
             System.out.println("Introduce el número del dado: ");
             int dado = sc.nextInt();
 
-            // Verificamos el movimiento
             if (!tablero.movimientPosible(ficha, dado)) {
                 System.out.println("Movimiento no posible para esa ficha.");
                 continue;
             }
 
-            // Ejecutamos el movimiento
             tablero.mouFicha(ficha, dado);
 
-            // Mostrar tablero
             System.out.println("\nTablero actualizado:");
             tablero.mostrar();
         }

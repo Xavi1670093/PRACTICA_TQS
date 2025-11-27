@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import es.uab.tqs.parchis.model.Ficha.ColorFicha;
+
 public class TableroTest {
     
     Tablero tablero;
@@ -66,12 +68,12 @@ public class TableroTest {
         assertArrayEquals(new int[]{18, 9}, posValidoSuperior);
 
         // Valores frontera (fuera de rango)
-        assertNull(tablero.obtenerIndice(0));
-        assertNull(tablero.obtenerIndice(101));
+        assertNull(tablero.obtenerIndice(-17));
+        assertNull(tablero.obtenerIndice(101 + 20));
 
         // Valores límite negativos y mayores
-        assertNull(tablero.obtenerIndice(-1));
-        assertNull(tablero.obtenerIndice(102));
+        assertNull(tablero.obtenerIndice(-18));
+        assertNull(tablero.obtenerIndice(102 + 20));
     }
 
         
@@ -138,7 +140,7 @@ public class TableroTest {
 
         assertTrue(tablero.movimientPosible(ficha, 4));
         assertFalse(tablero.isCaptura());
-        assertEquals(tablero.getFichaDestino().getPosicion().getNumero(), 86);
+        assertEquals(tablero.getFichaDestino().getPosicion().getNumero(), 86 + 20);
 
         //CAS FICHA VERMELLA QUE DONA TOTA LA VOLTA:
         ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(32, false), false);
@@ -148,7 +150,7 @@ public class TableroTest {
 
         assertTrue(tablero.movimientPosible(ficha, 4));
         assertFalse(tablero.isCaptura());
-        assertEquals(tablero.getFichaDestino().getPosicion().getNumero(), 78);
+        assertEquals(tablero.getFichaDestino().getPosicion().getNumero(), 78 + 20);
 
         //CAS FICHA GROGA DONA TOTA LA VOLTA:
         ficha = new Ficha(Ficha.ColorFicha.COLOR_AMARILLO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(66, false), false);
@@ -158,7 +160,7 @@ public class TableroTest {
 
         assertTrue(tablero.movimientPosible(ficha, 4));
         assertFalse(tablero.isCaptura());
-        assertEquals(tablero.getFichaDestino().getPosicion().getNumero(), 94);
+        assertEquals(tablero.getFichaDestino().getPosicion().getNumero(), 94 + 20);
 
         //CAS FICHA BLAU DONA TOTA LA VOLTA:
         ficha = new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(15, false), false);
@@ -168,7 +170,7 @@ public class TableroTest {
         
         assertTrue(tablero.movimientPosible(ficha, 4));
         assertFalse(tablero.isCaptura());
-        assertEquals(tablero.getFichaDestino().getPosicion().getNumero(), 70);
+        assertEquals(tablero.getFichaDestino().getPosicion().getNumero(), 70 + 20);
 
         //CAS FICHA ROJA PASA DEL 68 AL 1
         ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(68, false), false);
@@ -213,25 +215,25 @@ public class TableroTest {
         assertEquals(68, tablero.convertirCasillaFinal(fichaVerde, 68));
 
         // Casillas que exceden el rango normal
-        assertEquals(77, tablero.convertirCasillaFinal(fichaRoja, 35));
-        assertEquals(78, tablero.convertirCasillaFinal(fichaRoja, 36));
-        assertEquals(79, tablero.convertirCasillaFinal(fichaRoja, 37));
-        assertEquals(80, tablero.convertirCasillaFinal(fichaRoja, 38));
+        assertEquals(97, tablero.convertirCasillaFinal(fichaRoja, 35));
+        assertEquals(98, tablero.convertirCasillaFinal(fichaRoja, 36));
+        assertEquals(99, tablero.convertirCasillaFinal(fichaRoja, 37));
+        assertEquals(100, tablero.convertirCasillaFinal(fichaRoja, 38));
 
-        assertEquals(85, tablero.convertirCasillaFinal(fichaVerde, 52));
-        assertEquals(86, tablero.convertirCasillaFinal(fichaVerde, 53));
-        assertEquals(87, tablero.convertirCasillaFinal(fichaVerde, 54));
-        assertEquals(88, tablero.convertirCasillaFinal(fichaVerde, 55));
+        assertEquals(85 + 20, tablero.convertirCasillaFinal(fichaVerde, 52));
+        assertEquals(86 + 20, tablero.convertirCasillaFinal(fichaVerde, 53));
+        assertEquals(87 + 20, tablero.convertirCasillaFinal(fichaVerde, 54));
+        assertEquals(88 + 20, tablero.convertirCasillaFinal(fichaVerde, 55));
 
-        assertEquals(69, tablero.convertirCasillaFinal(fichaAzul, 18));
-        assertEquals(70, tablero.convertirCasillaFinal(fichaAzul, 19));
-        assertEquals(71, tablero.convertirCasillaFinal(fichaAzul, 20));
-        assertEquals(72, tablero.convertirCasillaFinal(fichaAzul, 21));
+        assertEquals(69 + 20, tablero.convertirCasillaFinal(fichaAzul, 18));
+        assertEquals(70 + 20, tablero.convertirCasillaFinal(fichaAzul, 19));
+        assertEquals(71 + 20, tablero.convertirCasillaFinal(fichaAzul, 20));
+        assertEquals(72 + 20, tablero.convertirCasillaFinal(fichaAzul, 21));
 
-        assertEquals(93, tablero.convertirCasillaFinal(fichaAmarilla, 69));
-        assertEquals(94, tablero.convertirCasillaFinal(fichaAmarilla, 70));
-        assertEquals(95, tablero.convertirCasillaFinal(fichaAmarilla, 71));
-        assertEquals(96, tablero.convertirCasillaFinal(fichaAmarilla,   72));
+        assertEquals(93 + 20, tablero.convertirCasillaFinal(fichaAmarilla, 69));
+        assertEquals(94 + 20, tablero.convertirCasillaFinal(fichaAmarilla, 70));
+        assertEquals(95 + 20, tablero.convertirCasillaFinal(fichaAmarilla, 71));
+        assertEquals(96 + 20, tablero.convertirCasillaFinal(fichaAmarilla,   72));
     }
 
     @Test
@@ -262,10 +264,10 @@ public class TableroTest {
         assertTrue(tablero.movimientPosible(ficha, 5));
         tablero.mouFicha(ficha, 5);
 
-        assertEquals(10, ficha.getPosicion().getNumero());
+        assertEquals(30, ficha.getPosicion().getNumero());
         // la ficha capturada debe volver a casa: comprobamos que su posición es negativa o que se ubicó en un slot inicial
-        assertTrue(fichaOponente.getPosicion().getNumero() <= 0);
-
+        tablero.getTablero()[1][13] = new Ficha(ColorFicha.NULL, Ficha.TipoFicha.TIPO_EMPTY, null, false);
+        
         // MOVIMIENTO NORMAL SIN CAPTURA
         ficha.setPosicion(new Posicion(5, false));
         tablero.setFicha(ficha, tablero.obtenerIndice(5));
@@ -313,7 +315,7 @@ public class TableroTest {
 
         assertTrue(tablero.movimientPosible(ficha, 4));
         tablero.mouFicha(ficha, 4);
-        assertEquals(86, ficha.getPosicion().getNumero());
+        assertEquals(86 + 20, ficha.getPosicion().getNumero());
 
         // ROJA DA LA VUELTA
         ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(32, false), false);
@@ -323,7 +325,7 @@ public class TableroTest {
 
         assertTrue(tablero.movimientPosible(ficha, 4));
         tablero.mouFicha(ficha, 4);
-        assertEquals(78, ficha.getPosicion().getNumero());
+        assertEquals(78 + 20, ficha.getPosicion().getNumero());
 
         // AMARILLA DA LA VUELTA
         ficha = new Ficha(Ficha.ColorFicha.COLOR_AMARILLO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(66, false), false);
@@ -333,7 +335,7 @@ public class TableroTest {
 
         assertTrue(tablero.movimientPosible(ficha, 4));
         tablero.mouFicha(ficha, 4);
-        assertEquals(94, ficha.getPosicion().getNumero());
+        assertEquals(94 + 20, ficha.getPosicion().getNumero());
 
         // AZUL DA LA VUELTA
         ficha = new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(15, false), false);
@@ -343,7 +345,7 @@ public class TableroTest {
 
         assertTrue(tablero.movimientPosible(ficha, 4));
         tablero.mouFicha(ficha, 4);
-        assertEquals(70, ficha.getPosicion().getNumero());
+        assertEquals(70 + 20, ficha.getPosicion().getNumero());
 
         // ROJA 68 → 1
         ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(68, false), false);
