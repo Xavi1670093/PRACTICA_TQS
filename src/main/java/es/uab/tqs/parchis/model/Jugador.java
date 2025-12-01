@@ -17,12 +17,6 @@ public class Jugador{
         this.nombre = nombre;
         this.color = color;
         this.fichas = new ArrayList<>();
- 
-        for (int i = 0; i < 4; i++) {
-            fichas.add(new Ficha(this));
-        }
-
-        assert fichas.size() == 4 : "Un jugador debe tener exactamente 4 fichas";
     }
 
     public String getNombre(){
@@ -34,6 +28,40 @@ public class Jugador{
     }
 
     public boolean jugar(int numDado, Tablero tablero){
-        
+        List<Ficha> fichasMovibles = new ArrayList<>();
+        for (Ficha ficha : fichas) {
+            if (!ficha.isBarrera() && tablero.movimientPosible(ficha, numDado)) {
+                fichasMovibles.add(ficha);
+            }
+        }
+
+        if (fichasMovibles.isEmpty()) {
+            System.out.println(nombre + ", no hay fichas que puedas mover con " + numDado);
+            return false;
+        } 
+
+        Scanner scanner = new Scanner(System.in);
+        int fihcaEscogida = -1;
+
+        // Bucle hasta que el jugador elija una ficha válida
+        while (fihcaEscogida < 1 || fihcaEscogida > fichasMovibles.size()) {
+            System.out.println(nombre + ", elige una ficha para mover con dado " + numDado + ":");
+            for (int i = 0; i < fichasMovibles.size(); i++) {
+                Ficha f = fichasMovibles.get(i);
+                System.out.println((i + 1) + ": Ficha en posición " + f.getPosicion().getNumero());
+            }
+
+            System.out.print("Introduce el número de la ficha a mover: ");
+            if (scanner.hasNextInt()) {
+                fihcaEscogida = scanner.nextInt();
+            } else {
+                scanner.next(); // descartar entrada no válida
+            }
+        }           
+    
+        Ficha fichaSeleccionada = fichasMovibles.get(eleccion - 1);
+        tablero.mouFicha(fichaSeleccionada, numDado);
+        System.out.println("Ficha movida a posición " + fichaSeleccionada.getPosicion().getNumero());
+        return true;
     }
 }
