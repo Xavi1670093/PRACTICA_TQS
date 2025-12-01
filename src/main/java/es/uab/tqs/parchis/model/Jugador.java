@@ -3,11 +3,12 @@ package es.uab.tqs.parchis.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Scanner;
+
 
 public class Jugador{
-    private final string nombre;
+    private final String nombre;
     private Ficha.ColorFicha color;
-    private List<Ficha> fichas;
     private final List<Ficha> fichas;
 
     public Jugador(String nombre, Ficha.ColorFicha color ) {
@@ -41,10 +42,10 @@ public class Jugador{
         } 
 
         Scanner scanner = new Scanner(System.in);
-        int fihcaEscogida = -1;
+        int fichaEscogida = -1;
 
         // Bucle hasta que el jugador elija una ficha válida
-        while (fihcaEscogida < 1 || fihcaEscogida > fichasMovibles.size()) {
+        while (fichaEscogida < 1 || fichaEscogida > fichasMovibles.size()) {
             System.out.println(nombre + ", elige una ficha para mover con dado " + numDado + ":");
             for (int i = 0; i < fichasMovibles.size(); i++) {
                 Ficha f = fichasMovibles.get(i);
@@ -53,13 +54,13 @@ public class Jugador{
 
             System.out.print("Introduce el número de la ficha a mover: ");
             if (scanner.hasNextInt()) {
-                fihcaEscogida = scanner.nextInt();
+                fichaEscogida = scanner.nextInt();
             } else {
                 scanner.next(); // descartar entrada no válida
             }
         }           
     
-        Ficha fichaSeleccionada = fichasMovibles.get(eleccion - 1);
+        Ficha fichaSeleccionada = fichasMovibles.get(fichaEscogida - 1);
         tablero.mouFicha(fichaSeleccionada, numDado);
         System.out.println("Ficha movida a posición " + fichaSeleccionada.getPosicion().getNumero());
         return true;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="es.uab.tqs.parchis.model.FichaTest" time="0.029" tests="5" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="es.uab.tqs.parchis.model.JugadorTest" time="1.132" tests="3" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="17"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -58,9 +58,21 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="61.0"/>
   </properties>
-  <testcase name="testGettersRetornanValoresEsperados" classname="es.uab.tqs.parchis.model.FichaTest" time="0.015"/>
-  <testcase name="testConstructorVacioNoLanzaErrores" classname="es.uab.tqs.parchis.model.FichaTest" time="0.001"/>
-  <testcase name="testSetColorCambiaColorFicha" classname="es.uab.tqs.parchis.model.FichaTest" time="0.002"/>
-  <testcase name="testSetTipoCambiaTipoFicha" classname="es.uab.tqs.parchis.model.FichaTest" time="0.001"/>
-  <testcase name="testConstructorInicializaCorrectamente" classname="es.uab.tqs.parchis.model.FichaTest" time="0.002"/>
+  <testcase name="testMoverFichaElegida" classname="es.uab.tqs.parchis.model.JugadorTest" time="1.097">
+    <system-out><![CDATA[Leidy, elige una ficha para mover con dado 5:
+1: Ficha en posición 1
+2: Ficha en posición 2
+Introduce el número de la ficha a mover: Ficha movida a posición 2
+]]></system-out>
+  </testcase>
+  <testcase name="testFicha1EnBarrera" classname="es.uab.tqs.parchis.model.JugadorTest" time="0.014">
+    <system-out><![CDATA[Leidy, elige una ficha para mover con dado 3:
+1: Ficha en posición 2
+Introduce el número de la ficha a mover: Ficha movida a posición 2
+]]></system-out>
+  </testcase>
+  <testcase name="testNingunaFichaSePuedeMover" classname="es.uab.tqs.parchis.model.JugadorTest" time="0.014">
+    <system-out><![CDATA[Leidy, no hay fichas que puedas mover con 5
+]]></system-out>
+  </testcase>
 </testsuite>
