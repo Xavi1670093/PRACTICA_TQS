@@ -28,10 +28,10 @@ public class Jugador{
         return fichas;
     }
 
-    public boolean jugar(int numDado, Tablero tablero){
+    public boolean jugar(int numDado, Tablero tablero, Ficha.ColorFicha color) {
         List<Ficha> fichasMovibles = new ArrayList<>();
         for (Ficha ficha : fichas) {
-            if (!ficha.isBarrera() && tablero.movimientPosible(ficha, numDado)) {
+            if (tablero.movimientPosible(ficha, numDado) && ficha.getColor() == color) {
                 fichasMovibles.add(ficha);
             }
         }
