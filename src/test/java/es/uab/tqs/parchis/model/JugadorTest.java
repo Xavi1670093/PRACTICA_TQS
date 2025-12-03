@@ -16,6 +16,9 @@ class JugadorTest{
     private Tablero tablero;
     private Ficha ficha1;
     private Ficha ficha2;
+    private Ficha ficha3;
+    private Ficha ficha4;
+    private Ficha ficha5;
 
     
     @BeforeEach
@@ -25,20 +28,31 @@ class JugadorTest{
 
         ficha1 = mock(Ficha.class);
         ficha2 = mock(Ficha.class);
+        ficha3 = mock(Ficha.class);
+        ficha4 = mock (Ficha.class);
+        ficha5 = mock(Ficha.class);
 
         Posicion pos1 = mock(Posicion.class);
         Posicion pos2 = mock(Posicion.class);
 
         when(ficha1.getPosicion()).thenReturn(pos1);
         when(ficha2.getPosicion()).thenReturn(pos2);
-
         when(pos1.getNumero()).thenReturn(1);
         when(pos2.getNumero()).thenReturn(2);
 
-        jugador.getFichas().add(ficha1);
-        jugador.getFichas().add(ficha2);
-    }
+        when(ficha1.getColor()).thenReturn(Ficha.ColorFicha.COLOR_ROJO);
+        when(ficha2.getColor()).thenReturn(Ficha.ColorFicha.COLOR_ROJO);
+        when(ficha3.getColor()).thenReturn(Ficha.ColorFicha.COLOR_ROJO);
+        when(ficha4.getColor()).thenReturn(Ficha.ColorFicha.COLOR_ROJO);
+        when(ficha1.getColor()).thenReturn(Ficha.ColorFicha.COLOR_VERDE);
+
+        jugador.añadirFicha(ficha1);
+        jugador.añadirFicha(ficha2);
+        jugador.añadirFicha(ficha3);
+        jugador.añadirFicha(ficha4);
     
+    }
+
     @Test
     void testMoverFichaElegida() {
         InputStream original = System.in;
@@ -60,7 +74,7 @@ class JugadorTest{
         }
     }            
 
-@Test
+    @Test
     void testNingunaFichaSePuedeMover() {
         
         when(tablero.movimientPosible(any(), anyInt())).thenReturn(false);
@@ -71,29 +85,44 @@ class JugadorTest{
         verify(tablero, never()).mouFicha(any(), anyInt());
     }
 
-@Test
-void testFicha1EnBarrera() {
-    InputStream original = System.in;
+    @Test
+    void testFicha1EnBarrera() {
+        InputStream original = System.in;
 
-    try {
-        when(ficha1.isBarrera()).thenReturn(true);
-        when(ficha2.isBarrera()).thenReturn(false);
+        try {
+            when(ficha1.isBarrera()).thenReturn(true);
+            when(ficha2.isBarrera()).thenReturn(false);
 
-        when(tablero.movimientPosible(ficha1, 3)).thenReturn(false);
-        when(tablero.movimientPosible(ficha2, 3)).thenReturn(true);
+            when(tablero.movimientPosible(ficha1, 3)).thenReturn(false);
+            when(tablero.movimientPosible(ficha2, 3)).thenReturn(true);
 
-        System.setIn(new ByteArrayInputStream("1\n".getBytes()));
+            System.setIn(new ByteArrayInputStream("1\n".getBytes()));
 
-        boolean resultado = jugador.jugar(3, tablero);
+            boolean resultado = jugador.jugar(3, tablero);
 
-        assertTrue(resultado);
-        verify(tablero).mouFicha(ficha2, 3);
-        verify(tablero, never()).mouFicha(ficha1, 3);
+            assertTrue(resultado);
+            verify(tablero).mouFicha(ficha2, 3);
+            verify(tablero, never()).mouFicha(ficha1, 3);
 
-    } finally {
-        System.setIn(original);
+        } finally {
+            System.setIn(original);
+        }
     }
-}
+
+    @Test
+    void añadirFicha() {
+        assertEquals(4, jugador.getFichas().size());
+        assertTrue(jugador.getFichas().contains(ficha1));
+        assertTrue(jugador.getFichas().contains(ficha2));
+        assertTrue(jugador.getFichas().contains(ficha3));
+        assertTrue(jugador.getFichas().contains(ficha4));
+
+        jugador.añadirFicha(ficha5);
+
+        assertEquals(4, jugador.getFichas().size());
+        assertFalse(jugador.getFichas().contains(ficha5));
+
+    }
 
 
 }

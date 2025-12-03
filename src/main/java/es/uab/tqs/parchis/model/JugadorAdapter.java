@@ -14,7 +14,7 @@ public class JugadorAdapter implements IJugador {
     @Override
     public boolean jugar(int numDado, Tablero tablero, Ficha.ColorFicha color) {
         // delega en la implementación existente
-        return jugador.jugar(numDado, tablero, color);
+        return jugador.jugar(numDado, tablero);
     }
 
     public Ficha.ColorFicha getColor() {
