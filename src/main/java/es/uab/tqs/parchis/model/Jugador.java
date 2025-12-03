@@ -29,7 +29,9 @@ public class Jugador{
     }
 
     public void añadirFicha(Ficha ficha){
-        
+        if(ficha.getColor() != this.color)
+            throw new IllegalArgumentException("La ficha no coincide con el color del jugador");
+        fichas.add(ficha);
     }
 
     public boolean jugar(int numDado, Tablero tablero){
