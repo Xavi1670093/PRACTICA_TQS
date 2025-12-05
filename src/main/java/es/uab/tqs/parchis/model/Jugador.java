@@ -24,6 +24,10 @@ public class Jugador{
         return nombre;
     }
 
+    public Ficha.ColorFicha getColor(){
+        return color;
+    }
+
     public List<Ficha> getFichas() {
         return fichas;
     }
@@ -69,6 +73,23 @@ public class Jugador{
         Ficha fichaSeleccionada = fichasMovibles.get(fichaEscogida - 1);
         tablero.mouFicha(fichaSeleccionada, numDado);
         System.out.println("Ficha movida a posición " + fichaSeleccionada.getPosicion().getNumero());
+        return true;
+    }
+
+    public boolean haGanado() {
+        int meta;
+        switch(color) {
+            case COLOR_ROJO -> meta = 84;
+            case COLOR_AZUL -> meta = 76;
+            case COLOR_VERDE -> meta = 92;
+            case COLOR_AMARILLO -> meta = 100;
+            default -> throw new IllegalStateException("Color no válido");
+        }
+        for (Ficha f : fichas) {
+            if (f.getPosicion().getNumero() != meta) {
+                return false;
+            }
+        }
         return true;
     }
 }

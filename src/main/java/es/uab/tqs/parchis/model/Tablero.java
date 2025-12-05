@@ -474,42 +474,6 @@ public class Tablero {
         if (isCaptura()) mouFicha(ficha, 20);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public void mostrar() {
 
         for (int i = 0; i < 19; i++) {
