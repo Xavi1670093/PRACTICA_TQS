@@ -20,9 +20,13 @@ public class Juego {
         return jugadores;
     }
 
-
     public void añadirJugador(Jugador jugador){
-
+        assert !jugadores.contains(jugador) : "El jugador ya está añadido";
+        if(jugadores.size() >= 4){
+            throw new IllegalArgumentException("No se pueden añadir más de 4 jugadores");
+        }
+        jugadores.add(jugador);
+        assert jugadores.contains(jugador);
     }
 
     
