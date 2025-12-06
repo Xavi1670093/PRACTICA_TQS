@@ -1,52 +1,88 @@
 package es.uab.tqs.parchis.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import es.uab.tqs.parchis.view.JuegoView;
+
 public class Juego {
+
     private final List<Jugador> jugadores;
     private final Tablero tablero;
     private final Dado dado;
 
-    public Juego(){
-        this.jugadores = new ArrayList<>();
-        this.tablero = new Tablero();
-        this.dado = new Dado();
-        tablero.inicializa();
+    private int turnoActual = 0;
+    private boolean terminado = false;
+    private Jugador ganador;
+    private int tirada;
+
+    public Juego(List<Jugador> jugadores, Tablero tablero, Dado dado) {
+        this.jugadores = jugadores;
+        this.tablero = tablero;
+        this.dado = dado;
     }
 
-    public List<Jugador> getJugadores(){
-        assert jugadores != null && !jugadores.isEmpty() : "Lista de jugadores vacía";
-        return jugadores;
+    public Jugador getJugadorActual() {
+        return jugadores.get(turnoActual);
     }
 
-    public void añadirJugador(Jugador jugador){
-        assert !jugadores.contains(jugador) : "El jugador ya está añadido";
-        if(jugadores.size() >= 4){
-            throw new IllegalArgumentException("No se pueden añadir más de 4 jugadores");
-        }
-        jugadores.add(jugador);
-        assert jugadores.contains(jugador);
+    public boolean isTerminado() {
+        return terminado;
     }
 
-    public void partida() {
-        //PRECONDICIÓN: Los jugadores se tiene que declarar en el main antes de llamar a la función partida
-        assert jugadores != null && !jugadores.isEmpty() : "No hay jugadores añadidos";
-        
-        boolean hayGanador = false;
-
-        while(!hayGanador) {
-            for(Jugador jugador: jugadores){
-                
-                System.out.println("\nTurno de" + jugador.getNombre());
-                int numDado = dado.lanzar();
-
-                System.out.println(jugador.getNombre() + "ha sacado un" + numDado);
-                jugador.jugar(numDado, tablero);
-            }
-
-        }
+    public Jugador getGanador() {
+        return ganador;
     }
 
+    public Tablero getTablero() {
+        return tablero;
+    }
+
+    public int getTirada() {
+        return tirada;
+    }
     
+    /** Decide si el jugador tiene al menos una ficha movible */
+    public boolean puedeMover(Jugador jugador) {
+        for (Ficha f : jugador.getFichas()) {
+            for (int dado = 1; dado <= 6; dado++) {
+                if (tablero.movimientPosible(f, dado)) return true;
+            }
+        }
+        return false;
+    }
+
+    public void jugarTurno() {
+        JuegoView juegoView = new JuegoView();
+        if (terminado) return;
+
+        Jugador jugador = getJugadorActual();
+        jugador.setMovimientoHecho(false);
+        tirada = dado.lanzar();
+        juegoView.mostrarDado(tirada);
+
+        // Si no puede mover -> pasa turno
+        if (!puedeMover(jugador)) {
+            avanzarTurno();
+            return;
+        }
+
+        jugador.jugar(tirada, tablero);
+
+        // ¿Victoria?
+        if (jugador.haGanado()) {
+            terminado = true;
+            ganador = jugador;
+            return;
+        }
+
+        // Si saca 6 -> NO avanza el turno
+        if (tirada == 6) return;
+
+        // Turno normal
+        avanzarTurno();
+    }
+
+    private void avanzarTurno() {
+        turnoActual = (turnoActual + 1) % jugadores.size();
+    }
 }

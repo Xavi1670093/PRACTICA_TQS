@@ -1,57 +1,36 @@
 package es.uab.tqs.parchis;
 
-import es.uab.tqs.parchis.model.Ficha;
-import es.uab.tqs.parchis.model.Tablero;
+import es.uab.tqs.parchis.model.*;
+import es.uab.tqs.parchis.view.JuegoView;
+import es.uab.tqs.parchis.controller.juegoController;
 
-import java.util.Scanner;
+import java.util.List;
 
 public class Main {
+
     public static void main(String[] args) {
 
-        Scanner sc = new Scanner(System.in);
-
-        // Crear e inicializar tablero
         Tablero tablero = new Tablero();
         tablero.inicializa();
 
-        System.out.println("Tablero inicial:");
-        tablero.mostrar();
+        Jugador j1 = new Jugador("Leidy", Ficha.ColorFicha.COLOR_ROJO);
+        Jugador j2 = new Jugador("Xavi", Ficha.ColorFicha.COLOR_AZUL);
 
-        while (true) {
-            System.out.println("\nIntroduce el número de la ficha a mover (0 para salir): ");
-            int numFicha = sc.nextInt();
-
-            if (numFicha == 0) {
-                System.out.println("Saliendo del programa...");
-                break;
-            }
-
-            int[] coords = tablero.obtenerIndice(numFicha);
-            if (coords == null) {
-                System.out.println("Número de ficha inválido.");
-                continue;
-            }
-
-            Ficha ficha = tablero.getFicha(coords[0], coords[1]);
-            if (ficha == null || ficha.getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
-                System.out.println("No hay ninguna ficha en esa casilla.");
-                continue;
-            }
-
-            System.out.println("Introduce el número del dado: ");
-            int dado = sc.nextInt();
-
-            if (!tablero.movimientPosible(ficha, dado)) {
-                System.out.println("Movimiento no posible para esa ficha.");
-                continue;
-            }
-
-            tablero.mouFicha(ficha, dado);
-
-            System.out.println("\nTablero actualizado:");
-            tablero.mostrar();
+        for (Ficha f : tablero.getFichasPorColor(Ficha.ColorFicha.COLOR_ROJO)) {
+            j1.añadirFicha(f);
         }
 
-        sc.close();
+        for (Ficha f : tablero.getFichasPorColor(Ficha.ColorFicha.COLOR_AZUL)) {
+            j2.añadirFicha(f);
+        }
+
+        Dado dado = new Dado();
+
+        Juego juego = new Juego(List.of(j1, j2), tablero, dado);
+
+        JuegoView vista = new JuegoView();
+        juegoController controller = new juegoController(juego, vista);
+
+        controller.iniciarPartida();
     }
 }

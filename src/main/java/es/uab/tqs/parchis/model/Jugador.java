@@ -10,6 +10,7 @@ public class Jugador{
     private final String nombre;
     private Ficha.ColorFicha color;
     private final List<Ficha> fichas;
+    private boolean movimientoHecho;
 
     public Jugador(String nombre, Ficha.ColorFicha color ) {
         Objects.requireNonNull(nombre, "El nombre del jugador no puede ser null");
@@ -31,7 +32,15 @@ public class Jugador{
     public List<Ficha> getFichas() {
         return fichas;
     }
+    
+    public boolean getMovimientoHecho() {
+        return movimientoHecho;
+    }
 
+    public void setMovimientoHecho(boolean movimientoHecho) {
+        this.movimientoHecho = movimientoHecho;
+    }
+    
     public void añadirFicha(Ficha ficha){
         if(ficha.getColor() != this.color)
             throw new IllegalArgumentException("La ficha no coincide con el color del jugador");
@@ -68,8 +77,9 @@ public class Jugador{
             } else {
                 scanner.next(); // descartar entrada no válida
             }
+            
         }           
-    
+        movimientoHecho = true;
         Ficha fichaSeleccionada = fichasMovibles.get(fichaEscogida - 1);
         tablero.mouFicha(fichaSeleccionada, numDado);
         System.out.println("Ficha movida a posición " + fichaSeleccionada.getPosicion().getNumero());

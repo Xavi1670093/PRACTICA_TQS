@@ -1,76 +1,92 @@
 package es.uab.tqs.parchis.model;
-import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
- 
-public class JuegoTest{
+
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+public class JuegoTest {
+
+    private Tablero tablero;
+    private Dado dado;
+    private Jugador j1, j2;
+    private Juego juego;
+
+    @BeforeEach
+    void setup() {
+        tablero = new Tablero();
+        tablero.inicializa();
+
+        // mock del dado
+        dado = mock(Dado.class);
+
+        j1 = new Jugador("Alice", Ficha.ColorFicha.COLOR_ROJO);
+        j2 = new Jugador("Bob", Ficha.ColorFicha.COLOR_AZUL);
+
+        // Añadimos fichas
+        j1.añadirFicha(new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(-1, false), false));
+        j1.añadirFicha(new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(-2, false), false));
+        j1.añadirFicha(new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(-3, false), false));
+        j1.añadirFicha(new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(-4, false), false));
+
+        j2.añadirFicha(new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(-9, false), false));
+        j2.añadirFicha(new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(-10, false), false));
+        j2.añadirFicha(new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(-11, false), false));
+        j2.añadirFicha(new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(-12, false), false));
+
+        juego = new Juego(List.of(j1, j2), tablero, dado);
+    }
 
     @Test
-    void testAñadirJugador(){
-        Juego juego = new Juego();
-        Jugador j1 = new Jugador("Alice", Ficha.ColorFicha.COLOR_ROJO);
-        Jugador j2 = new Jugador("Rosa", Ficha.ColorFicha.COLOR_VERDE);
-        Jugador j3 = new Jugador("Marc", Ficha.ColorFicha.COLOR_AMARILLO);
-        Jugador j4 = new Jugador("Alex", Ficha.ColorFicha.COLOR_AZUL);
-
-        juego.añadirJugador(j1);
-        juego.añadirJugador(j2);
-        juego.añadirJugador(j3);
-        juego.añadirJugador(j4);
-
-        //CASO 4 JUGADORES CORRECTAMENTE AÑADIDOS
-        assertEquals(4, juego.getJugadores().size());
-
-        //CASO NO SE PUEDE AÑADIR JUGADORES DUPLICADOS
-        assertThrows(AssertionError.class, () -> juego.añadirJugador(j1));
-
-        //CASO NO SE PUEDE AÑADRI MÁS DE 4 JUGADORES
-        Exception ex = assertThrows(IllegalArgumentException.class, () -> juego.añadirJugador(new Jugador("J5", Ficha.ColorFicha.COLOR_ROJO)));
-        assertEquals("No se pueden añadir más de 4 jugadores", ex.getMessage());
-
+    void testPrimerTurnoEsPrimerJugador() {
+        assertEquals(j1, juego.getJugadorActual());
     }
 
-    @Test 
-    void testPartida(){
-        Juego juego = new Juego();
-
-        Jugador j1 = mock(Jugador.class);
-        Jugador j2 = mock(Jugador.class);
-
-        juego.añadirJugador(j1);
-        juego.añadirJugador(j2);
-
-        when(j1.haGanado()).thenReturn(true); 
-        when(j2.haGanado()).thenReturn(false);
-
-        when(j1.jugar(anyInt(), any())).thenReturn(true);
-        when(j2.jugar(anyInt(), any())).thenReturn(true);
-
-        // Ejecutar iniciar en un hilo para no bloquear por Scanner
-        Thread t = new Thread(juego::partida);
-        t.start();
-        try {
-            t.join(1000); // esperar máximo 1s
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        verify(j1, atLeastOnce()).jugar(anyInt(), any());
-        verify(j1, atLeastOnce()).haGanado();
+    @Test
+    void testCambioDeTurnoConTiradaNormal() {
+        when(dado.lanzar()).thenReturn(3);
+        juego.jugarTurno();
+        assertEquals(j2, juego.getJugadorActual());
     }
 
-    @Test 
-    void testPartidaConMenosDeDosJugadores(){
-        Juego juego = new Juego();
-        Jugador j1 = new Jugador("Alice", Ficha.ColorFicha.COLOR_ROJO);
-        juego.añadirJugador(j1);
+    @Test
+    void testJugadorSaca6YRepiteTurno() {
+        when(dado.lanzar()).thenReturn(6).thenReturn(3);
 
-        Exception ex = assertThrows(IllegalStateException.class, juego::partida);
-        assertEquals("Se necessitan al menos 2 jugadores para empezar", ex.getMessage());
+        juego.jugarTurno(); // 6 → repite
+        assertEquals(j1, juego.getJugadorActual());
+
+        juego.jugarTurno(); // ahora sí cambia
+        assertEquals(j2, juego.getJugadorActual());
     }
 
+    @Test
+    void testJugadorNoPuedeMoverYPasaTurno() {
+        // Mockeamos que ninguna ficha puede moverse
+        Juego juegoEspia = spy(juego);
+        doReturn(false).when(juegoEspia).puedeMover(j1);
+
+        when(dado.lanzar()).thenReturn(3);
+
+        juegoEspia.jugarTurno();
+        assertEquals(j2, juegoEspia.getJugadorActual());
+    }
+
+    @Test
+    void testVictoriaJugador() {
+        // Mockeamos ganar
+        Jugador spyJ1 = spy(j1);
+        when(spyJ1.haGanado()).thenReturn(true);
+
+        Juego juego2 = new Juego(List.of(spyJ1, j2), tablero, dado);
+
+        when(dado.lanzar()).thenReturn(3);
+
+        juego2.jugarTurno();
+        assertTrue(juego2.isTerminado());
+        assertEquals(spyJ1, juego2.getGanador());
+    }
 }
