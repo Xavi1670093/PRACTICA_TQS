@@ -1,5 +1,8 @@
 package es.uab.tqs.parchis.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import es.uab.tqs.parchis.model.Ficha.ColorFicha;
 
 public class Tablero {
@@ -474,6 +477,20 @@ public class Tablero {
         if (isCaptura()) mouFicha(ficha, 20);
     }
 
+    public List<Ficha> getFichasPorColor(Ficha.ColorFicha color) {
+        List<Ficha> lista = new ArrayList<>();
+
+        for (int i = 0; i < 19; i++) {
+            for (int j = 0; j < 19; j++) {
+                Ficha f = tablero[i][j];
+                if (f.getColor() == color && f.getTipo() == Ficha.TipoFicha.TIPO_OCUPADO) {
+                    lista.add(f);
+                }
+            }
+        }
+        return lista;
+    }
+    
     public void mostrar() {
 
         for (int i = 0; i < 19; i++) {
