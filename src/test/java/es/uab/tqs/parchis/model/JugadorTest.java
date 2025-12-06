@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-class JugadorTest{
+public class JugadorTest{
     private Jugador jugador;
     private Tablero tablero;
     private Ficha ficha1;
