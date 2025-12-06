@@ -29,5 +29,9 @@ public class Juego {
         assert jugadores.contains(jugador);
     }
 
+    public void partida() {
+        
+    }
+
     
 }
