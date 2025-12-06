@@ -30,7 +30,22 @@ public class Juego {
     }
 
     public void partida() {
+        //PRECONDICIÓN: Los jugadores se tiene que declarar en el main antes de llamar a la función partida
+        assert jugadores != null && !jugadores.isEmpty() : "No hay jugadores añadidos";
         
+        boolean hayGanador = false;
+
+        while(!hayGanador) {
+            for(Jugador jugador: jugadores){
+                
+                System.out.println("\nTurno de" + jugador.getNombre());
+                int numDado = dado.lanzar();
+
+                System.out.println(jugador.getNombre() + "ha sacado un" + numDado);
+                jugador.jugar(numDado, tablero);
+            }
+
+        }
     }
 
     
