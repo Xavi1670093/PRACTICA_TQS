@@ -1,2 +1,2 @@
 # parchisTQS
-Este es un cambio para probar GitHub Actions.
+Este es un cambio 
