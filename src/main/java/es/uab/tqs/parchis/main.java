@@ -1,6 +1,10 @@
 package es.uab.tqs.parchis;
 
-import es.uab.tqs.parchis.model.*;
+import es.uab.tqs.parchis.model.Tablero;
+import es.uab.tqs.parchis.model.Jugador;
+import es.uab.tqs.parchis.model.Juego;
+import es.uab.tqs.parchis.model.Ficha;
+import es.uab.tqs.parchis.model.Dado;
 import es.uab.tqs.parchis.view.JuegoViewSwing;
 import es.uab.tqs.parchis.controller.juegoController;
 
