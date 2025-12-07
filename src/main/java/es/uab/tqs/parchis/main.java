@@ -1,7 +1,7 @@
 package es.uab.tqs.parchis;
 
 import es.uab.tqs.parchis.model.*;
-import es.uab.tqs.parchis.view.JuegoView;
+import es.uab.tqs.parchis.view.JuegoViewSwing;
 import es.uab.tqs.parchis.controller.juegoController;
 
 import java.util.List;
@@ -25,10 +25,9 @@ public class Main {
         }
 
         Dado dado = new Dado();
+        JuegoViewSwing vista = new JuegoViewSwing();
 
         Juego juego = new Juego(List.of(j1, j2), tablero, dado);
-
-        JuegoView vista = new JuegoView();
         juegoController controller = new juegoController(juego, vista);
 
         controller.iniciarPartida();

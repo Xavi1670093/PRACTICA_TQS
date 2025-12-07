@@ -2,8 +2,6 @@ package es.uab.tqs.parchis.model;
 
 import java.util.List;
 
-import es.uab.tqs.parchis.view.JuegoView;
-
 public class Juego {
 
     private final List<Jugador> jugadores;
@@ -44,21 +42,21 @@ public class Juego {
     /** Decide si el jugador tiene al menos una ficha movible */
     public boolean puedeMover(Jugador jugador) {
         for (Ficha f : jugador.getFichas()) {
-            for (int dado = 1; dado <= 6; dado++) {
-                if (tablero.movimientPosible(f, dado)) return true;
+            for (int dadoValor = 1; dadoValor <= 6; dadoValor++) {
+                if (tablero.movimientPosible(f, dadoValor)) return true;
             }
         }
         return false;
     }
 
     public void jugarTurno() {
-        JuegoView juegoView = new JuegoView();
         if (terminado) return;
 
         Jugador jugador = getJugadorActual();
         jugador.setMovimientoHecho(false);
+
+        // SOLO calcula la tirada, NO llama a vista
         tirada = dado.lanzar();
-        juegoView.mostrarDado(tirada);
 
         // Si no puede mover -> pasa turno
         if (!puedeMover(jugador)) {
@@ -75,7 +73,7 @@ public class Juego {
             return;
         }
 
-        // Si saca 6 -> NO avanza el turno
+        // Si saca 6 -> repite turno
         if (tirada == 6) return;
 
         // Turno normal

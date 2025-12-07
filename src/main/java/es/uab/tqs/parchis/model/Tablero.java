@@ -112,6 +112,7 @@ public class Tablero {
         numerosTablero[17][8] = 66;
         numerosTablero[18][8] = 67;
         numerosTablero[18][9] = 68;
+        //entrada azul
         numerosTablero[9][17] = 69+20;
         numerosTablero[9][16] = 70+20;
         numerosTablero[9][15] = 71+20;
@@ -120,6 +121,7 @@ public class Tablero {
         numerosTablero[9][12] = 74+20;
         numerosTablero[9][11] = 75+20;
         numerosTablero[9][10] = 76+20;
+        //entrada roja
         numerosTablero[1][9] = 77+20;
         numerosTablero[2][9] = 78+20;
         numerosTablero[3][9] = 79+20;
@@ -128,6 +130,7 @@ public class Tablero {
         numerosTablero[6][9] = 82+20;
         numerosTablero[7][9] = 83+20;
         numerosTablero[8][9] = 84+20;
+        //entrada verde
         numerosTablero[9][1] = 85+20;
         numerosTablero[9][2] = 86+20;
         numerosTablero[9][3] = 87+20;
@@ -136,6 +139,7 @@ public class Tablero {
         numerosTablero[9][6] = 90+20;
         numerosTablero[9][7] = 91+20;
         numerosTablero[9][8] = 92+20;
+        //entrada amarilla
         numerosTablero[17][9] = 93+20;
         numerosTablero[16][9] = 94+20;
         numerosTablero[15][9] = 95+20;
@@ -144,6 +148,7 @@ public class Tablero {
         numerosTablero[12][9] = 98+20;
         numerosTablero[11][9] = 99+20;
         numerosTablero[10][9] = 100+20;
+        
         numerosTablero[1][1] = -1; // Entrada Roja
         numerosTablero[1][5] = -2; // Entrada Roja
         numerosTablero[5][1] = -3; // Entrada Roja
@@ -517,6 +522,11 @@ public class Tablero {
         System.out.println();
         }
     }
+
+    public int[][] getNumerosTablero() {
+    return numerosTablero;
+}
+
 
     
 }
