@@ -2,6 +2,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>es.uab.tqs.parchis</groupId>
@@ -19,7 +20,7 @@
     </properties>
 
     <dependencies>
-        <!-- JUnit 5 para TDD -->
+        <!-- JUnit 5 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -27,7 +28,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Mockito para tests con mocks -->
+        <!-- Mockito -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
@@ -35,7 +36,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- AssertJ (opcional, para asserts más legibles) -->
+        <!-- AssertJ -->
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
@@ -46,7 +47,8 @@
 
     <build>
         <plugins>
-            <!-- Compilador de Java -->
+
+            <!-- Compilador -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -57,7 +59,7 @@
                 </configuration>
             </plugin>
 
-            <!-- Plugin para ejecutar tests con JUnit 5 -->
+            <!-- Tests con JUnit -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -67,7 +69,7 @@
                 </configuration>
             </plugin>
 
-            <!-- Plugin JAR con Main-Class -->
+            <!-- Empaquetado JAR -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -80,6 +82,40 @@
                     </archive>
                 </configuration>
             </plugin>
+
+            <!-- ⭐ CHECKSTYLE CONFIGURADO -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+
+                    <!-- 📌 ruta donde está tu archivo checkstyle.xml -->
+                    <configLocation>checkstyle.xml</configLocation>
+
+                    <!-- Mostrar errores en consola -->
+                    <consoleOutput>true</consoleOutput>
+
+                    <!-- Fallar si hay errores -->
+                    <failsOnError>true</failsOnError>
+
+                    <!-- Asegurar UTF-8 -->
+                    <encoding>UTF-8</encoding>
+                </configuration>
+
+                <!-- Ejecutar checkstyle automáticamente en fase validate -->
+                <executions>
+                    <execution>
+                        <id>validate</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
+
 </project>
