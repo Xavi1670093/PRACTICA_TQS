@@ -47,44 +47,58 @@ public class Jugador{
         fichas.add(ficha);
     }
 
-    public boolean jugar(int numDado, Tablero tablero){
+    public boolean jugar(int numDado, Tablero tablero) {
         List<Ficha> fichasMovibles = new ArrayList<>();
+
+        // --- Construir lista de fichas realmente movibles ---
         for (Ficha ficha : fichas) {
-            if (ficha.getColor() == this.color && !ficha.isBarrera() && tablero.movimientPosible(ficha, numDado)) {
-                fichasMovibles.add(ficha);
+            int[] pos = tablero.obtenerIndice(ficha.getPosicion().getNumero());
+            if (pos != null) {
+                Ficha fichaEnTablero = tablero.getFicha(pos[0], pos[1]);
+                if (fichaEnTablero.getColor() == this.color && tablero.movimientPosible(fichaEnTablero, numDado)) {
+                    fichasMovibles.add(fichaEnTablero);
+                }
             }
         }
 
         if (fichasMovibles.isEmpty()) {
             System.out.println(nombre + ", no hay fichas que puedas mover con " + numDado);
             return false;
-        } 
+        }
 
         Scanner scanner = new Scanner(System.in);
         int fichaEscogida = -1;
 
-        // Bucle hasta que el jugador elija una ficha válida
+        // --- Bucle para elegir ficha ---
         while (fichaEscogida < 1 || fichaEscogida > fichasMovibles.size()) {
             System.out.println(nombre + ", elige una ficha para mover con dado " + numDado + ":");
             for (int i = 0; i < fichasMovibles.size(); i++) {
                 Ficha f = fichasMovibles.get(i);
-                System.out.println((i + 1) + ": Ficha en posición " + f.getPosicion().getNumero());
+                System.out.println((i + 1) + ": Ficha en posición " + f.getPosicion().getNumero() + (f.isBarrera() ? " (barrera)" : ""));
             }
 
             System.out.print("Introduce el número de la ficha a mover: ");
             if (scanner.hasNextInt()) {
                 fichaEscogida = scanner.nextInt();
             } else {
-                scanner.next(); // descartar entrada no válida
+                scanner.next();
             }
-            
-        }           
+        }
+
+        // --- Marcar movimiento hecho ---
         movimientoHecho = true;
         Ficha fichaSeleccionada = fichasMovibles.get(fichaEscogida - 1);
+
+        // --- Mover la ficha real que está en el tablero ---
         tablero.mouFicha(fichaSeleccionada, numDado);
+
         System.out.println("Ficha movida a posición " + fichaSeleccionada.getPosicion().getNumero());
+
         return true;
     }
+
+
+
 
     public boolean haGanado() {
         int meta;
