@@ -2,6 +2,8 @@ package es.uab.tqs.parchis.model;
 
 import java.util.List;
 
+import es.uab.tqs.parchis.view.JuegoViewSwing;
+
 public class Juego {
 
     private final List<Jugador> jugadores;
@@ -49,6 +51,61 @@ public class Juego {
         return false;
     }
 
+    public void mostrarDado(int valor) {
+        String dado = switch (valor) {
+            case 1 ->  
+                """
+                ┌───────┐
+                │       │
+                │   O   │
+                │       │
+                └───────┘
+                """;
+            case 2 ->
+                """
+                ┌───────┐
+                │ O     │
+                │       │
+                │     O │
+                └───────┘
+                """;
+            case 3 ->
+                """
+                ┌───────┐
+                │ O     │
+                │   O   │
+                │     O │
+                └───────┘
+                """;
+            case 4 ->
+                """
+                ┌───────┐
+                │ O   O │
+                │       │
+                │ O   O │
+                └───────┘
+                """;
+            case 5 ->
+                """
+                ┌───────┐
+                │ O   O │
+                │   O   │
+                │ O   O │
+                └───────┘
+                """;
+            case 6 ->
+                """
+                ┌───────┐
+                │ O   O │
+                │ O   O │
+                │ O   O │
+                └───────┘
+                """;
+            default -> "ERROR: dado inválido";
+        };
+        System.out.println(dado);
+    }
+
     public void jugarTurno() {
         if (terminado) return;
 
@@ -57,6 +114,8 @@ public class Juego {
 
         // SOLO calcula la tirada, NO llama a vista
         tirada = dado.lanzar();
+        
+        mostrarDado(tirada);
 
         // Si no puede mover -> pasa turno
         if (!puedeMover(jugador)) {

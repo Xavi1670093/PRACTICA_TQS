@@ -14,16 +14,13 @@ public class juegoController {
     }
 
     public void iniciarPartida() {
-
         vista.clear();
         vista.mostrarMensaje("¡Comienza la partida de Parchís!\n");
         vista.mostrarEstado(juego);
-
-        // Asignamos el primer click.
-        vista.esperarClickDado(() -> jugarTurno());
     }
 
-    private void jugarTurno() {
+    // --- Ahora se llama desde MAIN, no desde clics ---
+    public void jugarTurno() {
 
         if (juego.isTerminado()) {
             vista.mostrarGanador(juego.getGanador());
@@ -33,20 +30,12 @@ public class juegoController {
         Jugador jugador = juego.getJugadorActual();
         vista.mostrarMensaje("\nTurno de: " + jugador.getNombre() + " (" + jugador.getColor() + ")");
 
-        // Acción del juego
+        // --- LA LÓGICA DEL TURNO (con Scanner) ---
         juego.jugarTurno();
-        vista.mostrarDado(juego.getTirada());
+        // Actualizar el tablero siempre
+        vista.mostrarEstado(juego);
 
-        Jugador jugadorDespues = juego.getJugadorActual();
-
-        if (jugadorDespues.getMovimientoHecho()) {
-            vista.mostrarEstado(juego);
-        }
-
-        // Si no ha terminado, volvemos a esperar otro clic
-        if (!juego.isTerminado()) {
-            vista.esperarClickDado(() -> jugarTurno());
-        } else {
+        if (juego.isTerminado()) {
             vista.mostrarGanador(juego.getGanador());
         }
     }

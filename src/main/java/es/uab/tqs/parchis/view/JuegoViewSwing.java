@@ -9,17 +9,14 @@ public class JuegoViewSwing {
 
     private final JFrame ventana;
     private final JTextArea areaTexto;
-    private final JButton botonDado;
 
     private final Tablero tablero;
     private final TableroView tableroView;
 
-    public JuegoViewSwing() {
+    public JuegoViewSwing(Tablero tablero) {
 
         // --- Inicializar el modelo ---
-        tablero = new Tablero();
-        tablero.inicializa();
-
+        this.tablero = tablero;
         // --- Ventana ---
         ventana = new JFrame("Parchís");
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -39,10 +36,6 @@ public class JuegoViewSwing {
         scroll.setPreferredSize(new Dimension(300, 0));
         ventana.add(scroll, BorderLayout.EAST);
 
-        // --- BOTÓN ---
-        botonDado = new JButton("Lanzar dado");
-        ventana.add(botonDado, BorderLayout.SOUTH);
-
         ventana.setVisible(true);
     }
 
@@ -56,14 +49,8 @@ public class JuegoViewSwing {
         areaTexto.setText("");
     }
 
-    public void esperarClickDado(Runnable callback) {
-        botonDado.addActionListener(e -> callback.run());
-    }
-
     public void mostrarEstado(Juego juego) {
-        mostrarMensaje("\n======= ESTADO DEL TABLERO =======");
         tableroView.actualizar();  // repaint() del tablero gráfico
-        mostrarMensaje("===================================\n");
     }
 
     public void mostrarFichasPorColor(Ficha.ColorFicha color) {
@@ -73,16 +60,15 @@ public class JuegoViewSwing {
         }
     }
 
-    public void mostrarDado(int valor) {
-        mostrarMensaje("\nDado: " + valor);
-    }
+    
+
 
     public void mostrarGanador(Jugador ganador) {
         mostrarMensaje("\n=====================================");
         mostrarMensaje("          ¡FIN DE LA PARTIDA!        ");
         mostrarMensaje("=====================================");
         mostrarMensaje("Ganador: " + ganador.getNombre() + " (" + ganador.getColor() + ")");
-        mostrarMensaje("🎉 ¡Felicidades! 🎉\n");
+        mostrarMensaje("¡Felicidades!\n");
         }
 
     public Tablero getTablero() {
