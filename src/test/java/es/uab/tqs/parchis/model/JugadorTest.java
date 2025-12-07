@@ -20,7 +20,6 @@ public class JugadorTest{
     private Ficha ficha4;
     private Ficha ficha5;
 
-    
     @BeforeEach
     void setup() {
         jugador = new Jugador("Leidy", Ficha.ColorFicha.COLOR_ROJO);
@@ -29,7 +28,7 @@ public class JugadorTest{
         ficha1 = mock(Ficha.class);
         ficha2 = mock(Ficha.class);
         ficha3 = mock(Ficha.class);
-        ficha4 = mock (Ficha.class);
+        ficha4 = mock(Ficha.class);
         ficha5 = mock(Ficha.class);
 
         Posicion pos1 = mock(Posicion.class);
@@ -50,7 +49,13 @@ public class JugadorTest{
         jugador.añadirFicha(ficha2);
         jugador.añadirFicha(ficha3);
         jugador.añadirFicha(ficha4);
-    
+
+        when(tablero.obtenerIndice(anyInt())).thenReturn(new int[]{0, 0});
+
+        // Devuelve ficha1 la primera vez y ficha2 la segunda
+        when(tablero.getFicha(anyInt(), anyInt()))
+                .thenReturn(ficha1)
+                .thenReturn(ficha2);
     }
 
     @Test
@@ -72,11 +77,10 @@ public class JugadorTest{
         } finally {
             System.setIn(original);
         }
-    }            
+    }
 
     @Test
     void testNingunaFichaSePuedeMover() {
-        
         when(tablero.movimientPosible(any(), anyInt())).thenReturn(false);
 
         boolean resultado = jugador.jugar(5, tablero);
@@ -121,11 +125,10 @@ public class JugadorTest{
 
         assertEquals(4, jugador.getFichas().size());
         assertFalse(jugador.getFichas().contains(ficha5));
-
     }
 
     @Test
-    void haGanadoTest(){
+    void haGanadoTest() {
         Jugador jugadorVerde = new Jugador("Xavi", Ficha.ColorFicha.COLOR_VERDE);
 
         Ficha fichaV1 = mock(Ficha.class);
@@ -133,13 +136,11 @@ public class JugadorTest{
         Ficha fichaV3 = mock(Ficha.class);
         Ficha fichaV4 = mock(Ficha.class);
 
-        // Posiciones mockeadas para las fichas
         Posicion posV1 = mock(Posicion.class);
         Posicion posV2 = mock(Posicion.class);
         Posicion posV3 = mock(Posicion.class);
         Posicion posV4 = mock(Posicion.class);
 
-        // Asignar posiciones a las fichas mock
         when(fichaV1.getPosicion()).thenReturn(posV1);
         when(posV1.getNumero()).thenReturn(92);
         when(fichaV2.getPosicion()).thenReturn(posV2);
@@ -149,7 +150,6 @@ public class JugadorTest{
         when(fichaV4.getPosicion()).thenReturn(posV4);
         when(posV4.getNumero()).thenReturn(92);
 
-        // Asignar color VERDE a las fichas
         when(fichaV1.getColor()).thenReturn(Ficha.ColorFicha.COLOR_VERDE);
         when(fichaV2.getColor()).thenReturn(Ficha.ColorFicha.COLOR_VERDE);
         when(fichaV3.getColor()).thenReturn(Ficha.ColorFicha.COLOR_VERDE);
@@ -163,6 +163,5 @@ public class JugadorTest{
         assertTrue(jugadorVerde.haGanado());
         assertFalse(jugador.haGanado());
     }
-
 
 }

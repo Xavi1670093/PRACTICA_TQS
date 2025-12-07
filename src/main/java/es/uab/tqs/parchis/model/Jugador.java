@@ -52,6 +52,10 @@ public class Jugador{
 
         // --- Construir lista de fichas realmente movibles ---
         for (Ficha ficha : fichas) {
+
+            if(ficha.getPosicion() == null){
+                continue;
+            }
             int[] pos = tablero.obtenerIndice(ficha.getPosicion().getNumero());
             if (pos != null) {
                 Ficha fichaEnTablero = tablero.getFicha(pos[0], pos[1]);
