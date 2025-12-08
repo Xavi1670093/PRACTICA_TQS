@@ -99,7 +99,9 @@ public class Jugador{
             System.out.println(nombre + ", elige una ficha para mover con dado " + numDado + ":");
             for (int i = 0; i < fichasMovibles.size(); i++) {
                 Ficha f = fichasMovibles.get(i);
-                System.out.println((i + 1) + ": Ficha en posición " + f.getPosicion().getNumero() + (f.isBarrera() ? " (barrera)" : ""));
+                if (f.getPosicion().getNumero() < 0) System.out.println((i + 1) + ": Ficha en posición inicial");
+                else if (f.getPosicion().getNumero() > 68) System.out.println((i + 1) + ": Ficha en posiciones finales");
+                else System.out.println((i + 1) + ": Ficha en posición " + f.getPosicion().getNumero() + (f.isBarrera() ? " (barrera)" : ""));
             }
 
             System.out.print("Introduce el número de la ficha a mover: ");

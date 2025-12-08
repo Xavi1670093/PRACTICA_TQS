@@ -1,23 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <checkstyle version="9.3">
-<file name="C:\Users\luzon\Desktop\PRACTICA_TQS\src\main\java\es\uab\tqs\parchis\controller\juegoController.java">
-</file>
-<file name="C:\Users\luzon\Desktop\PRACTICA_TQS\src\main\java\es\uab\tqs\parchis\Main.java">
-</file>
-<file name="C:\Users\luzon\Desktop\PRACTICA_TQS\src\main\java\es\uab\tqs\parchis\model\Dado.java">
-</file>
-<file name="C:\Users\luzon\Desktop\PRACTICA_TQS\src\main\java\es\uab\tqs\parchis\model\Ficha.java">
-</file>
-<file name="C:\Users\luzon\Desktop\PRACTICA_TQS\src\main\java\es\uab\tqs\parchis\model\Juego.java">
-</file>
-<file name="C:\Users\luzon\Desktop\PRACTICA_TQS\src\main\java\es\uab\tqs\parchis\model\Jugador.java">
-</file>
-<file name="C:\Users\luzon\Desktop\PRACTICA_TQS\src\main\java\es\uab\tqs\parchis\model\Posicion.java">
-</file>
-<file name="C:\Users\luzon\Desktop\PRACTICA_TQS\src\main\java\es\uab\tqs\parchis\model\Tablero.java">
-</file>
-<file name="C:\Users\luzon\Desktop\PRACTICA_TQS\src\main\java\es\uab\tqs\parchis\view\JuegoViewSwing.java">
-</file>
-<file name="C:\Users\luzon\Desktop\PRACTICA_TQS\src\main\java\es\uab\tqs\parchis\view\TableroView.java">
+<file name="C:\Users\Zirek\Documents\UAB\TERCER\1er SEMESTRE\TQS\PRACTICA\src\src\main\java\es\uab\tqs\parchis\model\Tablero.java">
 </file>
 </checkstyle>
