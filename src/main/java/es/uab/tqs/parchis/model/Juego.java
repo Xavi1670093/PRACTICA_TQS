@@ -127,14 +127,25 @@ public class Juego {
         System.out.println(dado);
     }
 
-    public void jugarTurno() {
-        //PRECONDICIONES
+    public enum ResultadoTurno {
+        NO_PUEDE_MOVER,
+        MOVIMIENTO_REALIZADO,
+        REPITE_TURNO,
+        JUGADOR_GANA,
+        TURNO_AVANZA,
+        JUEGO_TERMINADO
+    }
+
+
+    public ResultadoTurno jugarTurno() {
+        // PRECONDICIONES
         assert !jugadores.isEmpty();
         assert !terminado;
         assert tablero != null;
         assert dado != null;
 
-        if (terminado) return;
+        if (terminado) 
+            return ResultadoTurno.JUEGO_TERMINADO;
 
         int turnoAntes = turnoActual;
         Jugador jugadorAntes = getJugadorActual();
@@ -145,13 +156,12 @@ public class Juego {
 
         // SOLO calcula la tirada
         tirada = dado.lanzar();
-        
         mostrarDado(tirada);
 
         // Si no puede mover -> pasa turno
         if (!puedeMover(jugador)) {
             avanzarTurno();
-            return;
+            return ResultadoTurno.NO_PUEDE_MOVER;
         }
 
         jugador.jugar(tirada, tablero);
@@ -160,33 +170,37 @@ public class Juego {
         if (jugador.haGanado()) {
             terminado = true;
             ganador = jugador;
-            return;
+            return ResultadoTurno.JUGADOR_GANA;
         }
 
         // Si saca 6 -> repite turno
-        if (tirada == 6) return;
+        if (tirada == 6) 
+            return ResultadoTurno.REPITE_TURNO;
 
         // Turno normal
         avanzarTurno();
 
-        //POSTCONDICIONES
+        // POSTCONDICIONES
         assert tirada >= 1 && tirada <= 6;
 
-        if(terminado){
-            assert ganador != null:"El juego ha terminado pero no hay ganador";
-            assert jugadores.contains(ganador): "el ganador no pertenece al juego";
+        if (terminado) {
+            assert ganador != null : "El juego ha terminado pero no hay ganador";
+            assert jugadores.contains(ganador) : "el ganador no pertenece al juego";
         }
-        
+
         if (!estabaTerminado && tirada != 6 && puedeMover(jugadorAntes)) {
             assert turnoActual != turnoAntes : "el turno debía avanzar pero no lo hizo";
         }
 
-        if(tirada == 6 && !terminado){
+        if (tirada == 6 && !terminado) {
             assert turnoActual == turnoAntes : "Ha sacado 6 y no ha vuelto a tirar";
         }
+
+        return ResultadoTurno.TURNO_AVANZA;
     }
 
     private void avanzarTurno() {
         turnoActual = (turnoActual + 1) % jugadores.size();
     }
 }
+

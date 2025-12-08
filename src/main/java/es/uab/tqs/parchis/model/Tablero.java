@@ -371,6 +371,10 @@ public class Tablero {
         return result;
     }
 
+    public int getNumeroTablero(int x, int y) {
+        return numerosTablero[x][y];
+    }
+    
     public boolean movimientPosible(Ficha ficha, int numDado) {
         captura = false;
         int posActual = ficha.getPosicion().getNumero();

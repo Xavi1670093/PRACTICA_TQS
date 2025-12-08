@@ -1,12 +1,15 @@
 package es.uab.tqs.parchis.model;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 public class JuegoTest {
 
@@ -88,5 +91,18 @@ public class JuegoTest {
         juego2.jugarTurno();
         assertTrue(juego2.isTerminado());
         assertEquals(spyJ1, juego2.getGanador());
+    }
+
+    void testJuegoTerminadoDevuelveJuegoTerminado() throws Exception {
+        // Forzamos juego terminado antes de llamar al método
+        var field = Juego.class.getDeclaredField("terminado");
+        field.setAccessible(true);
+        field.setBoolean(juego, true);
+
+        // Mock del dado para que no falle
+        when(dado.lanzar()).thenReturn(1);
+
+        // Ahora cualquier llamada debe devolver JUEGO_TERMINADO
+        assertEquals(Juego.ResultadoTurno.JUEGO_TERMINADO, juego.jugarTurno());
     }
 }
