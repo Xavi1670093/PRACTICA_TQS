@@ -555,8 +555,13 @@ public class Tablero {
 
         // Mover la ficha
 
-        if (tablero[destino[0]][destino[1]].getColor() == color) tablero[destino[0]][destino[1]].setBarrera(true);
-        
+        Ficha fichaEnDestino = tablero[destino[0]][destino[1]];
+        if (fichaEnDestino.getColor() == ficha.getColor()) {
+            fichaEnDestino.setBarrera(true);
+            tablero[filaActual][colActual] = new Ficha(ColorFicha.NULL, TipoFicha.TIPO_EMPTY, null, false);
+            return;
+        }  
+
         if (!barrera)
             tablero[filaActual][colActual] = new Ficha(ColorFicha.NULL, Ficha.TipoFicha.TIPO_EMPTY, null, false);
         else
@@ -579,7 +584,17 @@ public class Tablero {
             ficha.setPosicion(new Posicion(casillaDestino));
             tablero[destino[0]][destino[1]] = ficha;
         }
-        if (isCaptura()) mouFicha(ficha, 20);
+        
+        if (isCaptura() &&
+            !(ficha.getColor() == ColorFicha.COLOR_ROJO && casillaDestino > 22 && casillaDestino < 34 ) &&
+            !(ficha.getColor() == ColorFicha.COLOR_AZUL && casillaDestino > 5 && casillaDestino < 17 ) && 
+            !(ficha.getColor() == ColorFicha.COLOR_VERDE && casillaDestino > 39 && casillaDestino < 51 ) &&
+            !(ficha.getColor() == ColorFicha.COLOR_AMARILLO && casillaDestino > 56 && casillaDestino < 68 ))
+        {
+
+            mouFicha(ficha, 20);
+
+        }
 
         //POSTCONDICIONES
         assert ficha.getPosicion() != null : "la ficha perdió su posición";

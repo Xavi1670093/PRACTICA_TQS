@@ -1,12 +1,12 @@
-#Mon Dec 08 12:48:12 CET 2025
-configuration*?=A33E0BD05FEB9B29EA4ED8B96D6439343BAD534
-C\:\\Users\\luzon\\Desktop\\PRACTICA_TQS\\src\\main\\java\\es\\uab\\tqs\\parchis\\model\\Ficha.java=1765143041456
-C\:\\Users\\luzon\\Desktop\\PRACTICA_TQS\\src\\main\\java\\es\\uab\\tqs\\parchis\\model\\Jugador.java=1765194353804
-C\:\\Users\\luzon\\Desktop\\PRACTICA_TQS\\src\\main\\java\\es\\uab\\tqs\\parchis\\model\\Tablero.java=1765193863980
-C\:\\Users\\luzon\\Desktop\\PRACTICA_TQS\\src\\main\\java\\es\\uab\\tqs\\parchis\\model\\Dado.java=1765143041456
-C\:\\Users\\luzon\\Desktop\\PRACTICA_TQS\\src\\main\\java\\es\\uab\\tqs\\parchis\\model\\Posicion.java=1765141733499
-C\:\\Users\\luzon\\Desktop\\PRACTICA_TQS\\src\\main\\java\\es\\uab\\tqs\\parchis\\view\\JuegoViewSwing.java=1765141733499
-C\:\\Users\\luzon\\Desktop\\PRACTICA_TQS\\src\\main\\java\\es\\uab\\tqs\\parchis\\model\\Juego.java=1765191303063
-C\:\\Users\\luzon\\Desktop\\PRACTICA_TQS\\src\\main\\java\\es\\uab\\tqs\\parchis\\Main.java=1765141733497
-C\:\\Users\\luzon\\Desktop\\PRACTICA_TQS\\src\\main\\java\\es\\uab\\tqs\\parchis\\controller\\juegoController.java=1765141733497
-C\:\\Users\\luzon\\Desktop\\PRACTICA_TQS\\src\\main\\java\\es\\uab\\tqs\\parchis\\view\\TableroView.java=1765141733499
+#Mon Dec 08 18:04:35 CET 2025
+configuration*?=F9CFA2EB95B4C77A19B7E3C5344593161752BD8
+C\:\\Users\\Zirek\\Documents\\UAB\\TERCER\\1er\ SEMESTRE\\TQS\\PRACTICA\\src\\src\\main\\java\\es\\uab\\tqs\\parchis\\model\\Tablero.java=1765213203509
+C\:\\Users\\Zirek\\Documents\\UAB\\TERCER\\1er\ SEMESTRE\\TQS\\PRACTICA\\src\\src\\main\\java\\es\\uab\\tqs\\parchis\\Main.java=1765201816082
+C\:\\Users\\Zirek\\Documents\\UAB\\TERCER\\1er\ SEMESTRE\\TQS\\PRACTICA\\src\\src\\main\\java\\es\\uab\\tqs\\parchis\\model\\Dado.java=1765195930421
+C\:\\Users\\Zirek\\Documents\\UAB\\TERCER\\1er\ SEMESTRE\\TQS\\PRACTICA\\src\\src\\main\\java\\es\\uab\\tqs\\parchis\\model\\Juego.java=1765201782584
+C\:\\Users\\Zirek\\Documents\\UAB\\TERCER\\1er\ SEMESTRE\\TQS\\PRACTICA\\src\\src\\main\\java\\es\\uab\\tqs\\parchis\\model\\Jugador.java=1765205707539
+C\:\\Users\\Zirek\\Documents\\UAB\\TERCER\\1er\ SEMESTRE\\TQS\\PRACTICA\\src\\src\\main\\java\\es\\uab\\tqs\\parchis\\model\\Ficha.java=1765195930422
+C\:\\Users\\Zirek\\Documents\\UAB\\TERCER\\1er\ SEMESTRE\\TQS\\PRACTICA\\src\\src\\main\\java\\es\\uab\\tqs\\parchis\\view\\TableroView.java=1765206224920
+C\:\\Users\\Zirek\\Documents\\UAB\\TERCER\\1er\ SEMESTRE\\TQS\\PRACTICA\\src\\src\\main\\java\\es\\uab\\tqs\\parchis\\model\\Posicion.java=1763584529894
+C\:\\Users\\Zirek\\Documents\\UAB\\TERCER\\1er\ SEMESTRE\\TQS\\PRACTICA\\src\\src\\main\\java\\es\\uab\\tqs\\parchis\\controller\\juegoController.java=1765195930420
+C\:\\Users\\Zirek\\Documents\\UAB\\TERCER\\1er\ SEMESTRE\\TQS\\PRACTICA\\src\\src\\main\\java\\es\\uab\\tqs\\parchis\\view\\JuegoViewSwing.java=1765195930424

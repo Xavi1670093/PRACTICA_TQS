@@ -1,4 +1,17 @@
 -------------------------------------------------------------------------------
 Test set: es.uab.tqs.parchis.model.TableroTest
 -------------------------------------------------------------------------------
-Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.044 s -- in es.uab.tqs.parchis.model.TableroTest
+Tests run: 7, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.084 s <<< FAILURE! -- in es.uab.tqs.parchis.model.TableroTest
+es.uab.tqs.parchis.model.TableroTest.mouFichaTest -- Time elapsed: 0.030 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <8> but was: <5>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145)
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:531)
+	at es.uab.tqs.parchis.model.TableroTest.mouFichaTest(TableroTest.java:288)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+
