@@ -4,12 +4,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-
 public class Jugador{
     private final String nombre;
     private Ficha.ColorFicha color;
     private final List<Ficha> fichas;
     private boolean movimientoHecho;
+
+    /** INVARIANTES DEL JUGADOR:
+     *  - nombre no puede ser null ni vacío.
+     *  - color no puede ser null.
+     *  - fichas nunca es null.
+     *  - cada ficha debe coincidir con el color del jugador,
+     *    salvo las fichas especiales del tablero (color NULL).
+     */
+    private void checkInvariant() {
+        assert nombre != null && !nombre.isBlank() : "El nombre del jugador es inválido";
+        assert color != null : "El color del jugador no puede ser null";
+        assert fichas != null : "La lista de fichas no puede ser null";
+
+        for (Ficha f : fichas) {
+            assert f != null : "Hay una ficha null en la lista del jugador";
+            if (f.getColor() != Ficha.ColorFicha.NULL) {
+                assert f.getColor() == color :
+                    "Una ficha del jugador tiene un color distinto al del jugador";
+            }
+        }
+    }
 
     public Jugador(String nombre, Ficha.ColorFicha color ) {
         //PRECONDICIONES
@@ -25,30 +45,38 @@ public class Jugador{
         assert this.nombre.equals(nombre) : "nombre no inicializado correctamente";
         assert this.color == color : "color no inicializado correctamente";
         assert this.fichas.isEmpty() : "lista de fichas debería empezar vacía";
+
+        checkInvariant();
     }
 
     public String getNombre(){
+        checkInvariant();
         return nombre;
     }
 
     public Ficha.ColorFicha getColor(){
+        checkInvariant();
         return color;
     }
 
     public List<Ficha> getFichas() {
+        checkInvariant();
         return fichas;
     }
     
     public boolean getMovimientoHecho() {
+        checkInvariant();
         return movimientoHecho;
     }
 
     public void setMovimientoHecho(boolean movimientoHecho) {
         this.movimientoHecho = movimientoHecho;
+        checkInvariant();
     }
     
     public void eliminarFicha(Ficha ficha) {
         fichas.remove(ficha);
+        checkInvariant();
     }
 
     public void añadirFicha(Ficha ficha){
@@ -60,10 +88,14 @@ public class Jugador{
         fichas.add(ficha);
         
         //POSTCONDICIÓN
-        assert fichas.contains(ficha) : "Ficha no añadidad correctamente";
+        assert fichas.contains(ficha) : "Ficha no añadida correctamente";
+
+        checkInvariant();
     }
 
     public boolean jugar(int numDado, Tablero tablero) {
+        checkInvariant();
+
         //PRECONDICIONES
         assert numDado >= 1 && numDado <= 6 : "valor de dado inválido";
         assert tablero != null : "tablero es null";
@@ -80,7 +112,10 @@ public class Jugador{
             int[] pos = tablero.obtenerIndice(ficha.getPosicion().getNumero());
             if (pos != null) {
                 Ficha fichaEnTablero = tablero.getFicha(pos[0], pos[1]);
-                if (fichaEnTablero.getColor() == this.color && tablero.movimientPosible(fichaEnTablero, numDado)&& fichaEnTablero.getPosicion() != null) {
+                if (fichaEnTablero.getColor() == this.color &&
+                    tablero.movimientPosible(fichaEnTablero, numDado) &&
+                    fichaEnTablero.getPosicion() != null) {
+
                     fichasMovibles.add(fichaEnTablero);
                 }
             }
@@ -88,6 +123,7 @@ public class Jugador{
 
         if (fichasMovibles.isEmpty()) {
             System.out.println(nombre + ", no hay fichas que puedas mover con " + numDado);
+            checkInvariant();
             return false;
         }
 
@@ -99,9 +135,13 @@ public class Jugador{
             System.out.println(nombre + ", elige una ficha para mover con dado " + numDado + ":");
             for (int i = 0; i < fichasMovibles.size(); i++) {
                 Ficha f = fichasMovibles.get(i);
-                if (f.getPosicion().getNumero() < 0) System.out.println((i + 1) + ": Ficha en posición inicial");
-                else if (f.getPosicion().getNumero() > 68) System.out.println((i + 1) + ": Ficha en posiciones finales");
-                else System.out.println((i + 1) + ": Ficha en posición " + f.getPosicion().getNumero() + (f.isBarrera() ? " (barrera)" : ""));
+                if (f.getPosicion().getNumero() < 0)
+                    System.out.println((i + 1) + ": Ficha en posición inicial");
+                else if (f.getPosicion().getNumero() > 68)
+                    System.out.println((i + 1) + ": Ficha en posiciones finales");
+                else
+                    System.out.println((i + 1) + ": Ficha en posición " + f.getPosicion().getNumero() +
+                                       (f.isBarrera() ? " (barrera)" : ""));
             }
 
             System.out.print("Introduce el número de la ficha a mover: ");
@@ -112,28 +152,28 @@ public class Jugador{
             }
         }
 
-        // --- Marcar movimiento hecho ---
         movimientoHecho = true;
         Ficha fichaSeleccionada = fichasMovibles.get(fichaEscogida - 1);
 
-        // --- Mover la ficha real que está en el tablero ---
         tablero.mouFicha(fichaSeleccionada, numDado);
         if (fichaSeleccionada.getPosicion().getNumero() == 999) {
             System.out.println("Ficha movida a la meta y retirada del tablero.");
         } else {
-        System.out.println("Ficha movida a posición " + fichaSeleccionada.getPosicion().getNumero());
+            System.out.println("Ficha movida a posición " + fichaSeleccionada.getPosicion().getNumero());
         }
+
         //POSTCONDICIONES
         assert movimientoHecho : "movimientoHecho debería haberse marcado como true";
-        assert fichaSeleccionada.getPosicion() != null : "la posición de la ficha no puede ser null después de mover";
-       
+        assert fichaSeleccionada.getPosicion() != null :
+                "la posición de la ficha no puede ser null después de mover";
+
+        checkInvariant();
         return true;
     }
 
-
-
-
     public boolean haGanado() {
+        checkInvariant();
+
         //PRECONDICIÓN
         assert !fichas.isEmpty() : "Jugador sin fichas no puede ganar";
 
@@ -147,6 +187,7 @@ public class Jugador{
         }
         for (Ficha f : fichas) {
             if (f.getPosicion().getNumero() != meta) {
+                checkInvariant();
                 return false;
             }
         }
@@ -154,6 +195,7 @@ public class Jugador{
         //POSTCONDICIÓN
         assert true : "Todas las fichas deben estar en la meta";
 
+        checkInvariant();
         return true;
     }
 }
