@@ -26,6 +26,7 @@ public class Ficha {
     private boolean barrera;
 
     public Ficha(ColorFicha color, TipoFicha tipo, Posicion pos, boolean barrera) {
+        //PRECONDICIONES
         Objects.requireNonNull(color, "El color de la ficha no puede ser null");
         Objects.requireNonNull(tipo, "El tipo de la ficha no puede ser null");
 
@@ -34,6 +35,7 @@ public class Ficha {
         this.pos = pos;
         this.barrera = barrera;
 
+        //POSTCONDICIONES
         assert this.color != null : "La ficha debe tener un color válido";
         assert this.tipo != null : "La ficha debe tener un tipo válido";
     }
@@ -55,12 +57,12 @@ public class Ficha {
     }
 
     public void setColor(ColorFicha color) {
-        Objects.requireNonNull(color, "El color no puede ser null");
+        Objects.requireNonNull(color, "El color no puede ser null"); //precondicion
         this.color = color;
     }
 
     public void setTipo(TipoFicha tipo) {
-        Objects.requireNonNull(tipo, "El tipo no puede ser null");
+        Objects.requireNonNull(tipo, "El tipo no puede ser null"); //precondicion
         this.tipo = tipo;
     }
 
@@ -74,6 +76,7 @@ public class Ficha {
 
     public int getNumCasilla() {
         int num = (pos != null) ? pos.getNumero() : 0;
+        //postcondicion
         assert num >= 0 : "El número de casilla debe ser no negativo";
         return num;
     }

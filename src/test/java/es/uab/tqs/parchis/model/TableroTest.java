@@ -103,7 +103,7 @@ public class TableroTest {
         Ficha fichaOponente = new Ficha(Ficha.ColorFicha.COLOR_AZUL, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(10, false), false);
         tablero.setFicha(ficha, tablero.obtenerIndice(5)); // Colocamos la ficha en el tablero
         tablero.setFicha(fichaOponente, tablero.obtenerIndice(10)); // Colocamos la ficha del oponente en el tablero
-
+        //VERIFIQUEM TOTES LES PARTICIONS EQUIVALENTS AMB TOTS ELS CASOS
         //CAS BASIC -> captura normal
         assertTrue(tablero.movimientPosible(ficha, 5));
         assertTrue(tablero.isCaptura());
@@ -257,7 +257,7 @@ public class TableroTest {
     @Test
     void movimentInicialTest() {
     
-        assertFalse(tablero.movimentInicial(tablero.getFicha(1, 1), 4));
+        assertFalse(tablero.movimentInicial(tablero.getFicha(1, 1), 4)); 
         assertTrue(tablero.movimentInicial(tablero.getFicha(1, 1), 5));
 
         assertFalse(tablero.movimentInicial(tablero.getFicha(13, 1), 3));
@@ -416,6 +416,7 @@ public class TableroTest {
         tablero.obtenerIndice(ficha.getPosicion().getNumero())[1]).getColor());
     }
 
+    //Test pel Decision coverage, condition coverage 
 
     @Test
     void testMovimentInicial_Decision_TRUE() {

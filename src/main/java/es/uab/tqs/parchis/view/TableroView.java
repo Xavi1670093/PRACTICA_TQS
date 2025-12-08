@@ -1,9 +1,16 @@
 package es.uab.tqs.parchis.view;
 
-import es.uab.tqs.parchis.model.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+
+import es.uab.tqs.parchis.model.Ficha;
+import es.uab.tqs.parchis.model.Tablero;
 
 public class TableroView extends JPanel {
 
@@ -50,7 +57,7 @@ public class TableroView extends JPanel {
                     g.fillRect(x, y, TILE, TILE);
                 }
 
-                                // Casillas especiales normales
+                // Casillas especiales normales
                 if((numero >= 113 && numero <= 120) || (numero == 5 || numero == 68 || numero == 12)){
                     g.setColor(Color.YELLOW);
                     g.fillRect(x, y, TILE, TILE);

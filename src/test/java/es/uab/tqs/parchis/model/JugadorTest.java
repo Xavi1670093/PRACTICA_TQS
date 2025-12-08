@@ -27,8 +27,10 @@ public class JugadorTest {
     @BeforeEach
     void setup() {
         jugador = new Jugador("Leidy", Ficha.ColorFicha.COLOR_ROJO);
+        //Creamos el mock del tablero
         tablero = mock(Tablero.class);
 
+        // Creamos mocks de las fichas del jugador
         ficha1 = mock(Ficha.class);
         ficha2 = mock(Ficha.class);
         ficha3 = mock(Ficha.class);
@@ -39,6 +41,7 @@ public class JugadorTest {
         Posicion pos3 = mock(Posicion.class);
         Posicion pos4 = mock(Posicion.class);
 
+        // Simulamos posiciones de las fichas
         when(pos1.getNumero()).thenReturn(39);
         when(pos2.getNumero()).thenReturn(2);
         when(pos3.getNumero()).thenReturn(10);
@@ -49,11 +52,13 @@ public class JugadorTest {
         when(ficha3.getPosicion()).thenReturn(pos3);
         when(ficha4.getPosicion()).thenReturn(pos4);
 
+        // Todas fichas del jugador son del mismo color
         when(ficha1.getColor()).thenReturn(Ficha.ColorFicha.COLOR_ROJO);
         when(ficha2.getColor()).thenReturn(Ficha.ColorFicha.COLOR_ROJO);
         when(ficha3.getColor()).thenReturn(Ficha.ColorFicha.COLOR_ROJO);
         when(ficha4.getColor()).thenReturn(Ficha.ColorFicha.COLOR_ROJO);
-
+        
+        // Añadimos fichas al jugador
         jugador.añadirFicha(ficha1);
         jugador.añadirFicha(ficha2);
         jugador.añadirFicha(ficha3);
@@ -64,15 +69,16 @@ public class JugadorTest {
         when(tablero.getFicha(0, 0)).thenReturn(ficha1, ficha2, ficha3, ficha4);
     }
 
-    // ---------------------------------------------------------------------
-
+    // TESTS DE JUGAR FICHA
     @Test
     void testMoverFichaElegida() {
         InputStream original = System.in;
         try {
+            // Simulamos que ficha1 y ficha2 pueden moverse
             when(tablero.movimientPosible(ficha1, 5)).thenReturn(true);
             when(tablero.movimientPosible(ficha2, 5)).thenReturn(true);
 
+            // Simulamos input del usuario eligiendo la segunda ficha
             System.setIn(new ByteArrayInputStream("2\n".getBytes()));
             boolean resultado = jugador.jugar(5, tablero);
 
@@ -88,6 +94,7 @@ public class JugadorTest {
 
     @Test
     void testNingunaFichaSePuedeMover() {
+        // Ninguna ficha puede moverse
         when(tablero.movimientPosible(any(), anyInt())).thenReturn(false);
 
         boolean resultado = jugador.jugar(5, tablero);
@@ -102,12 +109,14 @@ public class JugadorTest {
     void testFicha1EnBarrera() {
         InputStream original = System.in;
         try {
+            // ficha1 está en barrera → no se mueve, ficha2 sí
             when(ficha1.isBarrera()).thenReturn(true);
             when(ficha2.isBarrera()).thenReturn(false);
 
             when(tablero.movimientPosible(ficha1, 3)).thenReturn(false);
             when(tablero.movimientPosible(ficha2, 3)).thenReturn(true);
 
+            // Simulamos input del usuario
             System.setIn(new ByteArrayInputStream("1\n2\n".getBytes()));
             boolean res = jugador.jugar(3, tablero);
 
@@ -123,7 +132,9 @@ public class JugadorTest {
 
     @Test
     void añadirFicha() {
+        // Debe haber 4 fichas inicialmente
         assertEquals(4, jugador.getFichas().size());
+        // No se puede añadir ficha de color distinto
         assertThrows(IllegalArgumentException.class, () -> jugador.añadirFicha(mockFichaColorVerde()));
         assertEquals(4, jugador.getFichas().size());
     }
@@ -139,7 +150,8 @@ public class JugadorTest {
     @Test
     void haGanadoTest() {
         Jugador jugadorVerde = new Jugador("Xavi", Ficha.ColorFicha.COLOR_VERDE);
-
+        
+        // Creamos las fichas mokeadas
         Ficha f1 = mock(Ficha.class);
         Ficha f2 = mock(Ficha.class);
         Ficha f3 = mock(Ficha.class);
@@ -163,6 +175,7 @@ public class JugadorTest {
         jugadorVerde.añadirFicha(f3);
         jugadorVerde.añadirFicha(f4);
 
+        // Debe indicar victoria para jugadorVerde, no para jugador rojo
         assertTrue(jugadorVerde.haGanado());
         assertFalse(jugador.haGanado());
     }

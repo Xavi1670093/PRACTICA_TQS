@@ -4,18 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Jugador{
-    private final String nombre;
-    private Ficha.ColorFicha color;
-    private final List<Ficha> fichas;
-    private boolean movimientoHecho;
+public class Jugador {
+    private final String nombre;          // Nombre del jugador
+    private Ficha.ColorFicha color;       // Color del jugador
+    private final List<Ficha> fichas;     // Fichas del jugador
+    private boolean movimientoHecho;      // Indica si el jugador ya ha movido esta ronda
 
-    /** INVARIANTES DEL JUGADOR:
-     *  - nombre no puede ser null ni vacío.
-     *  - color no puede ser null.
-     *  - fichas nunca es null.
-     *  - cada ficha debe coincidir con el color del jugador,
-     *    salvo las fichas especiales del tablero (color NULL).
+    /**
+     * INVARIANTES DEL JUGADOR:
+     * - nombre no puede ser null ni vacío.
+     * - color no puede ser null.
+     * - fichas nunca es null.
+     * - cada ficha debe coincidir con el color del jugador,
+     *   salvo las fichas especiales del tablero (color NULL).
+     *
+     * Estas condiciones permiten asegurar consistencia interna y son útiles
+     * para testing y detección de errores.
      */
     private void checkInvariant() {
         assert nombre != null && !nombre.isBlank() : "El nombre del jugador es inválido";
@@ -31,8 +35,9 @@ public class Jugador{
         }
     }
 
-    public Jugador(String nombre, Ficha.ColorFicha color ) {
-        //PRECONDICIONES
+    // Constructor: inicializa nombre, color y lista vacía de fichas
+    public Jugador(String nombre, Ficha.ColorFicha color) {
+        // PRECONDICIONES
         assert nombre != null: "nombre es null";
         assert !nombre.isBlank() : "El nombre está vacío";
         assert color != null : "Color es null";
@@ -41,7 +46,7 @@ public class Jugador{
         this.color = color;
         this.fichas = new ArrayList<>();
 
-        //POSTCONDICIONES
+        // POSTCONDICIONES
         assert this.nombre.equals(nombre) : "nombre no inicializado correctamente";
         assert this.color == color : "color no inicializado correctamente";
         assert this.fichas.isEmpty() : "lista de fichas debería empezar vacía";
@@ -49,12 +54,12 @@ public class Jugador{
         checkInvariant();
     }
 
-    public String getNombre(){
+    public String getNombre() {
         checkInvariant();
         return nombre;
     }
 
-    public Ficha.ColorFicha getColor(){
+    public Ficha.ColorFicha getColor() {
         checkInvariant();
         return color;
     }
@@ -79,48 +84,61 @@ public class Jugador{
         checkInvariant();
     }
 
-    public void añadirFicha(Ficha ficha){
-        //PRECONDICIONES
+    /**
+     * Añade una ficha al jugador, verificando que coincida con el color del jugador.
+     * Los asserts y excepciones aseguran consistencia para testing y coverage.
+     */
+    public void añadirFicha(Ficha ficha) {
+        // PRECONDICIONES
         assert ficha != null : "ficha es null";
         if (ficha.getColor() != this.color)
             throw new IllegalArgumentException("La ficha no coincide con el color del jugador");
         
         fichas.add(ficha);
         
-        //POSTCONDICIÓN
+        // POSTCONDICIÓN
         assert fichas.contains(ficha) : "Ficha no añadida correctamente";
 
         checkInvariant();
     }
 
+    /**
+     * Método principal para jugar un turno:
+     * - Comprueba qué fichas pueden moverse
+     * - Solicita al jugador elegir una ficha mediante consola
+     * - Mueve la ficha seleccionada en el tablero
+     *
+     * Este método activa muchas ramas de código, lo que es útil para
+     * statement coverage y decision coverage en tests.
+     */
     public boolean jugar(int numDado, Tablero tablero) {
         checkInvariant();
 
-        //PRECONDICIONES
+        // PRECONDICIONES
         assert numDado >= 1 && numDado <= 6 : "valor de dado inválido";
         assert tablero != null : "tablero es null";
         assert !fichas.isEmpty() : "jugador sin fichas no puede jugar";
 
         List<Ficha> fichasMovibles = new ArrayList<>();
 
-        // --- Construir lista de fichas realmente movibles ---
+        // --- Construir lista de fichas movibles ---
         for (Ficha ficha : fichas) {
-
             if(ficha.getPosicion() == null){
-                continue;
+                continue; // ficha no está en juego, se ignora
             }
             int[] pos = tablero.obtenerIndice(ficha.getPosicion().getNumero());
             if (pos != null) {
                 Ficha fichaEnTablero = tablero.getFicha(pos[0], pos[1]);
+                // Solo fichas del jugador y que puedan moverse según tablero
                 if (fichaEnTablero.getColor() == this.color &&
                     tablero.movimientPosible(fichaEnTablero, numDado) &&
                     fichaEnTablero.getPosicion() != null) {
-
                     fichasMovibles.add(fichaEnTablero);
                 }
             }
         }
 
+        // No hay fichas que se puedan mover
         if (fichasMovibles.isEmpty()) {
             System.out.println(nombre + ", no hay fichas que puedas mover con " + numDado);
             checkInvariant();
@@ -130,7 +148,7 @@ public class Jugador{
         Scanner scanner = new Scanner(System.in);
         int fichaEscogida = -1;
 
-        // --- Bucle para elegir ficha ---
+        // --- Bucle para elegir ficha válida ---
         while (fichaEscogida < 1 || fichaEscogida > fichasMovibles.size()) {
             System.out.println(nombre + ", elige una ficha para mover con dado " + numDado + ":");
             for (int i = 0; i < fichasMovibles.size(); i++) {
@@ -148,21 +166,23 @@ public class Jugador{
             if (scanner.hasNextInt()) {
                 fichaEscogida = scanner.nextInt();
             } else {
-                scanner.next();
+                scanner.next(); // limpiar input inválido
             }
         }
 
+        // Marcar que el jugador ha movido y realizar el movimiento
         movimientoHecho = true;
         Ficha fichaSeleccionada = fichasMovibles.get(fichaEscogida - 1);
 
         tablero.mouFicha(fichaSeleccionada, numDado);
+
         if (fichaSeleccionada.getPosicion().getNumero() == 999) {
             System.out.println("Ficha movida a la meta y retirada del tablero.");
         } else {
             System.out.println("Ficha movida a posición " + fichaSeleccionada.getPosicion().getNumero());
         }
 
-        //POSTCONDICIONES
+        // POSTCONDICIONES
         assert movimientoHecho : "movimientoHecho debería haberse marcado como true";
         assert fichaSeleccionada.getPosicion() != null :
                 "la posición de la ficha no puede ser null después de mover";
@@ -171,10 +191,14 @@ public class Jugador{
         return true;
     }
 
+    /**
+     * Comprueba si el jugador ha ganado: todas sus fichas deben estar en la meta.
+     * Este método activa múltiples ramas según el color y permite cobertura de decisión.
+     */
     public boolean haGanado() {
         checkInvariant();
 
-        //PRECONDICIÓN
+        // PRECONDICIÓN
         assert !fichas.isEmpty() : "Jugador sin fichas no puede ganar";
 
         int meta;
@@ -185,6 +209,8 @@ public class Jugador{
             case COLOR_AMARILLO -> meta = 100;
             default -> throw new IllegalStateException("Color no válido");
         }
+
+        // Recorremos todas las fichas: si alguna no está en meta, no ha ganado
         for (Ficha f : fichas) {
             if (f.getPosicion().getNumero() != meta) {
                 checkInvariant();
@@ -192,7 +218,7 @@ public class Jugador{
             }
         }
 
-        //POSTCONDICIÓN
+        // POSTCONDICIÓN
         assert true : "Todas las fichas deben estar en la meta";
 
         checkInvariant();
