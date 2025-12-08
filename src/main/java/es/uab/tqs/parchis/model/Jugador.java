@@ -2,7 +2,6 @@ package es.uab.tqs.parchis.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 
 
@@ -13,12 +12,19 @@ public class Jugador{
     private boolean movimientoHecho;
 
     public Jugador(String nombre, Ficha.ColorFicha color ) {
-        Objects.requireNonNull(nombre, "El nombre del jugador no puede ser null");
-        assert !nombre.isBlank() : "El nombre del jugador no puede estar vacío";
+        //PRECONDICIONES
+        assert nombre != null: "nombre es null";
+        assert !nombre.isBlank() : "El nombre está vacío";
+        assert color != null : "Color es null";
 
         this.nombre = nombre;
         this.color = color;
         this.fichas = new ArrayList<>();
+
+        //POSTCONDICIONES
+        assert this.nombre.equals(nombre) : "nombre no inicializado correctamente";
+        assert this.color == color : "color no inicializado correctamente";
+        assert this.fichas.isEmpty() : "lista de fichas debería empezar vacía";
     }
 
     public String getNombre(){
@@ -42,12 +48,23 @@ public class Jugador{
     }
     
     public void añadirFicha(Ficha ficha){
-        if(ficha.getColor() != this.color)
+        //PRECONDICIONES
+        assert ficha != null : "ficha es null";
+        if (ficha.getColor() != this.color)
             throw new IllegalArgumentException("La ficha no coincide con el color del jugador");
+        
         fichas.add(ficha);
+
+        //POSTCONDICIÓN
+        assert fichas.contains(ficha) : "Ficha no añadidad correctamente";
     }
 
     public boolean jugar(int numDado, Tablero tablero) {
+        //PRECONDICIONES
+        assert numDado >= 1 && numDado <= 6 : "valor de dado inválido";
+        assert tablero != null : "tablero es null";
+        assert !fichas.isEmpty() : "jugador sin fichas no puede jugar";
+
         List<Ficha> fichasMovibles = new ArrayList<>();
 
         // --- Construir lista de fichas realmente movibles ---
@@ -95,9 +112,12 @@ public class Jugador{
 
         // --- Mover la ficha real que está en el tablero ---
         tablero.mouFicha(fichaSeleccionada, numDado);
-
         System.out.println("Ficha movida a posición " + fichaSeleccionada.getPosicion().getNumero());
 
+        //POSTCONDICIONES
+        assert movimientoHecho : "movimientoHecho debería haberse marcado como true";
+        assert fichaSeleccionada.getPosicion() != null : "la posición de la ficha no puede ser null después de mover";
+       
         return true;
     }
 
@@ -105,6 +125,9 @@ public class Jugador{
 
 
     public boolean haGanado() {
+        //PRECONDICIÓN
+        assert !fichas.isEmpty() : "Jugador sin fichas no puede ganar";
+
         int meta;
         switch(color) {
             case COLOR_ROJO -> meta = 84;
@@ -118,6 +141,10 @@ public class Jugador{
                 return false;
             }
         }
+
+        //POSTCONDICIÓN
+        assert true : "Todas las fichas deben estar en la meta";
+
         return true;
     }
 }

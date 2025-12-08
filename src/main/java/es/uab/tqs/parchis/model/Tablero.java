@@ -12,6 +12,10 @@ public class Tablero {
     Ficha fichaDestino;
 
     public void inicializa() {
+        //PRECONDICION
+        assert tablero == null : "El tablero no debe estar inicializado de antes";
+        assert numerosTablero == null : "Los números del tablero no deben estar inicializados";
+
         tablero = new Ficha[19][19];
         numerosTablero = new int[19][19];
         for (int i = 0; i < 19; i++) {
@@ -165,6 +169,10 @@ public class Tablero {
         numerosTablero[13][17] = -14; // Entrada Amarilla
         numerosTablero[17][13] = -15; // Entrada Amarilla
         numerosTablero[17][17] = -16; // Entrada Amarilla
+
+        //POSTCONDICIONES
+        assert tablero.length == 19 : "El tablero no tiene tamaño 19x19";
+        assert numerosTablero.length == 19 : "Los numerosTablero no tienen tamaño 19x19";
     }
 
     public Ficha[][] getTablero() {
@@ -202,11 +210,12 @@ public class Tablero {
 
 
     public int[] obtenerIndice(int numero) {
+
         if (numero < -16 || numero > 120) return null;
         for (int i = 0; i < numerosTablero.length; i++) {
             for (int j = 0; j < numerosTablero[i].length; j++) {
                 if (numerosTablero[i][j] == numero) {
-                    return new int[]{i, j}; 
+                    return new int[]{i, j};
                 }
             }
         }
@@ -215,83 +224,138 @@ public class Tablero {
 
 
     public int convertirCasillaFinal(Ficha ficha, int casilla) {
+        //PRECONDICIONES
+        assert ficha != null : "ficha es null";
+        assert ficha.getPosicion() != null : "posición de ficha es null";
 
         ColorFicha color = ficha.getColor();
         int posicionActual = ficha.getPosicion().getNumero();
 
+        int resultado = casilla; // valor por defecto para postcondiciones
+
         // --- BLOQUE 1: evitar conversiones en posiciones iniciales ---
         switch (color) {
             case COLOR_ROJO -> {
-                if (posicionActual >= 39 && posicionActual <= 41) return casilla; // NO convertir
+                if (posicionActual >= 39 && posicionActual <= 41) {
+                    resultado = casilla;
+                    assert resultado >= -16 && resultado <= 120 : "casilla final fuera de rango";
+                    return resultado;
+                }
             }
             case COLOR_AZUL -> {
-                if (posicionActual >= 22 && posicionActual <= 24) return casilla;
+                if (posicionActual >= 22 && posicionActual <= 24) {
+                    resultado = casilla;
+                    assert resultado >= -16 && resultado <= 120 : "casilla final fuera de rango";
+                    return resultado;
+                }
             }
             case COLOR_VERDE -> {
-                if (posicionActual >= 56 && posicionActual <= 58) return casilla;
+                if (posicionActual >= 56 && posicionActual <= 58) {
+                    resultado = casilla;
+                    assert resultado >= -16 && resultado <= 120 : "casilla final fuera de rango";
+                    return resultado;
+                }
             }
             case COLOR_AMARILLO -> {
-                if (posicionActual >= 5 && posicionActual <= 8) return casilla;
+                if (posicionActual >= 5 && posicionActual <= 8) {
+                    resultado = casilla;
+                    assert resultado >= -16 && resultado <= 120 : "casilla final fuera de rango";
+                    return resultado;
+                }
             }
         }
 
         // --- BLOQUE 2: si ya está en tramo final, NO convertir ---
         if (casilla >= 69 + 20 && casilla <= 100 + 20) {
-            return casilla;
+            resultado = casilla;
+
+            // POSTCONDICIONES
+            assert resultado >= -16 && resultado <= 120 : "casilla final fuera de rango";
+            assert !(resultado < 0 && resultado >= 69 + 20) : "rango final inconsistente";
+
+            return resultado;
         }
 
         // --- BLOQUE 3: conversiones normales ---
         switch (color) {
 
             case COLOR_AZUL -> {
-                // Entrada en 17 → tramo 69–76
                 if (casilla > 17 && casilla <= 24) {
-                    return 69 + 20 + (casilla - 17) - 1;
+                    resultado = 69 + 20 + (casilla - 17) - 1;
+
+                    // POSTCONDICIONES
+                    assert resultado >= -16 && resultado <= 120 : "casilla final fuera de rango";
+                    return resultado;
                 }
-                return casilla;
+                resultado = casilla;
+
+                assert resultado >= -16 && resultado <= 120 : "casilla final fuera de rango";
+                return resultado;
             }
 
             case COLOR_ROJO -> {
-                // Entrada en 34 → tramo 77–84
                 if (casilla > 34 && casilla <= 41) {
-                    return 77 + 20 + (casilla - 34) - 1;
+                    resultado = 77 + 20 + (casilla - 34) - 1;
+
+                    assert resultado >= -16 && resultado <= 120 : "casilla final fuera de rango";
+                    return resultado;
                 }
-                return casilla;
+                resultado = casilla;
+
+                assert resultado >= -16 && resultado <= 120 : "casilla final fuera de rango";
+                return resultado;
             }
 
             case COLOR_VERDE -> {
-                // Entrada en 51 → tramo 85–92
                 if (casilla > 51 && casilla <= 58) {
-                    return 85 + 20 + (casilla - 51) - 1;
+                    resultado = 85 + 20 + (casilla - 51) - 1;
+
+                    assert resultado >= -16 && resultado <= 120 : "casilla final fuera de rango";
+                    return resultado;
                 }
-                return casilla;
+                resultado = casilla;
+
+                assert resultado >= -16 && resultado <= 120 : "casilla final fuera de rango";
+                return resultado;
             }
 
             case COLOR_AMARILLO -> {
-                // Entrada en 68 → tramo 93–100
                 if (casilla > 68 && casilla <= 76) {
-                    return 93 + 20 + (casilla - 68) - 1;
+                    resultado = 93 + 20 + (casilla - 68) - 1;
+
+                    assert resultado >= -16 && resultado <= 120 : "casilla final fuera de rango";
+                    return resultado;
                 }
-                return casilla;
+                resultado = casilla;
+
+                assert resultado >= -16 && resultado <= 120 : "casilla final fuera de rango";
+                return resultado;
             }
 
             default -> {
-                return casilla;
+                resultado = casilla;
+
+                assert resultado >= -16 && resultado <= 120 : "casilla final fuera de rango";
+                return resultado;
             }
         }
     }
 
 
+
     public boolean movimentInicial(Ficha f, int numDado) {
-        if (f.getPosicion().getNumero() < 0) {
+        //PRECONDICIONES
+        assert f != null : "ficha es null";
+        assert numDado >= 1 && numDado <= 6 : "dado fuera de rango";
+        assert f.getPosicion() != null : "ficha sin posición";
+        
+        boolean result = (f.getPosicion().getNumero() < 0 && numDado == 5);
 
-            return numDado == 5;
-        }
+        //POSTCONDICION
+        assert (result == true || result == false) : "resultado inválido";
 
-        return false;
+        return result;
     }
-
-
 
     public boolean movimientPosible(Ficha ficha, int numDado) {
         captura = false;
@@ -400,6 +464,13 @@ public class Tablero {
     }
 
     public void mouFicha(Ficha ficha, int numDado) {
+        //PRECONDICIONES
+        assert ficha != null : "ficha es null";
+        assert ficha.getPosicion() != null : "posición null";
+        assert numDado > 0 : "numDado debe ser positivo";
+
+        int posAntes = ficha.getPosicion().getNumero();
+
         ColorFicha color = ficha.getColor();
         boolean barrera = ficha.isBarrera();
         // 1) Comprobación general
@@ -480,6 +551,11 @@ public class Tablero {
             tablero[destino[0]][destino[1]] = ficha;
         }
         if (isCaptura()) mouFicha(ficha, 20);
+
+        //POSTCONDICIONES
+        assert ficha.getPosicion() != null : "la ficha perdió su posición";
+        assert ficha.getPosicion().getNumero() != posAntes || numDado == 0
+        : "la ficha no cambió posición cuando debía";
     }
 
     public List<Ficha> getFichasPorColor(Ficha.ColorFicha color) {

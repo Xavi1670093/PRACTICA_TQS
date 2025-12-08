@@ -2,8 +2,6 @@ package es.uab.tqs.parchis.model;
 
 import java.util.List;
 
-import es.uab.tqs.parchis.view.JuegoViewSwing;
-
 public class Juego {
 
     private final List<Jugador> jugadores;
@@ -22,7 +20,17 @@ public class Juego {
     }
 
     public Jugador getJugadorActual() {
-        return jugadores.get(turnoActual);
+        //PRECONDICIONES
+        assert !jugadores.isEmpty();
+        assert turnoActual>= 0 && turnoActual < jugadores.size();
+
+        Jugador j = jugadores.get(turnoActual);
+
+        //POSTCONDICIÓN
+        assert j != null;
+
+        return j;
+
     }
 
     public boolean isTerminado() {
@@ -43,12 +51,21 @@ public class Juego {
     
     /** Decide si el jugador tiene al menos una ficha movible */
     public boolean puedeMover(Jugador jugador) {
+        //PRECONDICIONES
+        assert jugadores != null : "No hay jugadores";
+        assert jugadores.contains(jugador);
+        
+        boolean puede = false;
         for (Ficha f : jugador.getFichas()) {
             for (int dadoValor = 1; dadoValor <= 6; dadoValor++) {
-                if (tablero.movimientPosible(f, dadoValor)) return true;
+                if (tablero.movimientPosible(f, dadoValor)) puede = true;
             }
         }
-        return false;
+
+        //POSTCONDICIÓN
+        assert (puede == true || puede == false);
+
+        return puede;
     }
 
     public void mostrarDado(int valor) {
@@ -107,12 +124,22 @@ public class Juego {
     }
 
     public void jugarTurno() {
+        //PRECONDICIONES
+        assert !jugadores.isEmpty();
+        assert !terminado;
+        assert tablero != null;
+        assert dado != null;
+
         if (terminado) return;
+
+        int turnoAntes = turnoActual;
+        Jugador jugadorAntes = getJugadorActual();
+        boolean estabaTerminado = terminado;
 
         Jugador jugador = getJugadorActual();
         jugador.setMovimientoHecho(false);
 
-        // SOLO calcula la tirada, NO llama a vista
+        // SOLO calcula la tirada
         tirada = dado.lanzar();
         
         mostrarDado(tirada);
@@ -137,6 +164,22 @@ public class Juego {
 
         // Turno normal
         avanzarTurno();
+
+        //POSTCONDICIONES
+        assert tirada >= 1 && tirada <= 6;
+
+        if(terminado){
+            assert ganador != null:"El juego ha terminado pero no hay ganador";
+            assert jugadores.contains(ganador): "el ganador no pertenece al juego";
+        }
+        
+        if (!estabaTerminado && tirada != 6 && puedeMover(jugadorAntes)) {
+            assert turnoActual != turnoAntes : "el turno debía avanzar pero no lo hizo";
+        }
+
+        if(tirada == 6 && !terminado){
+            assert turnoActual == turnoAntes : "Ha sacado 6 y no ha vuelto a tirar";
+        }
     }
 
     private void avanzarTurno() {
