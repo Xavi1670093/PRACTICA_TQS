@@ -35,6 +35,7 @@ public class Main {
         JuegoViewSwing vista = new JuegoViewSwing(tablero);
 
         Juego juego = new Juego(List.of(j1, j2), tablero, dado);
+        tablero.setJuego(juego);
         juegoController controller = new juegoController(juego, vista);
 
         controller.iniciarPartida();
@@ -44,7 +45,7 @@ public class Main {
         // --- BUCLE PRINCIPAL DEL JUEGO ---
         while (!juego.isTerminado()) {
 
-            System.out.println("\nPulsa ENTER para jugar el siguiente turno...");
+            System.out.println("\nPulsa ENTER para tirar el dado...");
             scanner.nextLine(); // el usuario pulsa ENTER
 
             System.out.print("\033[H\033[2J");

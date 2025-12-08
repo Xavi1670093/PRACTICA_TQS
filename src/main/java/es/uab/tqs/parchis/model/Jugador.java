@@ -47,6 +47,10 @@ public class Jugador{
         this.movimientoHecho = movimientoHecho;
     }
     
+    public void eliminarFicha(Ficha ficha) {
+        fichas.remove(ficha);
+    }
+
     public void añadirFicha(Ficha ficha){
         //PRECONDICIONES
         assert ficha != null : "ficha es null";
@@ -76,7 +80,7 @@ public class Jugador{
             int[] pos = tablero.obtenerIndice(ficha.getPosicion().getNumero());
             if (pos != null) {
                 Ficha fichaEnTablero = tablero.getFicha(pos[0], pos[1]);
-                if (fichaEnTablero.getColor() == this.color && tablero.movimientPosible(fichaEnTablero, numDado)) {
+                if (fichaEnTablero.getColor() == this.color && tablero.movimientPosible(fichaEnTablero, numDado)&& fichaEnTablero.getPosicion() != null) {
                     fichasMovibles.add(fichaEnTablero);
                 }
             }
@@ -112,8 +116,11 @@ public class Jugador{
 
         // --- Mover la ficha real que está en el tablero ---
         tablero.mouFicha(fichaSeleccionada, numDado);
+        if (fichaSeleccionada.getPosicion().getNumero() == 999) {
+            System.out.println("Ficha movida a la meta y retirada del tablero.");
+        } else {
         System.out.println("Ficha movida a posición " + fichaSeleccionada.getPosicion().getNumero());
-
+        }
         //POSTCONDICIONES
         assert movimientoHecho : "movimientoHecho debería haberse marcado como true";
         assert fichaSeleccionada.getPosicion() != null : "la posición de la ficha no puede ser null después de mover";

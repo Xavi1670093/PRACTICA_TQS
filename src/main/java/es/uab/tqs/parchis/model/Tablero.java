@@ -4,12 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.uab.tqs.parchis.model.Ficha.ColorFicha;
+import es.uab.tqs.parchis.model.Ficha.TipoFicha;
 
 public class Tablero {
     private Ficha[][] tablero;
     private int[][] numerosTablero;
     private boolean captura;
     Ficha fichaDestino;
+    private Juego juego;
+
+    public void setJuego(Juego juego) {
+        this.juego = juego;
+    }
 
     public void inicializa() {
         //PRECONDICION
@@ -175,6 +181,14 @@ public class Tablero {
         assert numerosTablero.length == 19 : "Los numerosTablero no tienen tamaño 19x19";
     }
 
+    private Jugador obtenerJugadorDeColor(ColorFicha color) {
+        for (Jugador j : juego.getJugadores()) {
+            if (j.getColor() == color) {
+                return j;
+            }
+        }
+        throw new IllegalStateException("No existe jugador del color " + color);
+    }
     public Ficha[][] getTablero() {
         return tablero;
     }
@@ -362,7 +376,30 @@ public class Tablero {
         int posActual = ficha.getPosicion().getNumero();
         
         if (ficha.getPosicion().getNumero() < 0) {
-            return movimentInicial(ficha, numDado);
+            if (!movimentInicial(ficha, numDado)) 
+            return false;
+
+            // Determinar casilla de salida según color
+            int casillaSalida = switch (ficha.getColor()) {
+                case COLOR_ROJO -> 39;
+                case COLOR_AZUL -> 22;
+                case COLOR_AMARILLO -> 5;
+                case COLOR_VERDE -> 56;
+                default -> 0;
+            };
+
+            // Obtenemos la ficha que está en la casilla de salida
+            int[] ind = obtenerIndice(casillaSalida);
+            Ficha fichaEnSalida = tablero[ind[0]][ind[1]];
+
+            // Si hay una ficha rival, NO se puede salir
+            if (fichaEnSalida.getTipo() != Ficha.TipoFicha.TIPO_EMPTY &&
+                fichaEnSalida.getColor() != ficha.getColor()) {
+                return false;
+            }
+
+        return true;  // Puede salir
+
         } else {
             int casillaDestino = posActual + numDado;
             if (casillaDestino > 68 && casillaDestino <= 69 + 20 && ficha.getColor() != ColorFicha.COLOR_AMARILLO) {
@@ -407,48 +444,23 @@ public class Tablero {
     }
 
     private void enviarFichaACasa(Ficha ficha) {
-        if (ficha.getColor() == ColorFicha.COLOR_ROJO) {
-            if (tablero[1][1] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
-                setFicha(1, 1, ColorFicha.COLOR_ROJO, new Posicion(-1, false));
-            } else if (tablero[1][5] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
-                setFicha(1, 5, ColorFicha.COLOR_ROJO, new Posicion(-2, false));
-            } else if (tablero[5][1] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
-                setFicha(5, 1, ColorFicha.COLOR_ROJO, new Posicion(-3, false));
-            } else if (tablero[5][5] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
-                setFicha(5, 5, ColorFicha.COLOR_ROJO, new Posicion(-4, false));
-            }
-        }
-        if (ficha.getColor() == ColorFicha.COLOR_VERDE) {
-            if (tablero[13][1] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
-                setFicha(13, 1, ColorFicha.COLOR_VERDE, new Posicion(-5, false));
-            } else if (tablero[13][5] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
-                setFicha(13, 5, ColorFicha.COLOR_VERDE, new Posicion(-6, false));
-            } else if (tablero[17][1] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
-                setFicha(17, 1, ColorFicha.COLOR_VERDE, new Posicion(-7, false));
-            } else if (tablero[17][5] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
-                setFicha(17, 5, ColorFicha.COLOR_VERDE, new Posicion(-8, false));
-            }
-        }
-        if (ficha.getColor() == ColorFicha.COLOR_AZUL) {
-            if (tablero[1][13] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
-                setFicha(1, 13, ColorFicha.COLOR_AZUL, new Posicion(-9, false));
-            } else if (tablero[1][17] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
-                setFicha(1, 17, ColorFicha.COLOR_AZUL, new Posicion(-10, false));
-            } else if (tablero[5][13] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
-                setFicha(5, 13, ColorFicha.COLOR_AZUL, new Posicion(-11, false));
-            } else if (tablero[5][17] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
-                setFicha(5, 17, ColorFicha.COLOR_AZUL, new Posicion(-12, false));
-            }
-        }
-        if (ficha.getColor() == ColorFicha.COLOR_AMARILLO) {
-            if (tablero[13][13] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
-                setFicha(13, 13, ColorFicha.COLOR_AMARILLO, new Posicion(-13, false));
-            } else if (tablero[13][17] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
-                setFicha(13, 17, ColorFicha.COLOR_AMARILLO, new Posicion(-14, false));
-            } else if (tablero[17][13] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
-                setFicha(17, 13, ColorFicha.COLOR_AMARILLO, new Posicion(-15, false));
-            } else if (tablero[17][17] .getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
-                setFicha(17, 17, ColorFicha.COLOR_AMARILLO, new Posicion(-16, false));
+
+        int[][] casillas = switch (ficha.getColor()) {
+            case COLOR_ROJO -> new int[][]{{1,1},{1,5},{5,1},{5,5}};
+            case COLOR_VERDE -> new int[][]{{13,1},{13,5},{17,1},{17,5}};
+            case COLOR_AZUL -> new int[][]{{1,13},{1,17},{5,13},{5,17}};
+            case COLOR_AMARILLO -> new int[][]{{13,13},{13,17},{17,13},{17,17}};
+            default -> null;
+        };
+
+        for (int[] c : casillas) {
+            int f = c[0], col = c[1];
+            if (tablero[f][col].getTipo() == Ficha.TipoFicha.TIPO_EMPTY) {
+
+                ficha.setPosicion(new Posicion(numerosTablero[f][col], false));
+                ficha.setBarrera(false);
+                tablero[f][col] = ficha;
+                return;
             }
         }
     }
@@ -462,7 +474,7 @@ public class Tablero {
             default -> 1;
         };
     }
-
+    
     public void mouFicha(Ficha ficha, int numDado) {
         //PRECONDICIONES
         assert ficha != null : "ficha es null";
@@ -499,8 +511,7 @@ public class Tablero {
                 int[] destino = obtenerIndice(salida);
 
                 // mover ficha
-                if (tablero[destino[0]][destino[1]].getColor() == color) tablero[destino[0]][destino[1]].setBarrera(true);
-                
+                if (tablero[destino[0]][destino[1]].getColor() == color) tablero[destino[0]][destino[1]].setBarrera(true);                
                 tablero[filaActual][colActual] = new Ficha(ColorFicha.NULL, Ficha.TipoFicha.TIPO_EMPTY, null, false);
 
                 if (!tablero[destino[0]][destino[1]].isBarrera())
@@ -523,11 +534,23 @@ public class Tablero {
         // Convertir tramo final según color
         casillaDestino = convertirCasillaFinal(ficha, casillaDestino);
         int[] destino = obtenerIndice(casillaDestino);
+
+        if (esCasillaFinal(ficha, casillaDestino)) {
+            tablero[filaActual][colActual] = new Ficha(ColorFicha.NULL, TipoFicha.TIPO_EMPTY, null, false);
+            Posicion posFuera = new Posicion(999, false);
+            ficha.setPosicion(posFuera);
+            ficha.setBarrera(false);
+
+            Jugador dueño = obtenerJugadorDeColor(ficha.getColor());
+            dueño.eliminarFicha(ficha);
+            return; 
+        }
         // CAPTURA
         if (isCaptura()) {
 
-            enviarFichaACasa(tablero[destino[0]][destino[1]]);
-            captura = true;
+            Ficha capturada = tablero[destino[0]][destino[1]];
+            tablero[destino[0]][destino[1]] = new Ficha(ColorFicha.NULL, TipoFicha.TIPO_EMPTY, null, false);
+            enviarFichaACasa(capturada);
         }
 
         // Mover la ficha
@@ -537,7 +560,13 @@ public class Tablero {
         if (!barrera)
             tablero[filaActual][colActual] = new Ficha(ColorFicha.NULL, Ficha.TipoFicha.TIPO_EMPTY, null, false);
         else
-            tablero[filaActual][colActual] = new Ficha(color, Ficha.TipoFicha.TIPO_OCUPADO, ficha.getPosicion(), false);
+        {
+            Ficha nueva = new Ficha(color, TipoFicha.TIPO_OCUPADO, ficha.getPosicion(), false);
+            tablero[filaActual][colActual] = nueva;
+
+            Jugador dueño = obtenerJugadorDeColor(color);
+            dueño.añadirFicha(nueva);
+        }
 
         if (!tablero[destino[0]][destino[1]].isBarrera())
         {
@@ -600,9 +629,18 @@ public class Tablero {
     }
 
     public int[][] getNumerosTablero() {
-    return numerosTablero;
-}
+        return numerosTablero;
+    }
 
+    private boolean esCasillaFinal(Ficha ficha, int casilla) {
+        return switch (ficha.getColor()) {
+            case COLOR_AMARILLO -> casilla == 100 + 20;
+            case COLOR_AZUL     -> casilla == 76 + 20;
+            case COLOR_ROJO     -> casilla == 84 + 20;
+            case COLOR_VERDE    -> casilla == 92 + 20;
+            default -> false;
+        };
+    }
 
     
 }

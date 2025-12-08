@@ -34,6 +34,23 @@ public class TableroView extends JPanel {
 
                 // Casillas especiales
                 int numero = nums[i][j];
+
+                // --- CASILLAS FINALES MÁS FUERTES ---
+                if(numero == 104) { // rojo
+                    g.setColor(new Color(200, 0, 0));
+                    g.fillRect(x, y, TILE, TILE);
+                } else if(numero == 96) { // azul
+                    g.setColor(new Color(0, 0, 200));
+                    g.fillRect(x, y, TILE, TILE);
+                } else if(numero == 120) { // amarillo
+                    g.setColor(new Color(255, 200, 0));
+                    g.fillRect(x, y, TILE, TILE);
+                } else if(numero == 112) { // verde
+                    g.setColor(new Color(0, 200, 0));
+                    g.fillRect(x, y, TILE, TILE);
+                }
+
+                                // Casillas especiales normales
                 if((numero >= 113 && numero <= 120) || (numero == 5 || numero == 68 || numero == 12)){
                     g.setColor(Color.YELLOW);
                     g.fillRect(x, y, TILE, TILE);
@@ -48,6 +65,17 @@ public class TableroView extends JPanel {
                 }
                 if((numero >= 105 && numero <= 112) ||(numero == 51 || numero == 56 || numero == 63) ){
                     g.setColor(new Color(120, 230, 120));
+                    g.fillRect(x, y, TILE, TILE);
+                }
+
+                // Casillas finales más fuertes (sobrescribir)
+                switch(numero) {
+                    case 84+20 -> g.setColor(new Color(200, 0, 0));      // rojo
+                    case 76+20 -> g.setColor(new Color(0, 0, 200));      // azul
+                    case 100+20 -> g.setColor(new Color(255, 200, 0));   // amarillo
+                    case 92+20 -> g.setColor(new Color(0, 200, 0));      // verde
+                }
+                if(numero == 84+20 || numero == 76+20 || numero == 100+20 || numero == 92+20){
                     g.fillRect(x, y, TILE, TILE);
                 }
 

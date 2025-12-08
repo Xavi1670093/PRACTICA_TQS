@@ -19,6 +19,10 @@ public class Juego {
         this.dado = dado;
     }
 
+    public List<Jugador> getJugadores() {
+        return jugadores;
+    }
+    
     public Jugador getJugadorActual() {
         //PRECONDICIONES
         assert !jugadores.isEmpty();
