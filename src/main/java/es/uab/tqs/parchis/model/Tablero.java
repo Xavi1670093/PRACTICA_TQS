@@ -558,6 +558,7 @@ public class Tablero {
         Ficha fichaEnDestino = tablero[destino[0]][destino[1]];
         if (fichaEnDestino.getColor() == ficha.getColor()) {
             fichaEnDestino.setBarrera(true);
+            ficha.setPosicion(new Posicion(casillaDestino));
             tablero[filaActual][colActual] = new Ficha(ColorFicha.NULL, TipoFicha.TIPO_EMPTY, null, false);
             return;
         }  
