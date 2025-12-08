@@ -1,9 +1,15 @@
 package es.uab.tqs.parchis.model;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import es.uab.tqs.parchis.model.Ficha.ColorFicha;
 
@@ -76,7 +82,19 @@ public class TableroTest {
         assertNull(tablero.obtenerIndice(102 + 20));
     }
 
-        
+    @Test
+    void testLoopObtenerIndice() {
+        // Valores que existen en el tablero
+        for (int numero = 1; numero <= 68; numero++) {
+            int[] indice = tablero.obtenerIndice(numero);
+            assertNotNull(indice, "El número " + numero + " debería existir en el tablero");
+            assertEquals(numero, tablero.getNumeroTablero(indice[0], indice[1]));
+        }
+
+        // Valores fuera de rango
+        assertNull(tablero.obtenerIndice(-17));
+        assertNull(tablero.obtenerIndice(121));
+    }
     
     
     @Test
@@ -382,4 +400,46 @@ public class TableroTest {
         assertNotNull(coordSalidaRoja);
         assertSame(fichaCasa, tablero.getFicha(coordSalidaRoja[0], coordSalidaRoja[1]));
     }
+
+    @Test
+    void testLoopBuscarFichaEnTablero() {
+        // Colocamos una ficha en una posición conocida
+        Ficha ficha = new Ficha(Ficha.ColorFicha.COLOR_ROJO, Ficha.TipoFicha.TIPO_OCUPADO, new Posicion(5, false), false);
+        tablero.setFicha(ficha, new int[]{10, 12}); // fila 10, col 12
+        
+        // Ejecutamos mouFicha para que haga el loop de búsqueda
+        tablero.mouFicha(ficha, 1);
+        
+        // Verificamos que la ficha sigue en el tablero y su posición se actualizó
+        assertNotNull(tablero.getFicha(10, 12));
+        assertEquals(ficha.getColor(), tablero.getFicha(tablero.obtenerIndice(ficha.getPosicion().getNumero())[0],
+        tablero.obtenerIndice(ficha.getPosicion().getNumero())[1]).getColor());
+    }
+
+
+    @Test
+    void testMovimentInicial_Decision_TRUE() {
+        Tablero t = new Tablero();
+        Ficha f = Mockito.mock(Ficha.class);
+        Posicion p = new Posicion(-1);
+        Mockito.when(f.getPosicion()).thenReturn(p);
+
+        boolean r = t.movimentInicial(f, 5);
+
+        assertTrue(r);
+    }
+
+    @Test
+    void testMovimentInicial_Decision_FALSE() {
+        Tablero t = new Tablero();
+        Ficha f = Mockito.mock(Ficha.class);
+        Posicion p = new Posicion(-1);
+        Mockito.when(f.getPosicion()).thenReturn(p);
+
+        boolean r = t.movimentInicial(f, 3);
+
+        assertFalse(r);
+    }
+
+    
 }
