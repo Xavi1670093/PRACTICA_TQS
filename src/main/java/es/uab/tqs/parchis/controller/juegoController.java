@@ -1,6 +1,7 @@
 package es.uab.tqs.parchis.controller;
 
-import es.uab.tqs.parchis.model.*;
+import es.uab.tqs.parchis.model.Juego;
+import es.uab.tqs.parchis.model.Jugador;
 import es.uab.tqs.parchis.view.JuegoViewSwing;
 
 public class juegoController {
@@ -19,7 +20,6 @@ public class juegoController {
         vista.mostrarEstado(juego);
     }
 
-    // --- Ahora se llama desde MAIN, no desde clics ---
     public void jugarTurno() {
 
         if (juego.isTerminado()) {

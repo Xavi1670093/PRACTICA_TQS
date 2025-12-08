@@ -23,6 +23,7 @@ public class Dado {
     }
 
     public Dado(Random random) {
+        //PRECONDICIONES
         Objects.requireNonNull(random, "El Random no puede ser null");
         this.random = random;
 
@@ -34,12 +35,14 @@ public class Dado {
     }
 
     public int lanzar() {
+        //PRECONDICIONES
         Objects.requireNonNull(random, "El Random debe estar inicializado");
 
         checkInvariant(); // Invariante antes del cálculo
 
         int resultado = random.nextInt(MAX - MIN + 1) + MIN;
 
+        //POSTCONDICIONES
         assert resultado >= MIN && resultado <= MAX :
             "El resultado debe estar en el rango del dado";
 

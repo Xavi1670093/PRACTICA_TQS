@@ -6,17 +6,43 @@ import java.util.List;
 import es.uab.tqs.parchis.model.Ficha.ColorFicha;
 import es.uab.tqs.parchis.model.Ficha.TipoFicha;
 
+/**
+ * Representa el tablero del juego de Parchís.
+ * 
+ * Contiene:
+ * - Una matriz de fichas (19x19) que representa el tablero físico.
+ * - Una matriz de números que relaciona cada casilla con su número lógico en el juego.
+ * - Métodos para inicializar fichas, obtener posiciones y manejar capturas.
+ * 
+ * Esta clase es central para la lógica del juego y para las pruebas:
+ * - Permite testear movimientos, entradas de fichas y reglas de captura.
+ * - Es clave para decision coverage al manejar distintos casos de posición y color.
+ */
 public class Tablero {
-    private Ficha[][] tablero;
-    private int[][] numerosTablero;
-    private boolean captura;
-    Ficha fichaDestino;
-    private Juego juego;
+     private Ficha[][] tablero;         // Matriz de fichas visibles en el tablero
+    private int[][] numerosTablero;    // Matriz de números de casilla para lógica del juego
+    private boolean captura;           // Indica si la última jugada fue captura
+    Ficha fichaDestino;                 // Ficha que se ve afectada por captura
+    private Juego juego;               // Referencia al juego para obtener jugadores
 
     public void setJuego(Juego juego) {
         this.juego = juego;
     }
 
+    /**
+     * Inicializa el tablero y la matriz de números de casilla.
+     * 
+     * PRECONDICIONES:
+     * - No debe estar ya inicializado (tablero y numerosTablero null).
+     * 
+     * Lógica de inicialización:
+     * - Todas las posiciones comienzan vacías (TIPO_EMPTY, color NULL).
+     * - Se colocan fichas iniciales en las casas de cada color.
+     * - Se asignan números a las casillas principales y entradas de cada color.
+     * 
+     * POSTCONDICIONES:
+     * - Tablero y numerosTablero tienen tamaño 19x19.
+     */
     public void inicializa() {
         //PRECONDICION
         assert tablero == null : "El tablero no debe estar inicializado de antes";
@@ -24,6 +50,8 @@ public class Tablero {
 
         tablero = new Ficha[19][19];
         numerosTablero = new int[19][19];
+
+        // Inicializar todas las casillas como vacías
         for (int i = 0; i < 19; i++) {
             for (int j = 0; j < 19; j++) {
                 tablero[i][j] = new Ficha(Ficha.ColorFicha.NULL, Ficha.TipoFicha.TIPO_EMPTY, null, false);
@@ -54,6 +82,9 @@ public class Tablero {
         setFicha(17, 13, Ficha.ColorFicha.COLOR_AMARILLO, new Posicion(-15, false));
         setFicha(17, 17, Ficha.ColorFicha.COLOR_AMARILLO, new Posicion(-16, false));
 
+        // --- Asignación de números a las casillas principales ---
+        // Importante para lógica del juego y testing de movimientos.
+        // (Se numeran las casillas según recorrido de cada color)
         numerosTablero[18][10] = 1;
         numerosTablero[17][10] = 2;
         numerosTablero[16][10] = 3;
@@ -181,6 +212,10 @@ public class Tablero {
         assert numerosTablero.length == 19 : "Los numerosTablero no tienen tamaño 19x19";
     }
 
+    /**
+     * Devuelve el jugador correspondiente a un color.
+     * Se usa para testear movimientos según color y entradas de ficha.
+     */
     private Jugador obtenerJugadorDeColor(ColorFicha color) {
         for (Jugador j : juego.getJugadores()) {
             if (j.getColor() == color) {
@@ -189,6 +224,8 @@ public class Tablero {
         }
         throw new IllegalStateException("No existe jugador del color " + color);
     }
+
+    //GETTERS
     public Ficha[][] getTablero() {
         return tablero;
     }
@@ -205,6 +242,7 @@ public class Tablero {
         return tablero[fila][col];
     }
 
+    // --- MÉTODOS PRIVADOS PARA CONFIGURAR FICHAS ---
     private void setFicha(int fila, int col, Ficha.ColorFicha color, Posicion posicion) {
         tablero[fila][col].setColor(color);
         tablero[fila][col].setTipo(Ficha.TipoFicha.TIPO_OCUPADO);
@@ -222,7 +260,11 @@ public class Tablero {
         tablero[fila][col] = ficha;
     }
 
-
+    /**
+     * Obtiene las coordenadas de una casilla según su número lógico.
+     * Devuelve null si el número está fuera del rango válido.
+     * Esto permite testear todas las rutas de movimiento.
+     */
     public int[] obtenerIndice(int numero) {
 
         if (numero < -16 || numero > 120) return null;
@@ -237,6 +279,17 @@ public class Tablero {
     }   
 
 
+    /**
+     * Convierte una casilla lógica en su casilla final correspondiente
+     * según el color de la ficha.
+     * 
+     * PRECONDICIONES:
+     * - ficha no puede ser null
+     * - ficha.getPosicion() no puede ser null
+     * 
+     * POSTCONDICIONES:
+     * - devuelve un número dentro de [-16, 120]
+     */
     public int convertirCasillaFinal(Ficha ficha, int casilla) {
         //PRECONDICIONES
         assert ficha != null : "ficha es null";
@@ -375,10 +428,17 @@ public class Tablero {
         return numerosTablero[x][y];
     }
     
+    /**
+     * Comprueba si el movimiento de una ficha es posible según:
+     * - Salida inicial
+     * - Barreras en el camino
+     * - Casilla de destino ocupada o segura
+     */
     public boolean movimientPosible(Ficha ficha, int numDado) {
         captura = false;
         int posActual = ficha.getPosicion().getNumero();
         
+        // Salida desde casa
         if (ficha.getPosicion().getNumero() < 0) {
             if (!movimentInicial(ficha, numDado)) 
             return false;
@@ -447,6 +507,9 @@ public class Tablero {
         }
     }
 
+    /**
+     * Devuelve una casilla vacía en casa del color de la ficha para enviarla de vuelta.
+     */
     private void enviarFichaACasa(Ficha ficha) {
 
         int[][] casillas = switch (ficha.getColor()) {
@@ -479,6 +542,17 @@ public class Tablero {
         };
     }
     
+
+    /**
+     * Mueve una ficha en el tablero considerando:
+     * - Salida desde casa
+     * - Movimiento normal
+     * - Capturas
+     * - Barreras
+     * POSTCONDICIONES:
+     * - La ficha mantiene una posición válida
+     * - La posición cambia si el movimiento fue legal
+     */
     public void mouFicha(Ficha ficha, int numDado) {
         //PRECONDICIONES
         assert ficha != null : "ficha es null";
@@ -560,14 +634,14 @@ public class Tablero {
         // Mover la ficha
 
         Ficha fichaEnDestino = tablero[destino[0]][destino[1]];
-        if (fichaEnDestino.getColor() == ficha.getColor()) {
+        if (fichaEnDestino.getColor() == ficha.getColor()) { //Hacer la barrera
             fichaEnDestino.setBarrera(true);
             ficha.setPosicion(new Posicion(casillaDestino));
             tablero[filaActual][colActual] = new Ficha(ColorFicha.NULL, TipoFicha.TIPO_EMPTY, null, false);
             return;
         }  
 
-        if (!barrera)
+        if (!barrera) //Si no es barrera dejamos libre la posicion actual sino duplicamos para que no se descarte la ficha que no se mueve
             tablero[filaActual][colActual] = new Ficha(ColorFicha.NULL, Ficha.TipoFicha.TIPO_EMPTY, null, false);
         else
         {
@@ -607,6 +681,10 @@ public class Tablero {
         : "la ficha no cambió posición cuando debía";
     }
 
+
+    /**
+     * Devuelve todas las fichas ocupadas de un color específico.
+     */
     public List<Ficha> getFichasPorColor(Ficha.ColorFicha color) {
         List<Ficha> lista = new ArrayList<>();
 
@@ -621,6 +699,13 @@ public class Tablero {
         return lista;
     }
     
+
+     /**
+     * Muestra el tablero por consola con:
+     * - números de casilla
+     * - letras de color para fichas
+     * - indicación de barreras
+     */
     public void mostrar() {
 
         for (int i = 0; i < 19; i++) {
