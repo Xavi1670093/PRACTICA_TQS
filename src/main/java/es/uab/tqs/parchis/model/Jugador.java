@@ -54,7 +54,7 @@ public class Jugador{
             throw new IllegalArgumentException("La ficha no coincide con el color del jugador");
         
         fichas.add(ficha);
-
+        
         //POSTCONDICIÓN
         assert fichas.contains(ficha) : "Ficha no añadidad correctamente";
     }
